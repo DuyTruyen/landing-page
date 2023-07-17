@@ -1,6 +1,6 @@
-# DPS-FE (Digital Pathology Systems)
+# HVID
 
-FE Angular project for DPS product.
+FE Angular project for HVID.
 ***
 
 # How to run
