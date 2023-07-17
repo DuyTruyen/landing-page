@@ -1,0 +1,23 @@
+{
+    "api": {
+    "baseUrl": "dpstest2-be.pmr.vn/api",
+    "fileUrl": "dpstest2-be.pmr.vn/Files"
+},
+"deepzoom": {
+    "baseUrl": "dpstest2-dz.pmr.vn"
+},
+    "domain": "dpstest2.pmr.vn",
+    "sharedUrl": "share",
+    "layout": 3,
+    "slogan": {
+        "content": "Chính sức khỏe mới là sự giàu có thực sự, không phải vàng bạc",
+        "author": "Mahathma"
+    },
+    "viewerConfig": {
+        "usePolygonLabeling": true
+    },
+    "isEnablePapsmear":true,
+    "initData":{
+        "papsmearMarkTypeId":"63d744c3270d472ee767b791"
+    }
+}

@@ -1,0 +1,49 @@
+<div class="grid">
+  <div class="col-12 p-0">
+    <div class="card admin-content m-0">
+        <!-- Title Xem phân quyền user -->
+        <p-breadcrumb [model]="breadcrumbItem" [home]="breadcrumbHome" styleClass="breadcrumb-admin"></p-breadcrumb>
+
+      <div class="my-2">
+        <span class="block p-input-icon-left">
+          <i class="pi pi-search"></i>
+          <input pInputText type="text" placeholder="Tìm kiếm..." class="w-full sm:w-auto p-inputtext-sm"
+            [(ngModel)]="searchData.keyword" (keydown.enter)="search()" />
+          <button pButton pRipple icon="pi pi-search" class="p-button-primary mr-2 ml-2 p-button-sm"
+            (click)="search()"></button>
+          <button pButton pRipple icon="pi pi-times" class="p-button-secondary p-button-sm"
+            (click)="resetSearch()"></button>
+        </span>
+      </div>
+      <m-table [isLazyLoad]="false" [items]="userRoles" [dataKey]="'id'" [loading]="loading" [customBodyTemplate]="customBodyTemplate"
+        [customHeaderTemplate]="customHeaderTemplate" [tableStyleClass]="'p-datatable-sm'" [calcHeight]="303">
+      </m-table>
+      <ng-template #customHeaderTemplate>
+        <th [style.minWidth]="cols[0]['width']">UserId</th>
+
+        <th [style.minWidth]="cols[1]['width']" (click)="customSort(cols[1])">{{cols[1]['header']}}
+            <!-- Icon Sort -->
+            <div class="ml-1">
+                <i class="{{ cols[1]['isOpSort']? (cols[1]['iconSort'] == 0? 'pi pi-sort-alt' : (cols[1]['iconSort'] == 1? 'pi pi-sort-amount-up-alt' : 'pi pi-sort-amount-down')) : ''}}" style="font-size: 1.01rem"></i>
+            </div>
+        </th>
+
+        <th [style.minWidth]="cols[2]['width']" (click)="customSort(cols[2])">{{cols[2]['header']}}
+            <!-- Icon Sort -->
+            <div class="ml-1">
+                <i class="{{ cols[2]['isOpSort']? (cols[2]['iconSort'] == 0? 'pi pi-sort-alt' : (cols[2]['iconSort'] == 1? 'pi pi-sort-amount-up-alt' : 'pi pi-sort-amount-down')) : ''}}" style="font-size: 1.01rem"></i>
+            </div>
+        </th>
+        <th *ngFor="let role of roles; let i = index" [style.minWidth]="'5rem'">{{role}}</th>
+      </ng-template>
+      <ng-template #customBodyTemplate let-rowData>
+          <td [style.minWidth]="'15rem'">{{rowData['id']}}</td>
+          <td [style.minWidth]="'12rem'">{{rowData['username']}}</td>
+          <td [style.minWidth]="'12rem'">{{rowData['fullname']}}</td>
+          <td *ngFor="let role of roles; let i = index" class="text-center flex justify-content-center" [style.minWidth]="'5rem'">
+            <i *ngIf="rowData.roles == null? false : rowData.roles.includes(role)" class="pi pi-check text-xl text-green-500 font-bold"></i>
+          </td>
+      </ng-template>
+    </div>
+  </div>
+</div>
