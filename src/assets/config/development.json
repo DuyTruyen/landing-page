@@ -1,17 +1,17 @@
 {
     "api": {
-    "baseUrl": "dpstest2-be.pmr.vn/api",
-    "fileUrl": "dpstest2-be.pmr.vn/Files"
+    "baseUrl": "hidtest-api.pmr.vn/api",
+    "fileUrl": "hidtest-api.pmr.vn/Files"
 },
 "deepzoom": {
     "baseUrl": "dpstest2-dz.pmr.vn"
 },
-    "domain": "dpstest2.pmr.vn",
+    "domain": "hidtest.pmr.vn",
     "sharedUrl": "share",
     "layout": 3,
     "slogan": {
-        "content": "Chính sức khỏe mới là sự giàu có thực sự, không phải vàng bạc",
-        "author": "Mahathma"
+        "content": "BỆNH VIỆN ĐA KHOA HÙNG VƯƠNG",
+        "author": "Thân thiện - Chuyên nghiệp - Chu đáo"
     },
     "viewerConfig": {
         "usePolygonLabeling": true

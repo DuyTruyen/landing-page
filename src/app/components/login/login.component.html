@@ -11,15 +11,18 @@
     <div class="col-6 mt-10rem">
       <div class="mt-8 m-auto relative z-1 text-center text-white login-form ">
         <img class="h-13rem login-logoMSC-slogan" src="assets/images/msc.png"/>
-        <h1 class="text-6xl mt-0 login-logoMSC-slogan">DPS</h1>
-        <h2 class="font-light mt-7 mx-8 text-2xl login-logoMSC-slogan">{{slogan.content}}
+        <h1 class="text-6xl mt-0 login-logoMSC-slogan">HVID</h1>
+        <h2 class="font-light mt-7 mx-8 text-2xl login-logoMSC-slogan" style="color: #3156A3;">{{slogan.content}}
         </h2>
-        <h2 class="font-light mt-5 login-logoMSC-slogan"> - {{slogan.author}} -
+        <h2 class="font-light mt-5 login-logoMSC-slogan" style="color: #04b0f0"> - {{slogan.author}} -
         </h2>
       </div>
     </div>
     <div class="col-5 col-offset-1 relative z-1 text-center mt-10rem p-8 login-input">
-      <img class="relative mx-4 pt-6 h-10rem w-24rem login-logoPMR" src="assets/images/logo-PMRDPS.png"/>
+        <div>
+            <img class="h-13rem login-logoMSC-slogan" src="assets/images/login-hvid.png"/>
+            <p class="text-lg">BỆNH VIỆN ĐA KHOA HÙNG VƯƠNG</p>
+        </div>
       <div [formGroup]="loginForm">
 
           <div class="col-8 m-auto mt-6 w-23rem login-inp-btn-password">
