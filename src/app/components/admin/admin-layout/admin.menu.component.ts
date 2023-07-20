@@ -32,7 +32,7 @@ export class AdminMenuComponent implements OnInit {
                     {
                         label: 'Quản lý user',
                         icon: 'pi pi-fw pi-user',
-                        visible: this.currentUser.userTypes?.includes(Roles.MANAGE_USER),
+                        visible: this.currentUser.menus?.includes(Roles.MANAGE_USER),
                         items: [
                             {
                                 label: 'Danh sách user',
@@ -49,7 +49,7 @@ export class AdminMenuComponent implements OnInit {
                     {
                         label: 'Quản lý group',
                         icon: 'pi pi-fw pi-users',
-                        visible: this.currentUser.userTypes?.includes(Roles.MANAGE_GROUP),
+                        visible: this.currentUser.menus?.includes(Roles.MANAGE_GROUP),
                         items: [
                             {
                                 label: 'Danh sách group',

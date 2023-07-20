@@ -1,12 +1,12 @@
 {
     "api": {
-    "baseUrl": "dpstest2-be.pmr.vn/api",
-    "fileUrl": "dpstest2-be.pmr.vn/Files"
+    "baseUrl": "hidtest-api.pmr.vn",
+    "fileUrl": "hidtest-api.pmr.vn/Files"
 },
 "deepzoom": {
-    "baseUrl": "dpstest2-dz.pmr.vn"
+    "baseUrl": "hidtest-api.pmr.vn"
 },
-    "domain": "dpstest2.pmr.vn",
+    "domain": "hidtest-api.pmr.vn",
     "sharedUrl": "share",
     "layout": 3,
     "slogan": {

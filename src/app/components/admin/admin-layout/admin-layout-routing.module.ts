@@ -52,9 +52,10 @@ import { AdminLayoutComponent } from './admin.layout.component';
                         loadChildren: () =>
                             import('../admin-dashboard/admin-dashboard.module').then(
                                 (m) => m.AdminDashboardModule
-                            ),
+                            )
+
                     },
-                    { path: '', redirectTo: 'admin-dashboard', pathMatch: 'full' },
+                    { path: '', redirectTo: 'admin-dashboard', pathMatch: 'full'},
 
                 ],
             },

@@ -257,11 +257,13 @@ export class Constants {
 
 }
 export class StorageKeys {
-    public static readonly TOKEN = 'dps-token';
-    public static readonly USER = 'dps-user';
+    public static readonly TOKEN = 'token';
+    public static readonly USER = 'user';
+    public static readonly ADMIN_DASHBOARD = "admin";
     public static readonly LAYOUT = 'dps-layout';
     public static readonly PAPSMEAR_WORKLIST_SPLIT = 'dps-pasmear-worklist-split';
     public static readonly VT_WORKLIST_SPLIT = 'dps-VT-worklist-split-new';
+    public static readonly LOGIN_FAIL = "Incorrect username and/or password.";
 }
 
 export enum GridType{

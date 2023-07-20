@@ -14,7 +14,7 @@
 
   <div #topbarmenu class="layout-topbar-menu"
     [ngClass]="{'layout-topbar-menu-mobile-active': layoutService.state.profileSidebarVisible}">
-    <div class="flex align-items-center">{{currentUser.fullName}}</div>
+    <div class="flex align-items-center">{{currentUser.fullname}}</div>
     <button class="p-link layout-topbar-button" (click)="ProfileMenu.toggle($event)">
       <i class="pi pi-user"></i>
     </button>

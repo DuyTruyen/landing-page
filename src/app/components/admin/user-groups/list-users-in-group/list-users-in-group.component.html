@@ -7,7 +7,8 @@
           (completeMethod)="filterUser($event)" field="label" [minLength]="1" inputStyleClass="p-inputtext-sm"></p-autoComplete>
       </div>
       <div class="col-3 pb-0">
-        <button [disabled]="!selectedUser.userId" pButton pRipple icon="pi pi-plus" class="p-button-sm" label="Thêm user" (click)="addUser()"></button>
+        <button pButton pRipple icon="pi pi-plus" class="p-button-sm" label="Thêm user" (click)="addUser()"></button>
+        <!-- [disabled]="!selectedUser.id" -->
       </div>
       <div class="col-12 pb-0">
         <m-table [isLazyLoad]="false" [cols]="cols" [items]="users" (onDeleteItem)="onDeleteItem($event)"

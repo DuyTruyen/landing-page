@@ -87,7 +87,7 @@ export class ListUsersInGroupComponent implements OnInit {
     this.isVisibleDeleteItemDialog = true;
   }
   addUser() {
-    this.userGroupService.addUser(this.selectedUser?.userId ?? '', this.groupId).subscribe({
+    this.userGroupService.addUser(this.selectedUser?.id?.toString() ?? '', this.groupId).subscribe({
       next: (res) => {
         if (res.isValid) {
           this.notification.success('Thêm user thành công', '');

@@ -1,65 +1,40 @@
 <div class="min-h-screen h-full overflow-hidden">
-    <div>
-      <!-- <img class="fixed notmobie left-0 h-full w-7" src="assets/images/img-login.jpg" /> -->
-      <!-- <img class="fixed mobile left-0 h-full w-full opacity-90" style="display:none" src="assets/images/login-background.png" /> -->
-      <img class="fixed notmobie left-0 h-full w-full opacity-90" src="assets/images/login_bg.jpg" />
-    </div>
-    <div>
-      <!-- <img class="fixed notmobie left-0 h-full w-full" src="assets/images/login-hvid.png" /> -->
-    </div>
+  <div>
+    <img class="fixed notmobie left-0 h-full w-full opacity-90" src="assets/images/login_bg.jpg" />
+  </div>
   <div class="grid login-input">
     <div class="col-6 mt-10rem">
-      <div class="mt-8 m-auto relative z-1 text-center text-white login-form ">
-        <img class="h-13rem login-logoMSC-slogan" src="assets/images/login-hvid.png"/>
+      <div class="mt-8 m-auto relative z-1 text-center text-white login-form">
+        <img class="h-13rem login-logoMSC-slogan" src="assets/images/login-hvid.png" />
         <!-- <h1 class="text-6xl mt-0 login-logoMSC-slogan">HVID</h1> -->
-        <h2 class="font-light mt-7 mx-8 text-2xl login-logoMSC-slogan" style="color: #3156A3;">{{slogan.content}}
-        </h2>
-        <h2 class="font-light mt-5 login-logoMSC-slogan" style="color: #04b0f0">{{slogan.author}}
-        </h2>
+        <h2 class="font-light mt-7 mx-8 text-2xl login-logoMSC-slogan" style="color: #3156a3">{{ slogan.content }}</h2>
+        <h2 class="font-light mt-5 login-logoMSC-slogan" style="color: #04b0f0">{{ slogan.author }}</h2>
       </div>
     </div>
-    <div class="col-5 relative z-1 text-center p-7 login-input mx-0"
-    style="background: rgb(255 255 255 /0.8); height: 105vh; width: 30%;">
-        <div style="position: absolute; top: 25%; left: 5;">
-            <!-- <img class="h-13rem login-logoMSC-slogan" src="assets/images/login-hvid.png"/> -->
-            <p style="font-size: 2rem; font-weight: bold;">HID</p>
-        </div>
-      <div style="position: absolute; top: 25%; left: 8;" [formGroup]="loginForm">
-
-          <div class="col-8 m-auto mt-6 w-23rem login-inp-btn-password">
-
-            <div #notify_login class=" text-base inp-login" style="color: #ff5757;">
-            </div>
+    <div class="col-5 relative z-1 text-center p-7 login-input mx-0" style="background: rgb(255 255 255 /0.8); height: 105vh; width: 27%">
+      <div style="position: absolute; top: 25%; left: 13%">
+        <p class="font-bold text-4xl">HID</p>
+      </div>
+      <div style="position: absolute; top: 25%; left: 8" [formGroup]="loginForm">
+        <div class="col-8 m-auto mt-6 w-23rem login-inp-btn-password">
+          <div #notify_login class="text-base inp-login" style="color: #ff5757"></div>
 
           <div class="field">
-            <label for="Username">Username</label>
-            <input type="text" placeholder="Tên đăng nhập" pInputText formControlName="username"
-              (keydown.enter)="login()" class="w-full border-round-2xl border-500 p-4 h-3rem text-base ">
-            <div class="m-error text-sm inp-login ml-4"
-              *ngIf="loginForm.controls['username'].invalid && loginForm.controls['username'].dirty">
-              *Vui lòng nhập tên đăng nhập
+            <label class="mr-10rem font-bold text-lg" for="Username">Username</label>
+            <input type="text" placeholder="Tên đăng nhập" pInputText formControlName="username" (keydown.enter)="login()" class="w-full border-round-2xl border-500 p-4 h-3rem text-base" />
+            <div class="m-error text-sm inp-login ml-4" *ngIf="loginForm.controls['username'].invalid && loginForm.controls['username'].dirty">*Vui lòng nhập tên đăng nhập</div>
+          </div>
+
+          <div class="field Smt-6 mb-4 mt-4">
+            <label class="mr-10rem font-bold text-lg" for="Password">Password</label>
+            <p-password [feedback]="false" [toggleMask]="true" formControlName="password" inputId="password" (keydown.enter)="login()" (keydown)="removeTextErrorLogin()" styleClass="w-full p-password p-component p-inputwrapper p-input-icon-right" placeholder="Mật khẩu" inputStyleClass=" border-500 p-4 h-3rem border-round-2xl text-base"> </p-password>
+            <div style="display: block">
+              <div class="m-error text-sm inp-login ml-4" *ngIf="loginForm.controls['password'].invalid && loginForm.controls['password'].dirty">*Vui lòng nhập mật khẩu</div>
             </div>
           </div>
 
-          <div class="field Smt-6 mb-4 mt-4 ">
-            <label for="Password">Password</label>
-            <p-password [feedback]="false" [toggleMask]="true" formControlName="password" inputId="password"
-              (keydown.enter)="login()" (keydown)="removeTextErrorLogin()" styleClass="w-full p-password p-component p-inputwrapper p-input-icon-right"
-              placeholder="Mật khẩu" inputStyleClass=" border-500 p-4 h-3rem border-round-2xl text-base">
-            </p-password>
-            <div style="display: block;">
-                <div class="m-error text-sm inp-login ml-4" *ngIf="loginForm.controls['password'].invalid && loginForm.controls['password'].dirty">
-                  *Vui lòng nhập mật khẩu
-                </div>
-                <!-- <div #notify_login class="m-error text-sm inp-login ml-4">
-                </div> -->
-            </div>
-          </div>
-
-          <button [disabled]="loading" pRipple type="button" (click)="login()"
-            class="w-full border-none border-round-2xl cursor-pointer
-              h-3rem bg-orange-500 text-white hover:bg-orange-400 flex align-items-center justify-content-center text-base mt-6 btn-login">
-            <i *ngIf="loading" class="pi pi-spin pi-spinner mr-1" style="font-size: 1rem;"></i>
+          <button [disabled]="loading" pRipple type="button" (click)="login()" style="background-color: #3699ff; border-color: #3699ff" class="w-5 h-4rem border-none border-round-2xl cursor-pointer h-3rem text-white flex align-items-center justify-content-center text-base mt-6 btn-login">
+            <i *ngIf="loading" class="pi pi-spin pi-spinner mr-1" style="font-size: 1rem"></i>
             Đăng nhập
           </button>
         </div>
@@ -67,4 +42,3 @@
     </div>
   </div>
 </div>
-
