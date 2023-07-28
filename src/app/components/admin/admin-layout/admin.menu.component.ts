@@ -63,6 +63,18 @@ export class AdminMenuComponent implements OnInit {
                             },
                         ]
                     },
+                    {
+                        label: 'Quản lý tin tức',
+                        icon: 'pi pi-fw pi-tags',
+                        items: [
+                            {
+                                label: 'Danh sách tin tức',
+                                icon: 'pi pi-fw pi-tags',
+                                routerLink: ['/news']
+                            }
+                        ]
+                    },
+
                 ]
             },
         ];
