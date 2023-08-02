@@ -65,7 +65,22 @@ import { AdminLayoutComponent } from './admin.layout.component';
 
                     },
                     { path: '', redirectTo: 'admin-dashboard', pathMatch: 'full'},
-
+                    {
+                        path: 'customers',
+                        loadChildren: () =>
+                            import('../customers/customers.module').then(
+                                (m) => m.CustomersModule
+                            ),
+                    },
+                    { path: '', redirectTo: 'customers', pathMatch: 'full' },
+                    {
+                        path: 'departments',
+                        loadChildren: () =>
+                            import('../departments/departments.module').then(
+                                (m) => m.DepartmentsModule
+                            ),
+                    },
+                    { path: '', redirectTo: 'departments', pathMatch: 'full' },
                 ],
             },
         ]),
