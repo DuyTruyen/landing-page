@@ -4,7 +4,6 @@ import { BaseService } from './base-service';
 @Injectable({
   providedIn: 'root'
 })
-export class SourceHospitalService extends BaseService {
-    override url = '/SourceHospital';
-
+export class VisitTimeService extends BaseService {
+    override url = '/VisitTime';
 }

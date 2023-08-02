@@ -63,6 +63,17 @@ export class AdminMenuComponent implements OnInit {
                             },
                         ]
                     },
+                    {
+                        label: 'Quản lý danh mục',
+                        icon: 'pi pi-fw pi-folder-open',
+                        items: [
+                            {
+                                label: 'Quản lý khung giờ khám',
+                                icon: 'pi pi-fw pi-calendar-plus',
+                                routerLink: ['/visit-time']
+                            },
+                        ]
+                    },
                 ]
             },
         ];

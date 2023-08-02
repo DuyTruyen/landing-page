@@ -6,7 +6,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { RippleModule } from 'primeng/ripple';
 import { DialogModule } from 'primeng/dialog';
-import { ItemService } from 'src/app/services/item.service';
 import { InputTextModule } from 'primeng/inputtext';
 import { MTableModule } from 'src/app/shared/components/m-table/m-table.module';
 import { ListUsersInGroupComponent } from './list-users-in-group/list-users-in-group.component';
@@ -31,9 +30,6 @@ import { BreadcrumbModule } from 'primeng/breadcrumb';
     AutoCompleteModule,
     UserGroupsRoutingModule,
     BreadcrumbModule
-  ],
-  providers: [
-    ItemService
   ]
 })
 export class UserGroupsModule { }

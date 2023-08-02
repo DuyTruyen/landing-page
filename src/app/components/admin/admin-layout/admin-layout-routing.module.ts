@@ -48,6 +48,15 @@ import { AdminLayoutComponent } from './admin.layout.component';
                         data: { role: Roles.MANAGE_GROUP },
                     },
                     {
+                        path: 'visit-time',
+                        loadChildren: () =>
+                            import('../visit-time/visit-time.module').then(
+                                (m) => m.VisitTimeModule
+                            ),
+                        canActivate: [AuthGuard],
+                        // data: { role: Roles.MANAGE_GROUP },
+                    },
+                    {
                         path: 'admin-dashboard',
                         loadChildren: () =>
                             import('../admin-dashboard/admin-dashboard.module').then(

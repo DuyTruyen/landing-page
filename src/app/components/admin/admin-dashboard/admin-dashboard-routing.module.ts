@@ -4,7 +4,7 @@ import { AdminDashboardComponent } from './admin-dashboard.component';
 
 @NgModule({
 	imports: [RouterModule.forChild([
-		{ path: '', component: AdminDashboardComponent }
+		{ path: '', component: AdminDashboardComponent },
 	])],
 	exports: [RouterModule]
 })
