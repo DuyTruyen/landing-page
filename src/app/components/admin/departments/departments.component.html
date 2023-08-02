@@ -15,33 +15,27 @@
         </div>
       </div>
 
-      <m-table [isLazyLoad]="true" [cols]="cols" [items]="departments" (selectRow)="selectItem($event)" [customHeaderTemplate]="customHeaderTemplate" [customBodyTemplate]="customBodyTemplate" (onEditItem)="onEditItem($event)" (onDeleteItem)="onDeleteItem($event)" [calcHeight]="303" [totalRecords]="total" [take]="searchData.take" [dataKey]="'id'" [loading]="loading"> </m-table>
+      <m-table [isLazyLoad]="true" [cols]="cols" [items]="departments" (selectRow)="selectItem($event)" [customHeaderTemplate]="customHeaderTemplate" [customBodyTemplate]="customBodyTemplate" (onEditItem)="onEditItem($event)" (onDeleteItem)="onDeleteItem($event)" [calcHeight]="303" [totalRecords]="total" [take]="searchData.take" (onPageChange)="onPageChange($event)" [dataKey]="'id'" [loading]="loading"> </m-table>
 
       <ng-template #customHeaderTemplate>
-        <th *ngFor="let col of cols; let i = index" [style.minWidth]="col['width'] || '12rem'" class="{{ col.isOpSort ? 'cursor-pointer' : '' }}">
+        <th *ngFor="let col of cols; let i = index" [style.minWidth]="col['width'] || '12rem'">
           {{ col['header'] }}
         </th>
-        <!-- <th style="min-width: 6rem" class="{{ colDisable.isOpSort ? 'cursor-pointer' : '' }}" pFrozenColumn alignFrozen="right" (click)="customSort(colDisable)">
-          {{ colDisable.header }}
-        </th> -->
-        <th style="min-width: 6rem" pFrozenColumn alignFrozen="right"></th>
+        <th [style.minWidth]="'6rem'" pFrozenColumn alignFrozen="right"></th>
       </ng-template>
 
       <ng-template #customBodyTemplate let-rowData>
         <td [style.minWidth]="col.width" *ngFor="let col of cols" [ngClass]="{ 'justify-content-center': col.field === 'status' }">
-          <!-- {{ rowData[col['field']] }} -->
           <ng-container class="justify-content-center" *ngIf="col.field === 'status'">
             <i *ngIf="rowData[col.field]; else noStatus" class="pi pi-check" [style.color]="'var(--green-400)'"></i>
             <ng-template #noStatus>
               <i class="pi pi-ban" [style.color]="'var(--red-400)'"></i>
             </ng-template>
           </ng-container>
-
           <ng-container *ngIf="col.field !== 'status'">
             {{ rowData[col.field] }}
           </ng-container>
         </td>
-
         <td [style.minWidth]="'6rem'" class="text-center flex justify-content-center" pFrozenColumn alignFrozen="right">
           <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success p-button-xs mr-2" (click)="onEditItem(rowData)"></button>
           <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning p-button-xs" (click)="onDeleteItem(rowData)"></button>
@@ -53,7 +47,7 @@
       <ng-template pTemplate="content">
         <form [formGroup]="departmentForm">
           <div class="field">
-            <label for="name"><span class="text-red-500">*</span>Tên chuyên khoa</label>
+            <label for="name">Tên chuyên khoa<span class="text-red-500">*</span></label>
             <input type="text" pInputText id="name" formControlName="name" required autofocus />
             <div class="m-error" *ngIf="departmentForm.controls['name'].invalid && departmentForm.controls['name'].dirty">*Tên vị trí lấy mẫu không được để trống</div>
           </div>
@@ -63,7 +57,7 @@
           </div>
           <div class="field flex align-items-center">
             <label for="status">Trạng thái</label>
-            <p-inputSwitch class="ml-3" [(ngModel)]="checked" formControlName="status" rows="3"></p-inputSwitch>
+            <p-inputSwitch class="ml-3" [(ngModel)]="checked" formControlName="status"></p-inputSwitch>
           </div>
         </form>
       </ng-template>
