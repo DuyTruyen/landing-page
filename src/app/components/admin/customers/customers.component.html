@@ -1,0 +1,109 @@
+<div class="grid">
+  <div class="col-12 p-0">
+    <div class="card admin-content m-0 relative">
+      <p-breadcrumb [model]="breadcrumbItem" styleClass="breadcrumb-admin"></p-breadcrumb>
+
+      <div class="my-2 flex justify-content-between flex-wrap">
+        <span class="block p-input-icon-left">
+          <i class="pi pi-search"></i>
+          <input pInputText type="text" placeholder="Tìm kiếm ..." class="inline-block lg:w-17rem sm:w-auto p-inputtext-sm" />
+          <button pButton pRipple icon="pi pi-search" class="p-button-primary mr-2 ml-2 p-button-sm"></button>
+          <button pButton pRipple icon="pi pi-times" class="p-button-secondary p-button-sm"></button>
+        </span>
+      </div>
+
+      <m-table [isLazyLoad]="false" [cols]="cols" [items]="customers" [dataKey]="'id'" [customHeaderTemplate]="customHeaderTemplate" [customBodyTemplate]="customBodyTemplate" class="table-admin" [calcHeight]="303"></m-table>
+
+      <ng-template #customHeaderTemplate>
+        <th *ngFor="let col of cols; let i = index" [style.minWidth]="col['width'] || '12rem'" class="{{ col.isOpSort ? 'cursor-pointer' : '' }}">
+          {{ col['header'] }}
+
+          <!-- Icon Sort -->
+          <div class="ml-1">
+            <i class="{{ col.isOpSort ? (col.iconSort == 0 ? 'pi pi-sort-alt' : col.iconSort == 1 ? 'pi pi-sort-amount-up-alt' : 'pi pi-sort-amount-down') : '' }}" style="font-size: 1.01rem"></i>
+          </div>
+        </th>
+
+        <th [style.minWidth]="'6rem'" pFrozenColumn alignFrozen="right"></th>
+      </ng-template>
+
+      <ng-template #customBodyTemplate let-rowData>
+        <td [style.minWidth]="col.width" *ngFor="let col of cols" (click)="onShowProfile(rowData)">
+          {{ rowData[col['field']] }}
+        </td>
+      </ng-template>
+
+      <p-panel header="Danh sách hồ sơ" [toggleable]="true" *ngIf="showProfile" class="absolute top-0" style="width: 50%; z-index: 1; left: 25%">
+        <div class="panel-body" (click)="showCustomerCard(customer)" *ngFor="let customer of customers">
+          <h4>
+            <i class="pi pi-id-card mr-3 mb-3" style="font-size: 1.5rem"></i>
+            <span>
+              {{ customer.name }}
+            </span>
+          </h4>
+          <p-card *ngIf="selectedCustomer === customer && showCard">
+            <div class="flex flex-row">
+              <p-card header="Thông tin cá nhân" [style]="{ width: '45rem' }">
+                <div class="flex flex-row">
+                  <ul [style]="{ width: '100%' }">
+                    <li class="flex flex-row mr-8">
+                      <i class="pi pi-id-card -ml-6 mr-3 mb-5" style="font-size: 1.5rem"></i>
+                      {{ customer.transformedDob }}
+                    </li>
+                    <li class="flex flex-row mr-8">
+                      <i class="pi pi-phone -ml-6 mr-3 mb-5" style="font-size: 1.5rem"></i>
+                      {{ customer.phoneNo }}
+                    </li>
+                    <li class="flex flex-row mr-8">
+                      <i class="pi pi-user-edit -ml-6 mr-3 mb-5" style="font-size: 1.5rem"></i>
+                    </li>
+                    <li class="flex flex-row mr-8">
+                      <i class="pi pi-envelope -ml-6 mr-3 mb-5" style="font-size: 1.5rem"></i>
+                    </li>
+                    <p class="flex flex-row mr-8">
+                      <i class="pi pi-map -ml-6 mr-3" style="font-size: 1.5rem"></i>
+                      {{ customer.address }}
+                    </p>
+                  </ul>
+                  <ul [style]="{ width: '100%' }">
+                    <li class="flex flex-row mr-8">
+                      <i class="pi pi-info ml-3 mr-3 mb-5" style="font-size: 1.5rem"></i>
+                      {{ customer.genderName }}
+                    </li>
+                    <li class="flex flex-row mr-8">
+                      <i class="pi pi-users ml-3 mr-3 mb-5" style="font-size: 1.5rem"></i>
+                    </li>
+                    <li class="flex flex-row mr-8">
+                      <i class="pi pi-id-card ml-3 mr-3 mb-5" style="font-size: 1.5rem"></i>
+                    </li>
+                  </ul>
+                </div>
+              </p-card>
+              <p-card header="Thông tin y tế" [style]="{ width: '45rem' }">
+                <div>
+                  <li class="flex flex-row mr-8">
+                    <i class="pi pi-download mr-3 mb-5" style="font-size: 1.5rem"></i>
+                    Chưa đồng bộ
+                  </li>
+                  <li class="flex flex-row mr-8">
+                    <i class="pi pi-user mr-3 mb-3" style="font-size: 1.5rem"></i>
+                    Mã bệnh nhân
+                  </li>
+                  <div class="flex flex-row m-3 ml-5 mb-5" (click)="stopPropagation($event)">
+                    <input type="text" pInputText class="mr-3" (click)="stopPropagation($event)" />
+                    <button pButton pRipple label="Đồng bộ hồ sơ HIS" class="p-button-primary" (click)="syncProfile()"></button>
+                  </div>
+                  <li class="flex flex-row mr-8">
+                    <i class="pi pi-calendar-plus mr-3 mb-5" style="font-size: 1.5rem"></i>
+                    Danh sách ca khám
+                  </li>
+                </div>
+              </p-card>
+            </div>
+          </p-card>
+          <hr />
+        </div>
+      </p-panel>
+    </div>
+  </div>
+</div>

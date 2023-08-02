@@ -27,7 +27,6 @@ export function initAppConfig(appConfigService: AppConfigService) {
 @NgModule({
     declarations: [
       AppComponent,
-
     ],
     imports: [
       NotificationModule,
