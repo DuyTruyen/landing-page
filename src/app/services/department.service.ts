@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class DepartmentService extends BaseService {
-  override url = '/api/v2/Department';
+  override url = '/Department';
   override search(searchData: any): Observable<any> {
     return this.get(this.url, searchData);
   }
