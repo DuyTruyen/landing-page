@@ -253,8 +253,10 @@ export class Constants {
         {label: 'AND', value: 2},
     ]
 
-
-
+    public static readonly SESSION = [
+        {label: 'Sáng', value: 1},
+        {label: 'Chiều', value: 2},
+    ]
 }
 export class StorageKeys {
     public static readonly TOKEN = 'token';

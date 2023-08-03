@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MenuItem } from 'primeng/api';
 import { VisitTimeService } from 'src/app/services/visit-time.service';
+import { Constants } from 'src/app/shared/constants/constants';
 import { NotificationService } from 'src/app/shared/notification.service';
 import { NoWhitespaceValidator } from 'src/app/shared/validators/no-whitespace.validator';
 
@@ -11,31 +12,36 @@ import { NoWhitespaceValidator } from 'src/app/shared/validators/no-whitespace.v
   styleUrls: ['./visit-time.component.scss'],
 })
 export class VisitTimeComponent implements OnInit {
-  _isVisibleSourceHospitalDialog = false;
-  set isVisibleSourceHospitalDialog(value: boolean) {
-    this._isVisibleSourceHospitalDialog = value;
+  _isVisibleVisitTimeDialog = false;
+  set isVisibleVisitTimeDialog(value: boolean) {
+    this._isVisibleVisitTimeDialog = value;
     if (!value) {
-      this.sourceHospitalForm.markAsPristine();
+      this.visitTimeForm.markAsPristine();
     }
   }
-  get isVisibleSourceHospitalDialog() {
-    return this._isVisibleSourceHospitalDialog;
+  get isVisibleVisitTimeDialog() {
+    return this._isVisibleVisitTimeDialog;
   }
 
   cols: any[] = [];
-  // sourceHospital:any=[];
-  sourceHospitalDialogHeader = '';
+  // visitTime:any=[];
+  visitTimeDialogHeader = '';
   loading = false;
-  sourceHospitalForm: FormGroup;
-  sourceHospitals: any = [];
-  isEditSourceHospital = false;
+  visitTimeForm: FormGroup;
+  visitTimes: any = [];
+  isEditVisitTime = false;
   isVisibleDeleteItemDialog = false;
   textConfirmDelete = '';
   deletedItem: any = {};
+  session = Constants.SESSION;
+  total: number = 0;
+
   searchData = {
     skip: 0,
     take: 40,
     keyword: '',
+    disabled: '',
+    session: '',
   };
 
   // Breakcrum Page source-hospital
@@ -43,15 +49,15 @@ export class VisitTimeComponent implements OnInit {
   breadcrumbHome: MenuItem;
 
   constructor(private fb: FormBuilder, private notification: NotificationService, private visitTimeService: VisitTimeService) {
-    this.sourceHospitalForm = this.fb.group({
+    this.visitTimeForm = this.fb.group({
       id: [null],
-      name: [null, Validators.compose([Validators.required, NoWhitespaceValidator()])],
-      address: [null],
-      phoneNo: [null],
+      name: [new Date('1970-01-01T07:00:00'), [Validators.required]],
+      session: [null, [Validators.required]],
+      enable: [true],
     });
 
     // Breakcrum Page source-hospital
-    this.breadcrumbItem = [{ label: 'Quản lý danh mục' }, { label: 'Nơi gửi mẫu' }];
+    this.breadcrumbItem = [{ label: 'Quản lý danh mục' }, { label: 'Khung giờ khám' }];
 
     this.breadcrumbHome = {
       icon: 'pi pi-home',
@@ -61,57 +67,50 @@ export class VisitTimeComponent implements OnInit {
 
   ngOnInit(): void {
     this.cols = [
-      { field: 'id', header: 'Id', isOpSort: false, iconSort: 0, width: '16rem' },
-      { field: 'name', header: 'Nơi gửi mẫu', isOpSort: true, iconSort: 0, width: '32.7rem' },
-      { field: 'address', header: 'Địa chỉ', isOpSort: true, iconSort: 0, width: '34rem' },
-      { field: 'phoneNo', header: 'Số điện thoại', isOpSort: true, iconSort: 0, width: '16rem' },
+      { field: 'name', header: 'Khung giờ', isOpSort: true, iconSort: 0, width: '40rem' },
+      { field: 'session', header: 'Buổi', isOpSort: true, iconSort: 0, width: '40rem' },
+      { field: 'disabled', header: 'Trạng thái', isOpSort: true, iconSort: 0, width: '10rem' },
     ];
     this.getAll();
   }
+
   getAll() {
     this.loading = true;
     this.visitTimeService
-      .getAll()
+      .getAll(this.searchData)
       .subscribe({
-        next: (res : any) => {
-          if (res.isValid) {
-            this.sourceHospitals = res.jsonData;
-          } else {
-            if (res.errors && res.errors.length > 0) {
-              res.errors.forEach((el: any) => {
-                this.notification.error(el.errorMessage);
-              });
-            } else {
-              this.notification.error('Lấy dữ liệu nơi giửi mẫu không thành công');
-            }
-          }
+        next: (res: any) => {
+          this.visitTimes = res.data;
+          this.total = res.total;
         },
       })
       .add(() => {
         this.loading = false;
       });
   }
+
   onCreatItem() {
-    this.sourceHospitalForm.reset();
-    this.sourceHospitalForm.patchValue({
+    this.visitTimeForm.reset();
+    this.visitTimeForm.patchValue({
       id: 0,
-      name: '',
-      address: '',
-      phoneNo: '',
+      name: new Date('1970-01-01T07:00:00'),
+      session: 1,
+      enable: true,
     });
-    this.isVisibleSourceHospitalDialog = true;
-    this.isEditSourceHospital = false;
-    this.sourceHospitalDialogHeader = 'Thêm mới nơi gửi mẫu';
+    this.isVisibleVisitTimeDialog = true;
+    this.isEditVisitTime = false;
+    this.visitTimeDialogHeader = 'Thêm mới khung giờ khám';
   }
+
   saveItem() {
-    if (this.sourceHospitalForm.valid) {
-      if (!this.isEditSourceHospital) {
-        this.createSourceHospital();
+    if (this.visitTimeForm.valid) {
+      if (!this.isEditVisitTime) {
+        this.createVisitTime();
       } else {
-        this.updateSourceHospital();
+        this.updateVisitTime();
       }
     } else {
-      Object.values(this.sourceHospitalForm.controls).forEach((control) => {
+      Object.values(this.visitTimeForm.controls).forEach((control) => {
         if (control.invalid) {
           control.markAsDirty();
           control.updateValueAndValidity({ onlySelf: true });
@@ -119,195 +118,83 @@ export class VisitTimeComponent implements OnInit {
       });
     }
   }
-  createSourceHospital() {
-    this.visitTimeService.create(this.sourceHospitalForm.value).subscribe({
-      next: (res : any) => {
-        if (res.isValid) {
-          this.notification.success('Thêm mới thành công', '');
-          this.isVisibleSourceHospitalDialog = false;
-          this.getAll();
-        } else {
-          if (res.errors && res.errors.length > 0) {
-            res.errors.forEach((el: any) => {
-              this.notification.error(el.errorMessage);
-            });
-          } else {
-            this.notification.error('Thêm mới nơi giửi mẫu không thành công');
-          }
-        }
+
+  createVisitTime() {
+    let value = this.visitTimeForm.value;
+    value.disabled = !value.enable;
+    this.visitTimeService.create(this.visitTimeForm.value).subscribe({
+      next: (res: any) => {
+        this.notification.success('Thêm mới thành công', '');
+        this.isVisibleVisitTimeDialog = false;
+        this.getAll();
       },
     });
-  }
-  selectSourceHospital(sourceHospital: any) {
-    this.selectSourceHospital = sourceHospital;
-  }
-  updateSourceHospital() {
-    this.visitTimeService.update(this.sourceHospitalForm.value.id, this.sourceHospitalForm.value).subscribe({
-      next: (res : any) => {
-        if (res.isValid) {
-          this.notification.success('Cập nhật thành công', '');
-          this.isVisibleSourceHospitalDialog = false;
-          this.getAll();
-        } else {
-          if (res.errors && res.errors.length > 0) {
-            res.errors.forEach((el: any) => {
-              this.notification.error(el.errorMessage);
-            });
-          } else {
-            this.notification.error('Cập nhật nơi giửi mẫu không thành công');
-          }
-        }
-      },
-    });
-  }
-  onEditItem(item: any) {
-    this.sourceHospitalForm.reset();
-    this.sourceHospitalForm.patchValue({
-      id: item.id,
-      name: item.name,
-      address: item.address,
-      phoneNo: item.phoneNo,
-    });
-    this.isVisibleSourceHospitalDialog = true;
-    this.isEditSourceHospital = true;
-    this.sourceHospitalDialogHeader = 'Sửa thông tin nơi gửi mẫu';
-  }
-  onDeleteItem(item: any) {
-    this.deletedItem = item;
-    this.textConfirmDelete = `Xác nhận xóa nơi gửi mẫu <b>${item.name}</b>?`;
-    this.isVisibleDeleteItemDialog = true;
-  }
-  onSearch(data: any) {
-    this.loading = true;
-    this.visitTimeService
-      .search(data)
-      .subscribe({
-        next: (res: any) => {
-          if (res.isValid) {
-            // this.ObservationTypes = res.jsonData.data;
-            this.sourceHospitals = res.jsonData.data;
-            // //console.log('this.ObservationTypes ',this.ObservationTypes );
-            // this.ObservationTypes.forEach((u:any) => (u.enable = !u.disable));
-            // this.total = res.jsonData.total;
-          } else {
-            if (res.errors && res.errors.length > 0) {
-              res.errors.forEach((el: any) => {
-                this.notification.error(el.errorMessage);
-              });
-            } else {
-              this.notification.error('Tìm kiểu nơi giửi mẫu không thành công');
-            }
-          }
-        },
-      })
-      .add(() => {
-        this.loading = false;
-      });
   }
 
-  deleteSourceHospital() {
-    this.visitTimeService.deleteById(this.deletedItem.id).subscribe({
-      next: (res : any) => {
-        if (res.isValid) {
-          this.notification.success('Xóa nơi gửi mẫu thành công', '');
-          this.isVisibleDeleteItemDialog = false;
-          this.getAll();
-        } else {
-          if (res.errors && res.errors.length > 0) {
-            res.errors.forEach((el: any) => {
-              this.notification.error(el.errorMessage);
-            });
-          } else {
-            this.notification.error('Xóa nơi giửi mẫu không thành công');
-          }
-        }
+  updateVisitTime() {
+    let value = this.visitTimeForm.value;
+    value.disabled = !value.enable;
+    this.visitTimeService.update(this.visitTimeForm.value.id, this.visitTimeForm.value).subscribe({
+      next: (res: any) => {
+        this.notification.success('Cập nhật thành công', '');
+        this.isVisibleVisitTimeDialog = false;
+        this.getAll();
       },
     });
   }
+
+  onEditItem(item: any) {
+    this.visitTimeForm.reset();
+    this.visitTimeForm.patchValue({
+      id: item.id,
+      name: new Date(item.name),
+      session: item.session,
+      enable: !item.disabled,
+    });
+    this.isVisibleVisitTimeDialog = true;
+    this.isEditVisitTime = true;
+    this.visitTimeDialogHeader = 'Sửa thông tin khung giờ khám';
+  }
+
+  onDeleteItem(item: any) {
+    this.deletedItem = item;
+    this.textConfirmDelete = `Xác nhận xóa khung giờ khám <b>${item.name}</b>?`;
+    this.isVisibleDeleteItemDialog = true;
+  }
+
+  deleteVisitTime() {
+    this.visitTimeService.deleteById(this.deletedItem.id).subscribe({
+      next: (res: any) => {
+        this.notification.success('Xóa khung giờ khám thành công', '');
+        this.isVisibleDeleteItemDialog = false;
+        this.getAll();
+      },
+    });
+  }
+
   search() {
     this.loading = true;
     this.visitTimeService
       .search(this.searchData)
       .subscribe({
-        next: (res : any) => {
-          if (res.isValid) {
-            this.sourceHospitals = res.jsonData.data;
-            // this.sourceHospitals.forEach((u:any) => (u.enable = !u.disable));
-            // this.total = res.jsonData.total;
-          } else {
-            if (res.errors && res.errors.length > 0) {
-              res.errors.forEach((el: any) => {
-                this.notification.error(el.errorMessage);
-              });
-            } else {
-              this.notification.error('Tìm kiểu nơi giửi mẫu không thành công');
-            }
-          }
+        next: (res: any) => {
+          this.visitTimes = res.data;
+          this.total = res.total;
         },
       })
       .add(() => {
         this.loading = false;
       });
   }
+
   resetSearch() {
     this.searchData = {
       skip: 0,
       take: 40,
       keyword: '',
+      session: '',
+      disabled: '',
     };
     this.search();
-  }
-
-  // Luật sắp xếp
-  customSort(col: any) {
-    var dataField = col.field;
-    // //console.log(dataField);
-    dataField = dataField.charAt(0).toUpperCase() + dataField.slice(1);
-    // //console.log(dataField);
-    // //console.log('col.isOpSort: '  + col.isOpSort);
-    // Chuyển trạng thái Icon
-    this.resetIconDefaultRest(col);
-
-    // Chuyển trạng thái Icon kế tiếp
-    col.iconSort++;
-    col.iconSort = col.iconSort % 3;
-    if (col.isOpSort) {
-      // //console.log('col.isOpSort: '  + col.isOpSort);
-      this.onSearch({
-        take: 40,
-        skip: 0,
-        keyword: '',
-        sortField: dataField,
-        sortDir: this.getOpSort(col),
-      });
-    }
-  }
-
-  getOpSort(col: any) {
-    var opSort = '';
-    switch (col.iconSort) {
-      case 0:
-        opSort = '';
-        break;
-      case 1:
-        opSort = 'asc';
-        break;
-      case 2:
-        opSort = 'dsc';
-        break;
-    }
-    return opSort;
-  }
-
-  resetIconDefaultRest(col: any) {
-    // const index = this.todoList.indexOf(item);
-    // this.todoList[index] = { ...item, ...changes };
-    const index = this.cols.indexOf(col);
-    for (let colRe of this.cols) {
-      let indexRe = this.cols.indexOf(colRe);
-      if (indexRe !== index) {
-        colRe.iconSort = 0;
-      }
-    }
   }
 }

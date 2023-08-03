@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { VisitTimeComponent } from './visit-time.component';
 import { VisitTimeRoutes } from './visit-time.routing';
 import { RippleModule } from 'primeng/ripple';
@@ -10,6 +10,10 @@ import { ButtonModule } from 'primeng/button';
 import { ConfirmDialogModule } from 'src/app/shared/components/confirm-dialog/confirm-dialog.module';
 import { InputTextModule } from 'primeng/inputtext';
 import { BreadcrumbModule } from 'primeng/breadcrumb';
+import { CalendarModule } from 'primeng/calendar';
+import { DropdownModule } from 'primeng/dropdown';
+import { InputSwitchModule } from 'primeng/inputswitch';
+import { PipeModule } from 'src/app/shared/pipes/pipe.module';
 
 @NgModule({
   imports: [
@@ -23,8 +27,13 @@ import { BreadcrumbModule } from 'primeng/breadcrumb';
     ButtonModule,
     ConfirmDialogModule,
     InputTextModule,
-    BreadcrumbModule
+    BreadcrumbModule,
+    CalendarModule,
+    DropdownModule,
+    InputSwitchModule,
+    PipeModule
   ],
-  declarations: [VisitTimeComponent]
+  declarations: [VisitTimeComponent],
+  providers: [DatePipe]
 })
 export class VisitTimeModule { }
