@@ -64,6 +64,15 @@ import { AdminLayoutComponent } from './admin.layout.component';
                             )
 
                     },
+                    {
+                        path: 'news',
+                        loadChildren: () =>
+                            import('../news/news.module').then(
+                                (m) => m.NewsModule
+                            ),
+                    },
+
+                    
                     { path: '', redirectTo: 'admin-dashboard', pathMatch: 'full'},
                     {
                         path: 'customers',
