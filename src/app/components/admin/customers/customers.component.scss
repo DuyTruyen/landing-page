@@ -1,0 +1,24 @@
+
+:host ::ng-deep .p-panel-header {
+    background-color: var(--blue-600);
+    color: #fff;
+}
+
+:host ::ng-deep .p-panel-content {
+    background-color: var(--blue-50);
+}
+
+// :host ::ng-deep .p-button{
+//     background-color: var(--blue-600);
+//     border-color: var(--blue-600);
+// }
+.information-card.p-card-content{
+    border-color: none;
+}
+ul > li{
+    list-style: none;
+}
+
+:host ::ng-deep .p-card{
+    box-shadow: none !important;
+}

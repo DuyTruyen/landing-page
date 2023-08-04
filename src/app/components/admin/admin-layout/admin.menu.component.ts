@@ -63,6 +63,39 @@ export class AdminMenuComponent implements OnInit {
                             },
                         ]
                     },
+                    {
+                        label: 'Quản lý danh mục',
+                        icon: 'pi pi-fw pi-folder-open',
+                        items: [
+                            {
+                                label: 'Quản lý khung giờ khám',
+                                icon: 'pi pi-fw pi-calendar-plus',
+                                routerLink: ['/visit-time']
+                            },
+                        ]
+                    },
+                    {
+                        label: 'Quản lý khách hàng',
+                        icon: 'pi pi-fw pi-users',
+                        items: [
+                            {
+                                label: 'Danh sách khách hàng',
+                                icon: 'pi pi-fw pi-user',
+                                routerLink: ['/customers']
+                            }
+                        ]
+                    },
+                    {
+                        label:'Quản lý chuyên khoa',
+                        icon: 'pi pi-fw pi-users',
+                        items: [
+                            {
+                                label: 'Danh sách chuyên khoa',
+                                icon: 'pi pi-fw pi-user',
+                                routerLink: ['/departments']
+                            }
+                        ]
+                    }
                 ]
             },
         ];

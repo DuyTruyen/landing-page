@@ -48,6 +48,15 @@ import { AdminLayoutComponent } from './admin.layout.component';
                         data: { role: Roles.MANAGE_GROUP },
                     },
                     {
+                        path: 'visit-time',
+                        loadChildren: () =>
+                            import('../visit-time/visit-time.module').then(
+                                (m) => m.VisitTimeModule
+                            ),
+                        canActivate: [AuthGuard],
+                        // data: { role: Roles.MANAGE_GROUP },
+                    },
+                    {
                         path: 'admin-dashboard',
                         loadChildren: () =>
                             import('../admin-dashboard/admin-dashboard.module').then(
@@ -56,7 +65,22 @@ import { AdminLayoutComponent } from './admin.layout.component';
 
                     },
                     { path: '', redirectTo: 'admin-dashboard', pathMatch: 'full'},
-
+                    {
+                        path: 'customers',
+                        loadChildren: () =>
+                            import('../customers/customers.module').then(
+                                (m) => m.CustomersModule
+                            ),
+                    },
+                    { path: '', redirectTo: 'customers', pathMatch: 'full' },
+                    {
+                        path: 'departments',
+                        loadChildren: () =>
+                            import('../departments/departments.module').then(
+                                (m) => m.DepartmentsModule
+                            ),
+                    },
+                    { path: '', redirectTo: 'departments', pathMatch: 'full' },
                 ],
             },
         ]),

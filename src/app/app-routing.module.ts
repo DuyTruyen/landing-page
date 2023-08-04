@@ -20,6 +20,7 @@ import { Roles } from './shared/constants/constants';
                         import(
                             './components/admin/admin-layout/admin.layout.module'
                         ).then((m) => m.AdminLayoutModule),
+                    // canActivate: [AuthGuard],
                     data: { role: Roles.ADMIN },
                 },
                 {

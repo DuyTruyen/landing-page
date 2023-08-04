@@ -1,0 +1,90 @@
+<div class="grid">
+    <div class="col-12 p-0">
+        <div class="card admin-content m-0">
+            <!-- Start: Breakcrum Page source-hospital -->
+            <p-breadcrumb [model]="breadcrumbItem" [home]="breadcrumbHome" styleClass="breadcrumb-admin"></p-breadcrumb>
+            <!-- End: Breakcrum Page source-hospital -->
+            <div class="my-2 flex justify-content-between flex-wrap">
+                <span class="block p-input-icon-left">
+                    <i class="pi pi-search"></i>
+                    <input pInputText type="text" placeholder="Tìm kiếm ..."
+                        class="inline-block lg:w-17rem sm:w-auto p-inputtext-sm" [(ngModel)]="searchData.keyword"
+                        (keydown.enter)="search()" />
+                    <button pButton pRipple icon="pi pi-search" class="p-button-primary mr-2 ml-2 p-button-sm"
+                        (click)="search()"></button>
+                    <button pButton pRipple icon="pi pi-times" class="p-button-secondary p-button-sm"
+                        (click)="resetSearch()"></button>
+                </span>
+                <div class="flex justify-content-end flex-wrap">
+                    <button pButton pRipple label="Thêm mới" icon="pi pi-plus" class="p-button-success p-button-sm"
+                        (click)="onCreatItem()"></button>
+                </div>
+            </div>
+            <m-table [isLazyLoad]="false" [cols]="cols" [items]="visitTimes" [dataKey]="'id'" [loading]="loading"
+                (onEditItem)="onEditItem($event)" (onDeleteItem)="onDeleteItem($event)" [calcHeight]="305"
+                [customHeaderTemplate]="customHeaderTemplate" [customBodyTemplate]="customBodyTemplate"
+                class="table-admin" [totalRecords]="total"></m-table>
+            <ng-template #customHeaderTemplate>
+                <th *ngFor="let col of cols; let i = index" [style.minWidth]="col['width'] || '12rem'"
+                    class='text-center'>
+                    {{col['header']}}
+                </th>
+                <th [style.minWidth]="'6rem'" pFrozenColumn alignFrozen="right"></th>
+            </ng-template>
+            <ng-template #customBodyTemplate let-rowData>
+                <td [style.minWidth]="'40rem'" class="text-center">
+                    {{ rowData.name | date: 'hh:mm'  }}
+                </td>
+                <td [style.minWidth]="'40rem'" class="text-center">
+                    {{ rowData.session| visitSession }}
+                </td>
+                <td [style.minWidth]="'10rem'" class="justify-content-center">
+                    <i *ngIf="!rowData.disabled else noStatus" class="pi pi-check" [style.color]="'var(--green-400)'"></i>
+                    <ng-template #noStatus>
+                      <i class="pi pi-ban" [style.color]="'var(--red-400)'"></i>
+                    </ng-template>
+                  </td>
+                <td [style.minWidth]="'6rem'" class="text-center flex justify-content-center " pFrozenColumn alignFrozen="right">
+                    <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success p-button-xs  mr-2"
+                        (click)="onEditItem(rowData)"></button>
+                    <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning p-button-xs" (click)="onDeleteItem(rowData)"></button>
+                </td>
+            </ng-template>
+        </div>
+        <p-dialog [(visible)]="isVisibleVisitTimeDialog" [style]="{width:'450px'}"
+            [header]="visitTimeDialogHeader" [modal]="true" class="p-fluid">
+            <ng-template pTemplate="content">
+                <form [formGroup]="visitTimeForm">
+                    <div class="field">
+                        <label for="name">Khung giờ <span class="text-red-500">*</span></label>
+                        <p-calendar [timeOnly]="true" [stepMinute]="30" formControlName="name" autofocus></p-calendar>
+                        <div class="m-error"
+                            *ngIf="visitTimeForm.controls['name'].invalid && visitTimeForm.controls['name'].dirty">
+                            *Khung giờ không được để trống
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label for="address">Buổi <span class="text-red-500">*</span></label>
+                        <p-dropdown [options]="session" formControlName="session" optionLabel="label" optionValue="key"></p-dropdown>
+                        <div class="m-error"
+                        *ngIf="visitTimeForm.controls['session'].invalid && visitTimeForm.controls['name'].dirty">
+                        *Chưa chọn buổi
+                    </div>
+                    </div>
+                    <div class="field">
+                        <label for="address">Trạng thái <span class="text-red-500">*</span></label>
+                        <p-inputSwitch class="ml-3" formControlName="enable"></p-inputSwitch>
+                    </div>
+                </form>
+            </ng-template>
+            <ng-template pTemplate="footer">
+                <button pButton pRipple label="Đóng" icon="pi pi-time" class="p-button-text text-red-600"
+                    (click)="isVisibleVisitTimeDialog=false"></button>
+                <button pButton pRipple label="Lưu" icon="pi pi-check" class="p-button-text"
+                    (click)="saveItem()"></button>
+            </ng-template>
+        </p-dialog>
+    </div>
+</div>
+<confirm-dialog [(visible)]="isVisibleDeleteItemDialog" [confirmText]="textConfirmDelete"
+    (onConfirm)="deleteVisitTime()"></confirm-dialog>
