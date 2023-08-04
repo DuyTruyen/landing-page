@@ -51,7 +51,7 @@ export class NewsComponent implements OnInit {
       this.newsForm = this.fb.group({
           title: [null],
           status: [null],
-          image: [null], //[null, [Validators.required]],
+          // image: [null], //[null, [Validators.required]],
           summary: [null],
           content: [null]
         });
@@ -126,7 +126,7 @@ export class NewsComponent implements OnInit {
     console.log('status: ' + item.status);
     let payload = {
       title: item.title,
-      image: item.image,
+      thumbnail: item.thumbnail,
       summary: item.summary,
       content: item.content,
       status: item.status,
@@ -160,7 +160,7 @@ export class NewsComponent implements OnInit {
       id: 0,
       title: '',
       status: null,
-      image: '',
+      // image: '',
       summary: '',
       content: ''
     });
@@ -202,13 +202,14 @@ export class NewsComponent implements OnInit {
         id: item.id,
         title: item.title,
         status: item.status,
-        image: item.image,
+        // thumbnail: item.thumbnail,
         summary: item.summary,
         content: item.content,
     });
     this.isVisibleNewsDlg = true;
     this.isEditItem = true;
     this.newsDialogHeader = 'Cập nhật bài viết';
+    this.url = item.thumbnail;
   }
 
   onDeleteItem(item: any) {
@@ -249,7 +250,7 @@ export class NewsComponent implements OnInit {
     this.newsService
         .update(this.selectedItem.id, {
             ...this.newsForm.value,
-            image: this.url,
+            thumbnail: this.url,
         })
         .subscribe({
             next: (res) => {
@@ -278,7 +279,7 @@ export class NewsComponent implements OnInit {
       console.log('createItem');
       this.newsService.create({
             ...this.newsForm.value,
-            image: this.url,
+            thumbnail: this.url,
         }).subscribe({
           next: (res) => {
               if (res.ret && res.ret[0].code == 201) {
@@ -329,7 +330,7 @@ export class NewsComponent implements OnInit {
           console.log(res);
           if(res.filePath) {
             const config = this.configService.getConfig();
-            this.url = config.api.baseUrl + '/' + res.filePath;
+            this.url = config.api.fileUrl + '/' + res.filePath;
             console.log(this.url);
             this.doSaveItem();
           }
