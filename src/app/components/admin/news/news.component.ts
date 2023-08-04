@@ -13,11 +13,11 @@ import { AppConfigService } from 'src/app/shared/app-config.service';
     styleUrls: ['./news.component.scss'],
 })
 export class NewsComponent implements OnInit {
-  
+
   breadcrumbItem: MenuItem[];
   home: MenuItem;
-  
-  url: any; 
+
+  url: any;
   msg = "";
   fileName="";
   newsForm: FormGroup;
@@ -59,7 +59,7 @@ export class NewsComponent implements OnInit {
           { label: 'Quản lý tin tức' },
           { label: 'Danh sách tin tức' },
         ];
-    
+
         this.home = {
           icon: 'pi pi-home',
           routerLink: '/admin/admin-dashboard',
@@ -171,27 +171,27 @@ export class NewsComponent implements OnInit {
     this.isEditItem = false;
   }
 
-  selectFile(event: any) { 
+  selectFile(event: any) {
     if(!event.target.files[0] || event.target.files[0].length == 0) {
       this.msg = 'You must select an image';
       return;
     }
-    
+
     var mimeType = event.target.files[0].type;
-    
+
     if (mimeType.match(/image\/*/) == null) {
       this.msg = "Only images are supported";
       return;
     }
 
     this.blobChoosenFile = event.target.files[0];
-    
+
     var reader = new FileReader();
     reader.readAsDataURL(event.target.files[0]);
-    
+
     reader.onload = (_event) => {
       this.msg = "";
-      this.url = reader.result; 
+      this.url = reader.result;
     }
   }
 
@@ -226,7 +226,7 @@ export class NewsComponent implements OnInit {
       else {
         this.doSaveItem();
       }
-    } 
+    }
     else {
         Object.values(this.newsForm.controls).forEach((control) => {
             if (control.invalid) {

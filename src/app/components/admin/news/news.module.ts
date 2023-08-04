@@ -12,7 +12,7 @@ import { AutoCompleteModule } from 'primeng/autocomplete';
 import { ConfirmDialogModule } from 'src/app/shared/components/confirm-dialog/confirm-dialog.module';
 import { BreadcrumbModule } from 'primeng/breadcrumb';
 import { InputSwitchModule } from 'primeng/inputswitch';
-import {EditorModule} from 'primeng/editor';
+import { EditorModule } from 'primeng/editor';
 
 @NgModule({
     declarations: [NewsComponent],

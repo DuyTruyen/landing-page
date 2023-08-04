@@ -71,9 +71,16 @@ import { AdminLayoutComponent } from './admin.layout.component';
                                 (m) => m.NewsModule
                             ),
                     },
+                    {
+                        path: 'appointment',
+                        loadChildren: () =>
+                            import('../appointment/appointment.module').then(
+                                (m) => m.AppointmentModule
+                            ),
+                    },
 
-                    
-                    { path: '', redirectTo: 'admin-dashboard', pathMatch: 'full'},
+
+                    { path: '', redirectTo: 'admin-dashboard', pathMatch: 'full' },
                     {
                         path: 'customers',
                         loadChildren: () =>

@@ -107,6 +107,17 @@ export class AdminMenuComponent implements OnInit {
                             }
                         ]
                     },
+                    {
+                        label: 'Quản lý lịch hẹn',
+                        icon: 'pi pi-calendar-times',
+                        items: [
+                            {
+                                label: 'Danh sách lịch hẹn',
+                                icon: 'pi pi-calendar-times',
+                                routerLink: ['/appointment']
+                            }
+                        ]
+                    },
                 ]
             },
         ];
