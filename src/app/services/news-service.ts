@@ -6,8 +6,8 @@ import { BaseService } from './base-service';
   providedIn: 'root'
 })
 export class NewService extends BaseService {
-  override url = '/api/v2/New';
-  getNew(data: any): Observable<any> {
+  override url = '/api/v2/News';
+  getNews(data: any): Observable<any> {
     return this.get(this.url, data);
   }
   

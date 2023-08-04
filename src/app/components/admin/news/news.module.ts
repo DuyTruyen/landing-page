@@ -14,8 +14,6 @@ import { BreadcrumbModule } from 'primeng/breadcrumb';
 import { InputSwitchModule } from 'primeng/inputswitch';
 import {EditorModule} from 'primeng/editor';
 
-
-
 @NgModule({
     declarations: [NewsComponent],
     imports: [
