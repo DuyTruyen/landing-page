@@ -1,27 +1,4 @@
 {
-// <<<<<<< HEAD
-//     "api": {
-//     "baseUrl": "hvidtest-api.pmr.vn",
-//     "fileUrl": "hvidtest-api.pmr.vn/Files"
-// },
-// "deepzoom": {
-//     "baseUrl": "hvidtest-api.pmr.vn"
-// },
-//     "domain": "hvidtest-api.pmr.vn",
-//     "sharedUrl": "share",
-//     "layout": 3,
-//     "slogan": {
-//         "content": "BỆNH VIỆN ĐA KHOA HÙNG VƯƠNG",
-//         "author": "Thân thiện - Chuyên nghiệp - Chu đáo"
-//     },
-//     "viewerConfig": {
-//         "usePolygonLabeling": true
-//     },
-//     "isEnablePapsmear":true,
-//     "initData":{
-//         "papsmearMarkTypeId":"63d744c3270d472ee767b791"
-//     }
-// =======
   "api": {
     "baseUrl": "hvidtest-api.pmr.vn/api/v2",
     "fileUrl": "hidtest-api.pmr.vn/Files"
@@ -43,5 +20,4 @@
   "initData": {
     "papsmearMarkTypeId": "63d744c3270d472ee767b791"
   }
-// >>>>>>> d8dbea5af93721360d61073ea6334f70fa1544fe
 }
