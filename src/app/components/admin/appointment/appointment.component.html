@@ -1,7 +1,46 @@
 <div class="grid">
-    <div class="col-12 p-0">
-        <div class="card admin-content m-0">
-            <p-breadcrumb [model]="breadcrumbItem" [home]="home" styleClass="breadcrumb-admin"></p-breadcrumb>
+  <div class="col-12 p-0">
+    <div class="card admin-content m-0">
+      <p-breadcrumb [model]="breadcrumbItem" [home]="home" styleClass="breadcrumb-admin"></p-breadcrumb>
+      <!--End: Title Danh sách group -->
+      <div class="flex">
+        <div class="grid">
+          <div class="col">
+            <input type="text" [style]="{'height': '37px', 'width': '220px'}" pInputText placeholder="Tên khách hàng" />
+          </div>
         </div>
+        <div class="grid">
+          <div class="col ml-4">
+            <input type="text" [style]="{'height': '37px', 'width': '220px'}" pInputText placeholder="Số điện thoại" />
+          </div>
+        </div>
+        <div class="grid">
+          <div class="col ml-4">
+            <input type="text" [style]="{'height': '37px', 'width': '220px'}" pInputText placeholder="Chuyên khoa" />
+          </div>
+        </div>
+        <div class="grid">
+            <div class="col ml-4">
+                <p-calendar [style]="{'height': '37px'}" [showClear]="true" class="w-full sm:w-auto p-inputtext-sm" [showButtonBar]="true" placeholder="Ngày đăng kí" [showIcon]="true" appendTo="body" [dateFormat]="'dd/mm/yy'"></p-calendar>
+            </div>
+        </div>
+        <div class="grid">
+            <div class="col ml-4">
+                <p-calendar [showClear]="true" [style]="{'height': '37px'}" class="w-full sm:w-auto p-inputtext-sm" [showButtonBar]="true" placeholder="Ngày hẹn khám" [showIcon]="true" appendTo="body" [dateFormat]="'dd/mm/yy'"></p-calendar>
+            </div>
+        </div>
+        <div class="col-2 pl-5 -mt-3">
+            <button pButton [style]="{'height': '37px'}" pRipple icon="pi pi-search" class="p-button-primary mr-3 p-button-sm" (click)="onSearch()"></button>
+            <button pButton [style]="{'height': '37px'}" pRipple icon="pi pi-times" class="p-button-secondary p-button-sm" (click)="onClearSearch()"></button>
+          </div>
+      </div>
+      <m-table [customBodyTemplate]="customBodyTemplate" [customHeaderTemplate]="customHeaderTemplate" [calcHeight]="264" class="table-admin" [dataKey]="'id'" [loading]="loading" [items]="listItems" (onPageChange)="onPageChange($event)" [totalRecords]="totalItemCount" (selectRow)="selectItem($event)"></m-table>
+      <ng-template #customHeaderTemplate></ng-template>
+      <ng-template #customBodyTemplate></ng-template>
     </div>
+
+    <p-dialog>
+
+    </p-dialog>
+  </div>
 </div>
