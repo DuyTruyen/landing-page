@@ -183,6 +183,14 @@ export class Constants {
         { label: '1 tháng', value: 720 },
         { label: 'Vô thời hạn', value: -1 },
     ];
+    public static readonly APPOINTMENT_STATUS = [
+        { label: '', value: 0 },
+        { label: '', value: 1 },
+        { label: 'Xác nhận', value: 2 },
+        { label: 'Từ chối', value: 3 },
+        { label: 'Đến', value: 8 },
+        { label: 'Hủy bỏ', value: 9 },
+    ]
     public static readonly REPORT_EDITING_STATES = {
         READING: 1,
         APPROVING: 3,

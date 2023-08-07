@@ -12,7 +12,7 @@ export class AppointmentService extends BaseService {
         return this.get(this.url, data);
     }
 
-    putStatus(statusId: number) {
-        return this.put(`${this.url}/Status/${statusId}`, '')
+    updateStatus(statusId: number, data: any) {
+        return this.put(`${this.url}/Status/${statusId}`, data)
     }
 }

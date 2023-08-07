@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { NotificationService } from 'src/app/shared/notification.service';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MenuItem } from 'primeng/api';
 import { AppointmentService } from 'src/app/services/appointment.service';
+import { DepartmentService } from 'src/app/services/department.service'
+import { Constants } from 'src/app/shared/constants/constants';
 
 @Component({
     selector: 'app-appointment',
@@ -14,9 +17,15 @@ export class AppointmentComponent implements OnInit {
 
     loading = false;
     listItems: any = [];
+    lstDepartments: any = [];
+    totalDepartmen = 0;
     cols: any[] = [];
     totalItemCount = 0;
     selectedItem: any;
+    dbSelected: any
+    isVisibleAppointmentDlg = false;
+    header = 'Xử lý thông tin hẹn khám';
+    statusForm: FormGroup;
     searchData = {
         skip: 0,
         take: 40,
@@ -35,8 +44,14 @@ export class AppointmentComponent implements OnInit {
     }
     constructor(
         private notification: NotificationService,
-        private appointmentAPI: AppointmentService
+        private appointmentAPI: AppointmentService,
+        private departmentService: DepartmentService,
+        private fb: FormBuilder,
     ) {
+        this.statusForm = this.fb.group({
+            id: [null],
+            status: [null],
+        })
         this.breadcrumbItem = [
             { label: 'Quản lý lịch hẹn' },
             { label: 'Danh sách lịch hẹn' },
@@ -50,11 +65,12 @@ export class AppointmentComponent implements OnInit {
 
     ngOnInit(): void {
         this.search();
+        this.getDepartments();
         this.cols = [
-            { field: '', header: 'Họ tên', width: '15%'},
-            { field: '', header: 'SDT', width: '12%'},
-            { field: '', header: 'Chuyên khoa', width: '12%'},
-            { field: '', header: 'Trạng thái', width: '12'},
+            { field: 'name', header: 'Họ tên', width: '14%' },
+            { field: 'phoneNo', header: 'SDT', width: '14%' },
+            { field: 'departmentName', header: 'Chuyên khoa', width: '12%' },
+            { field: 'status', header: 'Trạng thái', width: '12' },
         ]
     }
 
@@ -65,7 +81,7 @@ export class AppointmentComponent implements OnInit {
                 if (res.data != undefined) {
                     console.log('res', res);
                     this.listItems = res.data;
-                    this.totalItemCount = res.count;
+                    this.totalItemCount = res.total;
                     console.log("listItems", this.listItems);
                 } else {
                     if (res.errors && res.errors.length > 0) {
@@ -81,6 +97,46 @@ export class AppointmentComponent implements OnInit {
             this.loading = false;
         });
     }
+
+    getDepartments(){
+        this.departmentService.getAll().subscribe({
+          next:(res) => {
+            if(res){
+              this.lstDepartments = res.data;
+            }else{
+              if(res.errors && res.errors.length > 0){
+                res.errors.forEach((el: any) => {
+                  this.notification.error(el.message);
+                })
+              }else{
+                this.notification.error("Lấy dữ liệu không thành công");
+              }
+            }
+          }
+        })
+      }
+
+      updateStatus(){
+        this.appointmentAPI.updateStatus( this.statusForm.value, this.selectedItem.id ).subscribe({
+            next: (res) => {
+                if(res.ret && res.ret[0].code == 200) {
+                    this.notification.success('Cập nhật trạng thái thành công', '');
+                    console.log('res', res);
+                }else{
+                    if(res.errors && res.errors.length > 0){
+                        res.errors.forEach((el: any) => {
+                            this.notification.error(el.errorMessage);
+                        });
+                    } else if(res.ret) {
+                      this.notification.error('Cập nhật trạng thái không thành công! Error: ' + res.ret[0].message);
+                    } else {
+                        this.notification.error('Cập nhật trạng thái không thành công! Error: unknown');
+                        console.error(res);
+                    }
+                }
+            }
+        })
+      }
 
     onSearch() {
         // this.searchForm = {
@@ -120,6 +176,13 @@ export class AppointmentComponent implements OnInit {
 
     selectItem(item: any) {
         this.selectedItem = item;
+    }
+
+    dbClickUpdate(data: any) {
+        console.log('dbClickUpdate',data);
+        this.isVisibleAppointmentDlg = true;
+        this.dbSelected = data;
+        console.log('dbSelected',this.dbSelected);
     }
 
 }

@@ -8,6 +8,8 @@ import { MTableModule } from 'src/app/shared/components/m-table/m-table.module';
 import { DialogModule } from 'primeng/dialog';
 import { InputTextModule } from 'primeng/inputtext';
 import { CalendarModule } from 'primeng/calendar';
+import { DropdownModule } from 'primeng/dropdown';
+import { ScrollPanelModule } from 'primeng/scrollpanel';
 
 
 @NgModule({
@@ -21,7 +23,9 @@ import { CalendarModule } from 'primeng/calendar';
     MTableModule,
     DialogModule,
     InputTextModule,
-    CalendarModule
+    CalendarModule,
+    DropdownModule,
+    ScrollPanelModule
   ]
 })
 export class AppointmentModule { }

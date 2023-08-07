@@ -6,41 +6,139 @@
       <div class="flex">
         <div class="grid">
           <div class="col">
-            <input type="text" [style]="{'height': '37px', 'width': '220px'}" pInputText placeholder="Tên khách hàng" />
+            <input type="text" [style]="{ height: '37px', width: '220px' }" pInputText placeholder="Tên khách hàng" [(ngModel)]="searchForm.name" />
           </div>
         </div>
         <div class="grid">
           <div class="col ml-4">
-            <input type="text" [style]="{'height': '37px', 'width': '220px'}" pInputText placeholder="Số điện thoại" />
+            <input type="text" [style]="{ height: '37px', width: '220px' }" pInputText placeholder="Số điện thoại" [(ngModel)]="searchForm.phoneNo" />
           </div>
         </div>
         <div class="grid">
           <div class="col ml-4">
-            <input type="text" [style]="{'height': '37px', 'width': '220px'}" pInputText placeholder="Chuyên khoa" />
+            <p-dropdown placeholder="Chuyên khoa" [options]="lstDepartments" [style]="{ height: '37px', width: '220px' }" appendTo="body" optionLabel="name" optionValue="id" [(ngModel)]="searchForm.departmentId" [virtualScroll]="true" [ngModelOptions]="{ standalone: true }" [showClear]="true" [virtualScrollItemSize]="30"></p-dropdown>
           </div>
         </div>
         <div class="grid">
-            <div class="col ml-4">
-                <p-calendar [style]="{'height': '37px'}" [showClear]="true" class="w-full sm:w-auto p-inputtext-sm" [showButtonBar]="true" placeholder="Ngày đăng kí" [showIcon]="true" appendTo="body" [dateFormat]="'dd/mm/yy'"></p-calendar>
-            </div>
+          <div class="col ml-4">
+            <p-calendar [style]="{ height: '37px' }" [showClear]="true" class="w-full sm:w-auto p-inputtext-sm" [showButtonBar]="true" placeholder="Ngày đăng kí" [showIcon]="true" appendTo="body" [dateFormat]="'dd/mm/yy'" [(ngModel)]="searchForm.dateCreated"></p-calendar>
+          </div>
         </div>
         <div class="grid">
-            <div class="col ml-4">
-                <p-calendar [showClear]="true" [style]="{'height': '37px'}" class="w-full sm:w-auto p-inputtext-sm" [showButtonBar]="true" placeholder="Ngày hẹn khám" [showIcon]="true" appendTo="body" [dateFormat]="'dd/mm/yy'"></p-calendar>
-            </div>
+          <div class="col ml-4">
+            <p-calendar [showClear]="true" [style]="{ height: '37px' }" class="w-full sm:w-auto p-inputtext-sm" [showButtonBar]="true" placeholder="Ngày hẹn khám" [showIcon]="true" appendTo="body" [dateFormat]="'dd/mm/yy'" [(ngModel)]="searchForm.appointmentDate"></p-calendar>
+          </div>
         </div>
         <div class="col-2 pl-5 -mt-3">
-            <button pButton [style]="{'height': '37px'}" pRipple icon="pi pi-search" class="p-button-primary mr-3 p-button-sm" (click)="onSearch()"></button>
-            <button pButton [style]="{'height': '37px'}" pRipple icon="pi pi-times" class="p-button-secondary p-button-sm" (click)="onClearSearch()"></button>
-          </div>
+          <button pButton [style]="{ height: '37px' }" pRipple icon="pi pi-search" class="p-button-primary mr-3 p-button-sm" (click)="onSearch()"></button>
+          <button pButton [style]="{ height: '37px' }" pRipple icon="pi pi-times" class="p-button-secondary p-button-sm" (click)="onClearSearch()"></button>
+        </div>
       </div>
-      <m-table [customBodyTemplate]="customBodyTemplate" [customHeaderTemplate]="customHeaderTemplate" [calcHeight]="264" class="table-admin" [dataKey]="'id'" [loading]="loading" [items]="listItems" (onPageChange)="onPageChange($event)" [totalRecords]="totalItemCount" (selectRow)="selectItem($event)"></m-table>
-      <ng-template #customHeaderTemplate></ng-template>
-      <ng-template #customBodyTemplate></ng-template>
+      <m-table [cols]="cols" [customBodyTemplate]="customBodyTemplate" [customHeaderTemplate]="customHeaderTemplate" [calcHeight]="264" class="table-admin" [dataKey]="'id'" [loading]="loading" [items]="listItems" (onPageChange)="onPageChange($event)" [totalRecords]="totalItemCount" (selectRow)="selectItem($event)" (doubleClickRow)="dbClickUpdate($event)"></m-table>
+      <ng-template #customHeaderTemplate>
+        <th [style.minWidth]="col['width']" *ngFor="let col of cols; let i = index">
+          {{ col['header'] }}
+        </th>
+        <th [style.minWidth]="'14rem'">Ngày hẹn khám</th>
+        <th [style.minWidth]="'14rem'">Ngày đặt lịch</th>
+        <th [style.minWidth]="'14rem'">Khung giờ</th>
+      </ng-template>
+      <ng-template #customBodyTemplate let-rowData>
+        <td [style.minWidth]="col.width || '12rem'" *ngFor="let col of cols">{{ rowData[col['field']] }}</td>
+        <td [style.minWidth]="'14rem'">{{ rowData.appointmentDate | date : 'hh:mm:ss dd/MM/yyyy' }}</td>
+        <td [style.minWidth]="'14rem'">{{ rowData.dob | date : 'hh:mm:ss dd/MM/yyyy' }}</td>
+        <td [style.minWidth]="'14rem'">{{ rowData.visitTime | date : 'hh:mm:ss dd/MM/yyyy' }}</td>
+      </ng-template>
     </div>
 
-    <p-dialog>
+    <p-dialog [(visible)]="isVisibleAppointmentDlg" [style]="{ width: '65rem' }" [modal]="true" [header]="header" class="p-fluid">
+      <ng-template pTemplate="content">
+        <div class="grid">
+          <div class="col-7">
+            <div class="formgrid grid">
+              <div class="field col">
+                <label><strong>Họ tên</strong></label>
+                <input type="text" pInputText placeholder="Tên" [(ngModel)]="dbSelected.name" [disabled]="true" />
+              </div>
+              <div class="field col">
+                <label><strong>Giới tính</strong></label>
+                <input type="text" pInputText placeholder="Giới tính" [disabled]="true" />
+              </div>
+            </div>
+            <div class="formgrid grid">
+              <div class="field col">
+                <label><strong>Địa chỉ</strong></label>
+                <input type="text" pInputText placeholder="Địa chỉ" [(ngModel)]="dbSelected.address" [disabled]="true" />
+              </div>
+              <div class="field col">
+                <label><strong>Số điện thoại</strong></label>
+                <input type="text" pInputText placeholder="" [(ngModel)]="dbSelected.phoneNo" [disabled]="true" />
+              </div>
+            </div>
+            <div class="formgrid grid">
+              <div class="field col">
+                <label><strong>Chuyên khoa</strong></label>
+                <p-dropdown placeholder="Chuyên khoa" optionLabel="name" optionValue="id" [options]="lstDepartments" [(ngModel)]="dbSelected.departmentName" [disabled]="dbSelected.departmentName !== ''"></p-dropdown>
+              </div>
+              <div class="field col">
+                <label><strong>Ngày hẹn khám</strong></label>
+                <p-calendar [showIcon]="true" [showIcon]="true" appendTo="body" [dateFormat]="'dd/mm/yy'" [(ngModel)]="dbSelected.appointmentDate" [disabled]="true"></p-calendar>
+                {{ dbSelected.appointmentDate }}
+              </div>
+            </div>
+            <div class="formgrid grid">
+              <div class="field col">
+                <label><strong>Ngày đặt lịch</strong></label>
+                <p-calendar [showIcon]="true" [showIcon]="true" appendTo="body" [dateFormat]="'dd/mm/yy'" [disabled]="true" [(ngModel)]="dbSelected.dob"></p-calendar>
+                {{ dbSelected.dob }}
+              </div>
+              <div class="field col">
+                <label><strong>Khung giờ</strong></label>
+                <p-calendar [showButtonBar]="true" placeholder="Ngày đăng kí" [showIcon]="true" appendTo="body" [(ngModel)]="dbSelected.visitTime"></p-calendar>
+                {{ dbSelected.visitTime }}
+                <p-calendar [style]="{ height: '37px' }" [showClear]="true" class="w-full sm:w-auto p-inputtext-sm" [showButtonBar]="true" placeholder="Ngày đăng kí" [showIcon]="true" appendTo="body" [dateFormat]="'dd/mm/yy'" [(ngModel)]="searchForm.dateCreated"></p-calendar>
+                {{searchForm.dateCreated}}
+              </div>
+            </div>
+            <form [formGroup]="statusForm">
+              <div class="formgrid grid">
+                <div class="field col">
+                  <textarea pKeyFilter="int" rows="5" cols="30" class="w-full" pInputTextarea placeholder="Ghi chú"></textarea>
+                </div>
+              </div>
+              <div class="formgrid grid">
+                <div class="field col">
+                  <button pButton pRipple label="Lưu" icon="pi pi-check" class="p-button-text" (click)="updateStatus()"></button>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="col-5">
+            <form [formGroup]="statusForm">
+              <div class="formgrid grid">
+                <div class="field col">
+                  <label
+                    ><strong>Trạng thái: </strong><span class="text-red-500">{{ dbSelected.status }}</span></label
+                  >
+                  <p-dropdown placeholder="" [style]="{ height: '40px', width: '250px' }" class="" formControlName="status"></p-dropdown>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+        <div class="car">
+          <h4><strong>Lịch sử chỉnh sửa</strong></h4>
+          <p-scrollPanel [style]="{ height: '150px', width: '100%' }">
+            <h5></h5>
+            <span></span>
+          </p-scrollPanel>
+        </div>
+      </ng-template>
+      <!-- </form> -->
 
+      <ng-template pTemplate="footer">
+        <button pButton pRipple label="Đóng" icon="pi pi-times" class="p-button-text text-red-600" (click)="isVisibleAppointmentDlg = false"></button>
+      </ng-template>
     </p-dialog>
   </div>
 </div>
