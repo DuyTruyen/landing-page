@@ -49,7 +49,8 @@
           <div class="field">
             <label for="name">Tên chuyên khoa<span class="text-red-500">*</span></label>
             <input type="text" pInputText id="name" formControlName="name" required autofocus />
-            <div class="m-error" *ngIf="departmentForm.controls['name'].invalid && departmentForm.controls['name'].dirty">*Tên vị trí lấy mẫu không được để trống</div>
+            <div class="m-error" *ngIf="departmentForm.controls['name'].errors?.['required'] && !departmentForm.controls['name'].errors?.['pattern']">*Tên chuyên khoa không được để trống</div>
+            <div class="m-error" *ngIf="departmentForm.controls['name'].errors?.['pattern'] && !departmentForm.controls['name'].errors?.['required']">*Tên chuyên khoa không được chỉ chứa khoảng trắng</div>
           </div>
           <div class="field">
             <label for="description">Mô tả</label>

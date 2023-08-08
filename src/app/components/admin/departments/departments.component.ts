@@ -46,7 +46,7 @@ export class DepartmentsComponent implements OnInit {
   ){
     this.departmentForm = this.fb.group({
       id: [null],
-      name: [null, [Validators.required]],
+      name: [null, [Validators.required, Validators.pattern(/\S/)]],
       description: [null],
       status: [null],
     });
@@ -126,7 +126,7 @@ export class DepartmentsComponent implements OnInit {
         if(res) {
           this.notification.success('Thêm mới thành công','');
           this.isVisibleDepartmentDialog = false;
-          this.getAll();
+          this.search();
         }else{
           if(res.errors && res.errors.length > 0){
             res.errors.forEach((el:any) => {
@@ -145,8 +145,9 @@ export class DepartmentsComponent implements OnInit {
       id: item.id,
       name: item.name,
       description: item.description,
-      status: !item.checked,
+      status: item.status,
     })
+    this.checked = item.status;
     this.isVisibleDepartmentDialog = true;
     this.isEditDepartment = true;
     this.departmentHeaderDialog = "Sửa thông tin chuyên khoa";
@@ -157,7 +158,7 @@ export class DepartmentsComponent implements OnInit {
         if(res){
           this.notification.success('Cập nhật thành công');
           this.isVisibleDepartmentDialog = false;
-          this.getAll();
+          this.search();
         }else{
           if(res.errors && res.errors.length > 0){
             res.errors.forEach((el:any) => {
@@ -181,7 +182,7 @@ export class DepartmentsComponent implements OnInit {
         if(res){
           this.notification.success('Xoá chuyên khoa thành công');
           this.isVisibleDeleteItemDialog = false;
-          this.getAll();
+          this.search();
         }else{
           if(res.errors && res.errors.length > 0){
             res.errors.forEach((el: any) => {
@@ -249,6 +250,7 @@ export class DepartmentsComponent implements OnInit {
     this.searchData.skip = data.first;
     this.searchData.take = data.rows;
     this.search();
+    console.log(data);
   }
 }
 
