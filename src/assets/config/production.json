@@ -1,6 +1,6 @@
 {
     "api": {
-        "baseUrl": "hvidtest-api.pmr.vn/api",
+        "baseUrl": "hvidtest-api.pmr.vn/api/v2",
         "fileUrl": "hvidtest-api.pmr.vn"
     },
     "deepzoom": {
