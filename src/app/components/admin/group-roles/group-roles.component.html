@@ -53,14 +53,14 @@
       </ng-template>
       <ng-template #customBodyTemplate let-rowData>
         <!-- Cố định cột -->
-        <td [ngClass]="{'row-modified':rowData.rowModified}" [style.minWidth]="'3rem'" class="text-center sticky flex justify-content-center"  [style.left]="'3.4rem'" pFrozenColumn alignFrozen="left">
-            <p-button icon="pi pi-save" [disabled]="!rowData.rowModified" (onClick)="updateGroupRoles(rowData)"  class="p-button-sm"></p-button>
+        <td  [style.minWidth]="'3rem'" class="text-center sticky flex justify-content-center"  [style.left]="'3.4rem'" pFrozenColumn alignFrozen="left">
+            <p-button icon="pi pi-save"  (onClick)="updateGroupRoles(rowData)"  class="p-button-sm"></p-button>
         </td>
-        <td [ngClass]="{'row-modified':rowData.rowModified}" [style.minWidth]="'15rem'" class="sticky" [style.left]="'6.75rem'" pFrozenColumn alignFrozen="left" >{{rowData['id']}}</td>
-        <td [ngClass]="{'row-modified':rowData.rowModified}" [style.minWidth]="'12rem'" class="sticky" [style.left]="'21.75rem'" pFrozenColumn alignFrozen="left" >{{rowData['name']}}</td>
+        <td  [style.minWidth]="'15rem'" class="sticky" [style.left]="'6.75rem'" pFrozenColumn alignFrozen="left" >{{rowData['id']}}</td>
+        <td  [style.minWidth]="'12rem'" class="sticky" [style.left]="'21.75rem'" pFrozenColumn alignFrozen="left" >{{rowData['name']}}</td>
 
-        <td *ngFor="let role of roles; let i = index"  [style.minWidth]="'5rem'" [ngClass]="{'row-modified':rowData.rowModified}" class="flex justify-content-center">
-          <input type="checkbox" [(ngModel)]="rowData.checkedRoles[i]" (ngModelChange)="onCheckBoxChange($event,rowData)" class="inline-block w-1rem h-1rem cursor-pointer">
+        <td *ngFor="let role of roles; let i = index"  [style.minWidth]="'5rem'"  class="flex justify-content-center">
+          <input type="checkbox" [(ngModel)]="rowData.checkedRoles[i]"  class="inline-block w-1rem h-1rem cursor-pointer">
         </td>
       </ng-template>
     </div>

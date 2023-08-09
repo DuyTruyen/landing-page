@@ -10,6 +10,9 @@ export class UserService extends BaseService {
   getUserRoles(data: any): Observable<any> {
     return this.post(`${this.url}/Role`, data);
   }
+  getUsersOfGroup(id:string){
+    return this.get(`${this.url}/GetUserOfGroup/${id}`);
+  }
   getUsers(data: any): Observable<any> {
     return this.post(`${this.url}/Get`, data);
   }
