@@ -61,8 +61,8 @@ export class DepartmentsComponent implements OnInit {
   }
   ngOnInit(): void {
     this.cols = [
-      { field: 'name', header: 'Tên chuyên khoa', isOpSort: true, iconSort : 0, width: '24rem' },
-      { field: 'description', header: 'Mô tả', isOpSort: true, iconSort : 0, width: '52rem' },
+      { field: 'name', header: 'Tên chuyên khoa', width: '24rem' },
+      { field: 'description', header: 'Mô tả', width: '52rem' },
       { field: 'status', header: 'Trạng thái',  width: '6rem' }
     ];
     this.getAll();
@@ -95,19 +95,19 @@ export class DepartmentsComponent implements OnInit {
   }
   saveItem(){
     if(this.departmentForm.valid){
-    if(!this.isEditDepartment){
-      this.createDepartment();
+      if(!this.isEditDepartment){
+        this.createDepartment();
+      }else{
+        this.updateDepartment();
+      }
     }else{
-      this.updateDepartment();
-    }
-    }else{
-       Object.values(this.departmentForm.controls).forEach((control) => {
+      Object.values(this.departmentForm.controls).forEach((control) => {
         if(control.invalid){
           control.markAsDirty();
           control.updateValueAndValidity({onlySelf : true});
-          }
-        });
-      }
+        }
+      });
+    }
   }
   onCreateItem(){
     this.departmentForm.reset();
