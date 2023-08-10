@@ -4,6 +4,6 @@ import { BaseService } from './base-service';
 @Injectable({
   providedIn: 'root'
 })
-export class SeverityPapsmearService extends BaseService {
-    override url = '/PapSmearConfig/Severity';
+export class VisitTimeService extends BaseService {
+    override url = '/VisitTime';
 }

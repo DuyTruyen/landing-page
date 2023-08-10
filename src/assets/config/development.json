@@ -1,23 +1,23 @@
 {
-    "api": {
-    "baseUrl": "hvidtest-api.pmr.vn",
-    "fileUrl": "hvidtest-api.pmr.vn/Files"
-},
-"deepzoom": {
-    "baseUrl": "hvidtest-api.pmr.vn"
-},
-    "domain": "hvidtest-api.pmr.vn",
-    "sharedUrl": "share",
-    "layout": 3,
-    "slogan": {
-        "content": "Chính sức khỏe mới là sự giàu có thực sự, không phải vàng bạc",
-        "author": "Mahathma"
-    },
-    "viewerConfig": {
-        "usePolygonLabeling": true
-    },
-    "isEnablePapsmear":true,
-    "initData":{
-        "papsmearMarkTypeId":"63d744c3270d472ee767b791"
-    }
+  "api": {
+    "baseUrl": "hvidtest-api.pmr.vn/api/v2",
+    "fileUrl": "hvidtest-api.pmr.vn"
+  },
+  "deepzoom": {
+    "baseUrl": "hidtest-api.pmr.vn"
+  },
+  "domain": "hidtest-api.pmr.vn",
+  "sharedUrl": "share",
+  "layout": 3,
+  "slogan": {
+    "content": "BỆNH VIỆN ĐA KHOA HÙNG VƯƠNG",
+    "author": "Thân thiện - Chuyên nghiệp - Chu đáo"
+  },
+  "viewerConfig": {
+    "usePolygonLabeling": true
+  },
+  "isEnablePapsmear": true,
+  "initData": {
+    "papsmearMarkTypeId": "63d744c3270d472ee767b791"
+  }
 }

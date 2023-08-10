@@ -32,7 +32,7 @@ export class AdminMenuComponent implements OnInit {
                     {
                         label: 'Quản lý user',
                         icon: 'pi pi-fw pi-user',
-                        visible: this.currentUser.userTypes?.includes(Roles.MANAGE_USER),
+                        // visible: this.currentUser.menus?.includes(Roles.MANAGE_USER),
                         items: [
                             {
                                 label: 'Danh sách user',
@@ -49,7 +49,7 @@ export class AdminMenuComponent implements OnInit {
                     {
                         label: 'Quản lý group',
                         icon: 'pi pi-fw pi-users',
-                        visible: this.currentUser.userTypes?.includes(Roles.MANAGE_GROUP),
+                        // visible: this.currentUser.menus?.includes(Roles.MANAGE_GROUP),
                         items: [
                             {
                                 label: 'Danh sách group',
@@ -60,6 +60,17 @@ export class AdminMenuComponent implements OnInit {
                                 label: 'Phân quyền group',
                                 icon: 'pi pi-fw pi-users',
                                 routerLink: ['/group-roles']
+                            },
+                        ]
+                    },
+                    {
+                        label: 'Quản lý danh mục',
+                        icon: 'pi pi-fw pi-folder-open',
+                        items: [
+                            {
+                                label: 'Quản lý khung giờ khám',
+                                icon: 'pi pi-fw pi-calendar-plus',
+                                routerLink: ['/visit-time']
                             },
                         ]
                     },
@@ -84,7 +95,29 @@ export class AdminMenuComponent implements OnInit {
                                 routerLink: ['/departments']
                             }
                         ]
-                    }
+                    },
+                    {
+                        label: 'Quản lý tin tức',
+                        icon: 'pi pi-fw pi-tags',
+                        items: [
+                            {
+                                label: 'Danh sách tin tức',
+                                icon: 'pi pi-fw pi-tags',
+                                routerLink: ['/news']
+                            }
+                        ]
+                    },
+                    {
+                        label: 'Quản lý lịch hẹn',
+                        icon: 'pi pi-calendar-times',
+                        items: [
+                            {
+                                label: 'Danh sách lịch hẹn',
+                                icon: 'pi pi-calendar-times',
+                                routerLink: ['/appointment']
+                            }
+                        ]
+                    },
                 ]
             },
         ];

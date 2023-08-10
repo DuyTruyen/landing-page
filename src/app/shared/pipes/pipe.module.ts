@@ -5,15 +5,16 @@ import { SortPipe } from './sort.pipe';
 import { LabelStatusPipe } from './label-status.pipe';
 import { SpecimensTypeTextPipe } from './specimens-type-text.pipe';
 import { LogTextPipe } from './log-text.pipe';
+import { VisitSessionPipe } from './session-visit.pipe';
 
 
 
 @NgModule({
-    declarations: [GenderToTextPipe, SortPipe, LabelStatusPipe, SpecimensTypeTextPipe, LogTextPipe],
+    declarations: [GenderToTextPipe, SortPipe, LabelStatusPipe, SpecimensTypeTextPipe, LogTextPipe, VisitSessionPipe],
     imports: [
         CommonModule,
     ],
-    exports: [GenderToTextPipe, SortPipe, LabelStatusPipe, SpecimensTypeTextPipe, LogTextPipe],
+    exports: [GenderToTextPipe, SortPipe, LabelStatusPipe, SpecimensTypeTextPipe, LogTextPipe, VisitSessionPipe],
     providers: [LogTextPipe]
 })
 export class PipeModule { }

@@ -6,12 +6,12 @@ import { BaseService } from './base-service';
   providedIn: 'root'
 })
 export class FileUploadService extends BaseService {
-  override url = '/FileUpload';
-  upload(fileParam: Blob): Observable<any> {
+  override url = '/File/Upload';
+  upload(fileParam: any): Observable<any> {
     let file = new Blob([fileParam], { type: fileParam.type })
     const formData: FormData = new FormData();
-    formData.append('FormFile', file, 'temp.png');
+    formData.append('file', file, fileParam.name);
 
-    return this.post(`${this.url}/Upload`, formData);
+    return this.post(`${this.url}`, formData);
   }
 }

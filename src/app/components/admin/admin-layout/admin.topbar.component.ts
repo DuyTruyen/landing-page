@@ -9,7 +9,6 @@ import { StorageKeys } from 'src/app/shared/constants/constants';
 import { AdminLayoutService } from './service/admin.layout.service';
 import { UserSettingStateService } from 'src/app/shared/app-state/user-setting-state.service';
 import { SystemConfigStateService } from 'src/app/shared/app-state/system-config-state.service';
-import { SearchCaseStudyStateService } from 'src/app/shared/app-state/search-case-study-state.service';
 import { INIT_USER_SETTING } from 'src/app/models/user-setting';
 import { DEFAULT_SYSTEM_CONFIG } from 'src/app/models/system-config';
 import { INIT_SEARCH_CASE_STUDY } from 'src/app/models/search-case-study';
@@ -29,7 +28,7 @@ export class AdminTopBarComponent {
   protected _authSubscription: Subscription;
   currentUser = INIT_AUTH_MODEL;
 
-  constructor(public layoutService: AdminLayoutService, private router: Router, private authState: AuthStateService, private authService: AuthService, private userSettingsStateService: UserSettingStateService, private systemConfigState: SystemConfigStateService, private searchCaseStudyStateService: SearchCaseStudyStateService) {
+  constructor(public layoutService: AdminLayoutService, private router: Router, private authState: AuthStateService, private authService: AuthService, private userSettingsStateService: UserSettingStateService, private systemConfigState: SystemConfigStateService) {
     this.profileMenuItems = [
       {
         label: 'Trang chủ',
@@ -60,7 +59,6 @@ export class AdminTopBarComponent {
         this.authState.dispatch(null);
         this.userSettingsStateService.dispatch(INIT_USER_SETTING);
         this.systemConfigState.dispatch(DEFAULT_SYSTEM_CONFIG);
-        this.searchCaseStudyStateService.dispatch(INIT_SEARCH_CASE_STUDY);
         this.router.navigate(['/login']);
       });
   }

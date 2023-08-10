@@ -34,14 +34,14 @@
                 <i class="{{ cols[2]['isOpSort']? (cols[2]['iconSort'] == 0? 'pi pi-sort-alt' : (cols[2]['iconSort'] == 1? 'pi pi-sort-amount-up-alt' : 'pi pi-sort-amount-down')) : ''}}" style="font-size: 1.01rem"></i>
             </div>
         </th>
-        <th *ngFor="let role of roles; let i = index" [style.minWidth]="'5rem'">{{role}}</th>
+        <th *ngFor="let role of roles; let i = index" [style.minWidth]="'5rem'">{{role.name}}</th>
       </ng-template>
       <ng-template #customBodyTemplate let-rowData>
           <td [style.minWidth]="'15rem'">{{rowData['id']}}</td>
           <td [style.minWidth]="'12rem'">{{rowData['username']}}</td>
           <td [style.minWidth]="'12rem'">{{rowData['fullname']}}</td>
           <td *ngFor="let role of roles; let i = index" class="text-center flex justify-content-center" [style.minWidth]="'5rem'">
-            <i *ngIf="rowData.roles == null? false : rowData.roles.includes(role)" class="pi pi-check text-xl text-green-500 font-bold"></i>
+            <i *ngIf="rowData.userRolesProcess == null? false : rowData.userRolesProcess.includes(role.id)" class="pi pi-check text-xl text-green-500 font-bold"></i>
           </td>
       </ng-template>
     </div>

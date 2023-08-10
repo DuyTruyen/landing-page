@@ -7,7 +7,7 @@ import { MenuItem } from 'primeng/api';
 @Component({
   selector: 'app-user-groups',
   templateUrl: './user-groups.component.html',
-  styleUrls: ['./user-groups.component.scss']
+  styleUrls: ['./user-groups.component.scss'],
 })
 export class UserGroupsComponent implements OnInit {
   _isVisibleUserGroupDialog = false;
@@ -38,26 +38,19 @@ export class UserGroupsComponent implements OnInit {
   searchData = {
     skip: 0,
     take: Constants.TABLE_PARAM.PAGE_SIZE,
-    keyword: ''
-  }
+    keyword: '',
+  };
   loading = false;
   total = 0;
-  constructor(
-    private fb: FormBuilder,
-    private notification: NotificationService,
-    private userGroupService: UserGroupService
-  ) {
+  constructor(private fb: FormBuilder, private notification: NotificationService, private userGroupService: UserGroupService) {
     this.userGroupForm = this.fb.group({
       id: [null],
       name: [null, [Validators.required]],
-      desc: [null],
+      description: [null],
     });
 
     // Title Danh sách group
-    this.breadcrumbItem = [
-      { label: 'Quản lý group' },
-      { label: 'Danh sách group' },
-    ];
+    this.breadcrumbItem = [{ label: 'Quản lý group' }, { label: 'Danh sách group' }];
 
     this.home = {
       icon: 'pi pi-home',
@@ -68,39 +61,46 @@ export class UserGroupsComponent implements OnInit {
   ngOnInit() {
     this.cols = [
       { field: 'name', header: 'Tên nhóm', isOpSort: true, iconSort: 0, width: '30rem' },
-      { field: 'desc', header: 'Mô tả', isOpSort: false, iconSort: 0, width: '68rem' }
+      { field: 'description', header: 'Mô tả', isOpSort: false, iconSort: 0, width: '68rem' },
     ];
     this.search();
   }
 
   search() {
     this.loading = true;
-    this.userGroupService.search(this.searchData).subscribe({
-      next: (res) => {
-        if (res.isValid) {
-          this.userGroups = res.jsonData.data;
-          this.total = res.jsonData.total;
-          //   console.log(this.userGroups);
-        } else {
-            if(res.errors && res.errors.length > 0){
-                res.errors.forEach((el: any) => {
-                    this.notification.error(el.errorMessage)
-                })
-            }else{
-                this.notification.error('Không tìm kiếm được dữ liệu')
-            }
-        }
-      }
-    }).add(() => {
-      this.loading = false
-    });
+    this.userGroupService
+      .getAll()
+      .subscribe({
+        next: (res) => {
+          this.userGroups = res;
+          // if (res.isValid) {
+          //   this.userGroups = res.jsonData.data;
+          //   this.total = res.jsonData.total;
+          //   //   console.log(this.userGroups);
+          // } else {
+          //     if(res.errors && res.errors.length > 0){
+          //         res.errors.forEach((el: any) => {
+          //             this.notification.error(el.errorMessage)
+          //         })
+          //     }else{
+          //         this.notification.error('Không tìm kiếm được dữ liệu')
+          //     }
+          // }
+        },
+        error: () => {
+          this.notification.error('Không tải được group');
+        },
+      })
+      .add(() => {
+        this.loading = false;
+      });
   }
 
   onCreateItem() {
     this.userGroupForm.patchValue({
       id: 0,
       name: '',
-      desc: ''
+      description: '',
     });
     this.isVisibleUserGroupDialog = true;
     this.isEditUserGroup = false;
@@ -111,7 +111,7 @@ export class UserGroupsComponent implements OnInit {
     this.userGroupForm.patchValue({
       id: item.id,
       name: item.name,
-      desc: item.desc
+      description: item.description,
     });
     this.isVisibleUserGroupDialog = true;
     this.isEditUserGroup = true;
@@ -119,7 +119,7 @@ export class UserGroupsComponent implements OnInit {
   }
 
   onDeleteItem(item: any) {
-    this.textConfirmDelete = `Xác nhận xóa group <b>${item.name}</b>?`
+    this.textConfirmDelete = `Xác nhận xóa group <b>${item.name}</b>?`;
     this.deletedItem = item;
     this.isVisibleDeleteItemDialog = true;
   }
@@ -131,33 +131,35 @@ export class UserGroupsComponent implements OnInit {
   }
   onSearch(data: any) {
     this.loading = true;
-    this.userGroupService.search(data).subscribe({
-      next: (res) => {
-        if (res.isValid) {
-          this.userGroups = res.jsonData.data;
-          this.total = res.jsonData.total;
-          console.log(this.userGroups);
-        } else {
-            if(res.errors && res.errors.length > 0){
-                res.errors.forEach((el: any) => {
-                    this.notification.error(el.errorMessage)
-                })
-            }else{
-                this.notification.error('Không tìm kiếm được nhóm')
+    this.userGroupService
+      .search(data)
+      .subscribe({
+        next: (res) => {
+          if (res.isValid) {
+            this.userGroups = res.jsonData.data;
+            this.total = res.jsonData.total;
+            console.log(this.userGroups);
+          } else {
+            if (res.errors && res.errors.length > 0) {
+              res.errors.forEach((el: any) => {
+                this.notification.error(el.errorMessage);
+              });
+            } else {
+              this.notification.error('Không tìm kiếm được nhóm');
             }
-        }
-      }
-    }).add(() => {
-      this.loading = false
-    });
+          }
+        },
+      })
+      .add(() => {
+        this.loading = false;
+      });
   }
 
   selectUserGroup(userGroup: any) {
     if (userGroup != null) {
       this.selectedUserGroup = userGroup;
       this.isEnableUserGroupButton = true;
-    }
-    else {
+    } else {
       this.isEnableUserGroupButton = false;
     }
     console.log('userGroup:', userGroup);
@@ -179,64 +181,78 @@ export class UserGroupsComponent implements OnInit {
       });
     }
   }
-
+  openUseInGroup() {
+    this.isVisibleListUsers = true;
+  }
   updateUserGroup() {
     this.userGroupService.update(this.userGroupForm.value.id, this.userGroupForm.value).subscribe({
       next: (res) => {
-        if (res.isValid) {
-          this.notification.success('Cập nhật thành công', '');
-          this.isVisibleUserGroupDialog = false;
-          this.search();
-        } else {
-            if(res.errors && res.errors.length > 0){
-                res.errors.forEach((el: any) => {
-                    this.notification.error(el.errorMessage)
-                })
-            }else{
-                this.notification.error('Cập nhật nhóm không thành công')
-            }
-        }
-      }
+        this.notification.success('Cập nhật thành công', '');
+        this.isVisibleUserGroupDialog = false;
+        this.search();
+        // if (res.isValid) {
+        //   this.notification.success('Cập nhật thành công', '');
+        //   this.isVisibleUserGroupDialog = false;
+        //   this.search();
+        // } else {
+        //     if(res.errors && res.errors.length > 0){
+        //         res.errors.forEach((el: any) => {
+        //             this.notification.error(el.errorMessage)
+        //         })
+        //     }else{
+        //         this.notification.error('Cập nhật nhóm không thành công')
+        //     }
+        // }
+      },
+      error: () => {
+        this.notification.error('Thêm mới nhóm không thành công');
+      },
     });
   }
 
   createUserGroup() {
     this.userGroupService.create(this.userGroupForm.value).subscribe({
       next: (res) => {
-        if (res.isValid) {
-          this.notification.success('Thêm mới thành công', '');
-          this.isVisibleUserGroupDialog = false;
-          this.search();
-        } else {
-            if(res.errors && res.errors.length > 0){
-                res.errors.forEach((el: any) => {
-                    this.notification.error(el.errorMessage)
-                })
-            }else{
-                this.notification.error('Thêm mới nhóm không thành công')
-            }
-        }
-      }
+        this.notification.success('Thêm mới thành công', '');
+        this.search();
+        // if (res.isValid) {
+        //   this.isVisibleUserGroupDialog = false;
+        // } else {
+        //     if(res.errors && res.errors.length > 0){
+        //         res.errors.forEach((el: any) => {
+        //             this.notification.error(el.errorMessage)
+        //         })
+        //     }else{
+        //         this.notification.error('Thêm mới nhóm không thành công')
+        //     }
+        // }
+      },
+      error: () => {
+        this.notification.error('Thêm mới nhóm không thành công');
+      },
     });
   }
 
   deleteUserGroup() {
     this.userGroupService.deleteById(this.deletedItem.id).subscribe({
       next: (res) => {
-        if (res.isValid) {
-          this.notification.success('Xóa group thành công', '');
-          this.isVisibleDeleteItemDialog = false;
-          this.search();
-        } else {
-            if(res.errors && res.errors.length > 0){
-                res.errors.forEach((el: any) => {
-                    this.notification.error(el.errorMessage)
-                })
-            }else{
-                this.notification.error('Xóa group không thành công')
-            }
-        }
-      }
+        this.notification.success('Xóa group thành công', '');
+        this.isVisibleDeleteItemDialog = false;
+        this.search();
+        // if (res.isValid) {
+        // } else {
+        //     if(res.errors && res.errors.length > 0){
+        //         res.errors.forEach((el: any) => {
+        //             this.notification.error(el.errorMessage)
+        //         })
+        //     }else{
+        //         this.notification.error('Xóa group không thành công')
+        //     }
+        // }
+      },
+      error: () => {
+        this.notification.error('Xóa group không thành công');
+      },
     });
   }
 
@@ -244,7 +260,7 @@ export class UserGroupsComponent implements OnInit {
     this.searchData = {
       skip: 0,
       take: Constants.TABLE_PARAM.PAGE_SIZE,
-      keyword: ''
+      keyword: '',
     };
     this.search();
   }
@@ -269,9 +285,8 @@ export class UserGroupsComponent implements OnInit {
         skip: 0,
         keyword: '',
         sortField: dataField,
-        sortDir: this.getOpSort(col)
-      }
-      );
+        sortDir: this.getOpSort(col),
+      });
     }
   }
   getOpSort(col: any) {

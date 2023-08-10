@@ -61,20 +61,26 @@ export class GroupRolesComponent implements OnInit {
             this.loadingRole = true;
             this.roleService.getAll().subscribe({
                 next: (res) => {
-                    if (res.isValid) {
-                        this.roles = res.jsonData;
+                    this.roles = res;
                         this.loadingRole = false;
                         resolve(true);
-                    } else {
-                        if(res.errors && res.errors.length > 0){
-                            res.errors.forEach((el: any) => {
-                                this.notification.error(el.errorMessage)
-                            })
-                        }else{
-                            this.notification.error('Lấy dữ liệu không thành công')
-                        }
-                    }
+                    // if (res.isValid) {
+                    //     this.roles = res.jsonData;
+                    //     this.loadingRole = false;
+                    //     resolve(true);
+                    // } else {
+                    //     if(res.errors && res.errors.length > 0){
+                    //         res.errors.forEach((el: any) => {
+                    //             this.notification.error(el.errorMessage)
+                    //         })
+                    //     }else{
+                    //         this.notification.error('Lấy dữ liệu không thành công')
+                    //     }
+                    // }
                 },
+                error:()=>{
+                    this.notification.error('Lấy dữ liệu không thành công')
+                }
             });
         });
     }
@@ -82,36 +88,85 @@ export class GroupRolesComponent implements OnInit {
     search() {
         this.loading = true;
         this.groupService
-            .search(this.searchData)
+            .getAll()
             .subscribe({
                 next: (res) => {
-                    if (res.isValid) {
-                        this.groups = res.jsonData.data;
-                        this.groups.forEach((g: any) => {
-                            g.checkedRoles = [];
-                            this.roles.forEach((r: any) => {
-                                g.checkedRoles.push(g.roles.includes(r.name));
-                            });
+                    this.groups = res
+                    this.groups.forEach((g: any) => {
+                        g.checkedRoles = [];
+                        this.roles.forEach((r: any) => {
+                            g.checkedRoles.push(g.groupRoles.map((el:any)=>{return el.roleId})
+                                .includes(r.id));
                         });
-                        this.groups.forEach((el:any)=>{el.rowModified = false});
-                        this.tempGroups = JSON.parse(JSON.stringify(this.groups)) ;
-                        console.log(this.groups);
-                        this.total = res.jsonData.total;
-                    }else{
-                        if(res.errors && res.errors.length > 0){
-                            res.errors.forEach((el: any) => {
-                                this.notification.error(el.errorMessage)
-                            })
-                        }else{
-                            this.notification.error('Tìm kiếm không thành công')
-                        }
-                    }
+                    });
+                    // this.groups.forEach((el:any)=>{el.rowModified = false});
+                    // this.tempGroups = JSON.parse(JSON.stringify(this.groups)) ;
+                    console.log(this.groups);
+                    // this.total = res.jsonData.total;
+                    // if (res.isValid) {
+                    //     this.groups = res.jsonData.data;
+                    //     this.groups.forEach((g: any) => {
+                    //         g.checkedRoles = [];
+                    //         this.roles.forEach((r: any) => {
+                    //             g.checkedRoles.push(g.roles.includes(r.name));
+                    //         });
+                    //     });
+                    //     this.groups.forEach((el:any)=>{el.rowModified = false});
+                    //     this.tempGroups = JSON.parse(JSON.stringify(this.groups)) ;
+                    //     console.log(this.groups);
+                    //     this.total = res.jsonData.total;
+                    // }else{
+                    //     if(res.errors && res.errors.length > 0){
+                    //         res.errors.forEach((el: any) => {
+                    //             this.notification.error(el.errorMessage)
+                    //         })
+                    //     }else{
+                    //         this.notification.error('Tìm kiếm không thành công')
+                    //     }
+                    // }
                 },
+                error:()=>{
+                    this.notification.error('Tìm kiếm không thành công')
+
+                }
             })
             .add(() => {
                 this.loading = false;
             });
     }
+    // search() {
+    //     this.loading = true;
+    //     this.groupService
+    //         .search(this.searchData)
+    //         .subscribe({
+    //             next: (res) => {
+    //                 if (res.isValid) {
+    //                     this.groups = res.jsonData.data;
+    //                     this.groups.forEach((g: any) => {
+    //                         g.checkedRoles = [];
+    //                         this.roles.forEach((r: any) => {
+    //                             g.checkedRoles.push(g.roles.includes(r.name));
+    //                         });
+    //                     });
+    //                     this.groups.forEach((el:any)=>{el.rowModified = false});
+    //                     this.tempGroups = JSON.parse(JSON.stringify(this.groups)) ;
+    //                     console.log(this.groups);
+    //                     this.total = res.jsonData.total;
+    //                 }else{
+    //                     if(res.errors && res.errors.length > 0){
+    //                         res.errors.forEach((el: any) => {
+    //                             this.notification.error(el.errorMessage)
+    //                         })
+    //                     }else{
+    //                         this.notification.error('Tìm kiếm không thành công')
+    //                     }
+    //                 }
+    //             },
+    //         })
+    //         .add(() => {
+    //             this.loading = false;
+    //         });
+    // }
 
     onSearch(data: any) {
         this.loading = true;
@@ -154,22 +209,30 @@ export class GroupRolesComponent implements OnInit {
                 roleIds.push(this.roles[i].id);
             }
         }
-        this.groupService.updateGroupRoles(group.id, roleIds).subscribe({
+        let payload = {
+            groupId: group.id,
+            roles : roleIds
+        }
+        this.groupService.updateGroupRoles(payload).subscribe({
             next: (res) => {
-                if (res.isValid) {
-                    group.rowModified = false;
-                    this.tempGroups = JSON.parse(JSON.stringify(this.groups));
-                    this.notification.success('Cập nhật thành công');
-                }else{
-                    if(res.errors && res.errors.length > 0){
-                        res.errors.forEach((el: any) => {
-                            this.notification.error(el.errorMessage)
-                        })
-                    }else{
-                        this.notification.error('Cập nhật không thành công')
-                    }
-                }
+                this.notification.success('Cập nhật thành công');
+                // if (res.isValid) {
+                //     group.rowModified = false;
+                //     this.tempGroups = JSON.parse(JSON.stringify(this.groups));
+                //     this.notification.success('Cập nhật thành công');
+                // }else{
+                //     if(res.errors && res.errors.length > 0){
+                //         res.errors.forEach((el: any) => {
+                //             this.notification.error(el.errorMessage)
+                //         })
+                //     }else{
+                //         this.notification.error('Cập nhật không thành công')
+                //     }
+                // }
             },
+            error: ()=>{
+                this.notification.error('Cập nhật không thành công')
+            }
         });
     }
 

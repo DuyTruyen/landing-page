@@ -11,7 +11,7 @@ import { NotificationService } from './notification.service';
 export class AuthGuard implements CanActivate, OnDestroy {
   protected _authSubscription: Subscription;
   currentUser = INIT_AUTH_MODEL;
-  
+
   constructor(
     private router: Router,
     private notification: NotificationService,
@@ -30,10 +30,10 @@ export class AuthGuard implements CanActivate, OnDestroy {
       route: ActivatedRouteSnapshot,
       state: RouterStateSnapshot): Promise<boolean> {
     if (route.data['role']) {
-      if (this.currentUser.userTypes?.includes(route.data['role'])) {
+      if (this.currentUser.roles?.includes(route.data['role'])) {
         return true;
       }
-    } else if (this.currentUser.userId) {
+    } else if (this.currentUser.id) {
       return true;
     }
     else if (state.url.includes('share/')) {
