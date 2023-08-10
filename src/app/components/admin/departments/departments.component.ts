@@ -65,7 +65,6 @@ export class DepartmentsComponent implements OnInit {
       { field: 'description', header: 'Mô tả', width: '52rem' },
       { field: 'status', header: 'Trạng thái',  width: '6rem' }
     ];
-    this.getAll();
   }
   getAll(){
     this.loading = true;
@@ -250,7 +249,6 @@ export class DepartmentsComponent implements OnInit {
     this.searchData.skip = data.first;
     this.searchData.take = data.rows;
     this.search();
-    console.log(data);
   }
 }
 
