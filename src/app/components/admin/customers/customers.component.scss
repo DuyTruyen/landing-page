@@ -1,10 +1,10 @@
 
-:host ::ng-deep .p-panel-header {
-    background-color: var(--blue-600);
+:host ::ng-deep .p-dialog-header {
+    background-color: var(--blue-600)!important;
     color: #fff;
 }
 
-:host ::ng-deep .p-panel-content {
+:host ::ng-deep .p-dialog-content {
     background-color: var(--blue-50);
 }
 
@@ -12,8 +12,11 @@
 //     background-color: var(--blue-600);
 //     border-color: var(--blue-600);
 // }
-.information-card.p-card-content{
-    border-color: none;
+// .information-card.p-card-content{
+//     border-color: none;
+// }
+:host ::ng-deep .panel-body{
+    cursor: pointer;
 }
 ul > li{
     list-style: none;
@@ -22,3 +25,7 @@ ul > li{
 :host ::ng-deep .p-card{
     box-shadow: none !important;
 }
+
+// :host ::ng-deep .p-button{
+//     background-color: var(--yellow-500)!important;
+// }
