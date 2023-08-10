@@ -16,6 +16,7 @@ import { CardModule } from 'primeng/card';
 import { CheckboxModule } from 'primeng/checkbox';
 import { ScrollPanelModule } from 'primeng/scrollpanel';
 import {DividerModule } from 'primeng/divider';
+import {TableModule} from 'primeng/table';
 
 
 @NgModule({
@@ -38,7 +39,8 @@ import {DividerModule } from 'primeng/divider';
     CardModule,
     CheckboxModule,
     ScrollPanelModule,
-    DividerModule
+    DividerModule,
+    TableModule
   ]
 })
 export class CustomersModule { }

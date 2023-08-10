@@ -12,7 +12,7 @@
         </span>
       </div>
 
-      <m-table [isLazyLoad]="false" [cols]="cols" [items]="customers" [dataKey]="'id'" [customHeaderTemplate]="customHeaderTemplate" [customBodyTemplate]="customBodyTemplate" class="table-admin" [calcHeight]="303"></m-table>
+      <m-table [isLazyLoad]="false" [cols]="cols" [items]="customers" (selectRow)="selectItem($event)" [dataKey]="'id'" [customHeaderTemplate]="customHeaderTemplate" [customBodyTemplate]="customBodyTemplate" class="table-admin" [calcHeight]="303"></m-table>
 
       <ng-template #customHeaderTemplate>
         <th *ngFor="let col of cols; let i = index" [style.minWidth]="col['width'] || '12rem'" class="{{ col.isOpSort ? 'cursor-pointer' : '' }}">
@@ -28,82 +28,120 @@
       </ng-template>
 
       <ng-template #customBodyTemplate let-rowData>
-        <td [style.minWidth]="col.width" *ngFor="let col of cols" (click)="onShowProfile(rowData)">
+        <td [style.minWidth]="col.width" *ngFor="let col of cols" [ngClass]="{ 'justify-content-start': col.field }">
           {{ rowData[col['field']] }}
+        </td>
+        <td [style.minWidth]="'6rem'" class="text-center flex justify-content-center" pFrozenColumn alignFrozen="right">
+          <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success p-button-xs mr-2"></button>
+          <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning p-button-xs"></button>
         </td>
       </ng-template>
 
-      <p-panel header="Danh sách hồ sơ" [toggleable]="true" *ngIf="showProfile" class="absolute top-0" style="width: 50%; z-index: 1; left: 25%">
-        <div class="panel-body" (click)="showCustomerCard(customer)" *ngFor="let customer of customers">
-          <h4>
-            <i class="pi pi-id-card mr-3 mb-3" style="font-size: 1.5rem"></i>
-            <span>
-              {{ customer.name }}
-            </span>
-          </h4>
-          <p-card *ngIf="selectedCustomer === customer && showCard">
-            <div class="flex flex-row">
-              <p-card header="Thông tin cá nhân" [style]="{ width: '45rem' }">
-                <div class="flex flex-row">
-                  <ul [style]="{ width: '100%' }">
-                    <li class="flex flex-row mr-8">
-                      <i class="pi pi-id-card -ml-6 mr-3 mb-5" style="font-size: 1.5rem"></i>
-                      {{ customer.transformedDob }}
-                    </li>
-                    <li class="flex flex-row mr-8">
-                      <i class="pi pi-phone -ml-6 mr-3 mb-5" style="font-size: 1.5rem"></i>
-                      {{ customer.phoneNo }}
-                    </li>
-                    <li class="flex flex-row mr-8">
-                      <i class="pi pi-user-edit -ml-6 mr-3 mb-5" style="font-size: 1.5rem"></i>
-                    </li>
-                    <li class="flex flex-row mr-8">
-                      <i class="pi pi-envelope -ml-6 mr-3 mb-5" style="font-size: 1.5rem"></i>
-                    </li>
-                    <p class="flex flex-row mr-8">
-                      <i class="pi pi-map -ml-6 mr-3" style="font-size: 1.5rem"></i>
-                      {{ customer.address }}
-                    </p>
-                  </ul>
-                  <ul [style]="{ width: '100%' }">
-                    <li class="flex flex-row mr-8">
-                      <i class="pi pi-info ml-3 mr-3 mb-5" style="font-size: 1.5rem"></i>
-                      {{ customer.genderName }}
-                    </li>
-                    <li class="flex flex-row mr-8">
-                      <i class="pi pi-users ml-3 mr-3 mb-5" style="font-size: 1.5rem"></i>
-                    </li>
-                    <li class="flex flex-row mr-8">
-                      <i class="pi pi-id-card ml-3 mr-3 mb-5" style="font-size: 1.5rem"></i>
-                    </li>
-                  </ul>
-                </div>
-              </p-card>
-              <p-card header="Thông tin y tế" [style]="{ width: '45rem' }">
-                <div>
-                  <li class="flex flex-row mr-8">
-                    <i class="pi pi-download mr-3 mb-5" style="font-size: 1.5rem"></i>
-                    Chưa đồng bộ
-                  </li>
-                  <li class="flex flex-row mr-8">
-                    <i class="pi pi-user mr-3 mb-3" style="font-size: 1.5rem"></i>
-                    Mã bệnh nhân
-                  </li>
-                  <div class="flex flex-row m-3 ml-5 mb-5" (click)="stopPropagation($event)">
-                    <input type="text" pInputText class="mr-3" (click)="stopPropagation($event)" />
-                    <button pButton pRipple label="Đồng bộ hồ sơ HIS" class="p-button-primary" (click)="syncProfile()"></button>
+      <p-dialog header="Danh sách hồ sơ" [(visible)]="isVisibleProfileDialog" [modal]="true" class="p-fluid" [style]="{ width: '70rem' }">
+        <ng-template pTemplate="content">
+          <div class="panel-body" *ngFor="let customer of customers" (click)="showCustomerCard(customer)">
+            <h4 class="mt-3">
+              <i class="pi pi-id-card mr-3 mb-3 mt-3" style="font-size: 1.5rem"></i>
+              <span>
+                {{ customer.name }}
+              </span>
+            </h4>
+            <p-card *ngIf="selectedCustomer === customer && showCard">
+              <div class="flex flex-row">
+                <p-card header="Thông tin cá nhân" [style]="{ width: '100%' }">
+                  <div class="flex flex-row">
+                    <ul [style]="{ width: '100%' }">
+                      <li class="flex flex-row mr-1">
+                        <i class="pi pi-id-card -ml-6 mr-2 mb-5" style="font-size: 1rem"></i>
+                        {{ customer.transformedDob }}
+                      </li>
+                      <li class="flex flex-row mr-1">
+                        <i class="pi pi-phone -ml-6 mr-2 mb-5" style="font-size: 1rem"></i>
+                        {{ customer.phoneNo }}
+                      </li>
+                      <li class="flex flex-row mr-1">
+                        <i class="pi pi-user-edit -ml-6 mr-2 mb-5" style="font-size: 1rem"> </i>
+                        {{ customer.job }}
+                      </li>
+                      <li class="flex flex-row mr-1">
+                        <i class="pi pi-envelope -ml-6 mr-2 mb-5" style="font-size: 1rem"></i>
+                      </li>
+                      <p class="flex flex-row">
+                        <i class="pi pi-map -ml-6 mr-1" style="font-size: 1rem"></i>
+                        {{ customer.address }}
+                        P108, N3 ,Khu tap the Khuong Thuong, Dong Da,
+                      </p>
+                    </ul>
+                    <ul [style]="{ width: '100%' }">
+                      <li class="flex flex-row">
+                        <i class="pi pi-info ml-3 mr-2 mb-5" style="font-size: 1rem"></i>
+                        {{ customer.genderName }}
+                      </li>
+                      <li class="flex flex-row">
+                        <i class="pi pi-users ml-3 mr-2 mb-5" style="font-size: 1rem"></i>
+                      </li>
+                      <li class="flex flex-row">
+                        <i class="pi pi-id-card ml-3 mr-2 mb-3" style="font-size: 1rem"></i>
+                        {{ 26382632136928 }}
+                      </li>
+                    </ul>
                   </div>
-                  <li class="flex flex-row mr-8">
-                    <i class="pi pi-calendar-plus mr-3 mb-5" style="font-size: 1.5rem"></i>
-                    Danh sách ca khám
-                  </li>
-                </div>
-              </p-card>
-            </div>
-          </p-card>
-          <hr />
-        </div>
-      </p-panel>
+                </p-card>
+                <p-card header="Thông tin y tế" [style]="{ width: '100%' }">
+                  <div>
+                    <li class="flex flex-row mr-8">
+                      <i class="pi pi-download mr-3 mb-5" style="font-size: 1rem"></i>
+                      Chưa đồng bộ
+                    </li>
+                    <li class="flex flex-row mr-8">
+                      <i class="pi pi-user mr-3 mb-3" style="font-size: 1rem"></i>
+                      Mã bệnh nhân
+                    </li>
+                    <div class="flex flex-row mb-5" (click)="stopPropagation($event)">
+                      <input type="text" pInputText class="mr-3" value="{{ customer.patientCode }}" (click)="stopPropagation($event)" />
+                      <button pButton pRipple label="{{ syncLabel }}" class="p-button-warning" [class.p-button-danger]="synced" style="color: #fff" (click)="syncProfile()"></button>
+                    </div>
+                    <li class="flex flex-row mr-8">
+                      <i class="pi pi-calendar-plus mr-3 mb-3" style="font-size: 1rem"></i>
+                      <a routerLink="/customers">Danh sách ca khám (0)</a>
+                    </li>
+                  </div>
+                </p-card>
+              </div>
+            </p-card>
+            <hr />
+          </div>
+        </ng-template>
+      </p-dialog>
+      <p-dialog header="Danh sách hồ sơ từ HIS" [(visible)]="isVisibleHisProfileDialog" [style]="{ width: '70rem' }" [modal]="true" class="p-fluid">
+        <h4 class="mt-3">
+          <i class="pi pi-user mt-3 mr-3 mb-3" style="font-size: 1.5rem"> </i>
+          <span [style]="{ color: '#000' }">Mã bệnh nhân:</span>
+        </h4>
+
+        <p-table [value]="customers" [tableStyle]="{ 'min-width': '60rem', border: '0' }">
+          <ng-template pTemplate="header">
+            <tr>
+              <th [style]="{ width: '40rem', color: '#000' }">Thông tin bệnh nhân</th>
+              <th [style]="{ width: '15rem', color: '#000' }">Mã BN</th>
+              <th [style]="{ width: '15rem', color: '#000' }">Số điện thoại</th>
+              <th [style]="{ width: '20rem', color: '#000' }">Ca khám gần nhất</th>
+              <th [style]="{ width: '10rem', color: '#000' }"></th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-customer>
+            <tr>
+              <td>{{ customer.name }}</td>
+              <td>{{ 26382632136928 }}</td>
+              <td>{{ customer.phoneNo }}</td>
+              <td>{{ customer.registerDate }}</td>
+              <td>
+                <button pButton pRipple label="Chọn" class="p-button-info" (click)="updateProfile()"></button>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </p-dialog>
     </div>
   </div>
 </div>

@@ -11,6 +11,21 @@ import { DatePipe } from '@angular/common';
   styleUrls: ['./customers.component.scss']
 })
 export class CustomersComponent implements OnInit {
+  _isVisibleProfileDialog = false;
+  set isVisibleProfileDialog(value:boolean){
+    this._isVisibleProfileDialog = value;
+  }
+  get isVisibleProfileDialog(){
+    return this._isVisibleProfileDialog;
+  }
+
+  _isVisibleHisProfileDialog = false;
+  set isVisibleHisProfileDialog(value:boolean){
+    this._isVisibleHisProfileDialog = value;
+  }
+  get isVisibleHisProfileDialog(){
+    return this._isVisibleHisProfileDialog;
+  }
 
   cols: any[] = [];
   customers:any[] = [];
@@ -24,8 +39,8 @@ export class CustomersComponent implements OnInit {
   showProfile = false;
   selectedProfile:any;
   selectedCustomer:any;
-  isVisibleProfile = false;
-  isVisibleProfileDialog = false;
+  synced = false;
+  syncLabel = 'Đồng bộ hồ sơ HIS';
 
   constructor(
     private notification: NotificationService,
@@ -33,78 +48,76 @@ export class CustomersComponent implements OnInit {
   ) {
 
     this.breadcrumbItem = [
-        { label: 'Quản lý khách hàng' },
-        { label: 'Danh sách khách hàng' },
+      { label: 'Quản lý khách hàng' },
+      { label: 'Danh sách khách hàng' },
     ];
 
     this.home = {
-        icon: 'pi pi-home',
-        routerLink: '/admin/admin-dashboard',
+      icon: 'pi pi-home',
+      routerLink: '/admin/admin-dashboard',
     };
    }
-
   ngOnInit(): void {
     this.cols = [
-        {field: 'id', header:'Id', width: '10rem'},
-        {field: 'name', header: 'Tên khách hàng', isOpSort: true, iconSort : 0, width: '20rem'},
-        {field: 'phoneNo', header: 'SĐT', isOpSort: false, iconSort : 0, width: '10rem'},
-        {field: 'transformedDob', header: 'Ngày sinh', width: '10rem'},
-        {field: 'address', header:'Địa chỉ', width: '25rem'},
-        {field: 'hisCode', header: 'Mã Code', isOpSort: true, iconSort : 0, width: '10rem'},
-        {field: 'status', header: 'Trạng thái', isOpSort: true, iconSort : 0, width: '10rem'},
-        {field: 'registerDate', header: 'Ngày đăng kí', isOpSort: false, iconSort : 0, width: '10rem'},
+      {field: 'name', header: 'Tên khách hàng', isOpSort: true, iconSort : 0, width: '15rem'},
+      {field: 'phoneNo', header: 'SĐT', isOpSort: false, iconSort : 0, width: '10rem'},
+      {field: 'transformedDob', header: 'Ngày sinh', width: '10rem'},
+      {field: 'address', header:'Địa chỉ', width: '25rem'},
+      {field: 'patientCode', header: 'Mã BN', isOpSort: true, iconSort : 0, width: '10rem'},
+      {field: 'status', header: 'Trạng thái', isOpSort: true, iconSort : 0, width: '10rem'},
+      {field: 'registerDate', header: 'Ngày đăng kí', isOpSort: false, iconSort : 0, width: '10rem'},
     ]
     this.getAll();
   }
-
   getAll() {
     this.loading = true;
     this.customerService.getAll().subscribe ({
       next: (res) => {
         if (res && res.customers) {
-            this.customers = res.customers.map((customer: any) => ({
-            ...customer,
-            accountPoint: customer.account.point,
-            pendingAccountPoint: customer.pendingAccount.point,
-            genderName: customer.gender === 0 ? 'Nữ' : 'Nam',
-            vip: customer.type === 2 ? 'V' : '',
-            transformedDob: new DatePipe('en-US').transform(customer.dob, 'dd/MM/yyyy'),
-            registerDate: new DatePipe('en-US').transform(customer.dateCreated, 'dd/MM/yyyy')
+          this.customers = res.customers.map((customer: any) => ({
+          ...customer,
+          genderName: customer.gender === 0 ? 'Nữ' : 'Nam',
+          transformedDob: new DatePipe('en-US').transform(customer.dob, 'dd/MM/yyyy'),
+          registerDate: new DatePipe('en-US').transform(customer.dateCreated, 'dd/MM/yyyy')
           }));
-        //   console.log(this.customers);
         }else{
-            if(res.errors && res.errors.length > 0){
-                res.errors.forEach((el: any) => {
-                    this.notification.error(el.errorMessage)
-                })
-            }else{
-                this.notification.error('Lấy dữ liệu không thành công')
-            }
+          if(res.errors && res.errors.length > 0){
+            res.errors.forEach((el: any) => {
+              this.notification.error(el.errorMessage)
+            })
+          }else{
+            this.notification.error('Lấy dữ liệu không thành công')
+          }
         }
       }
     }) .add(() => {
       this.loading = false
     });
   }
-
+  selectItem(customer: any){
+    this.selectedCustomer = customer;
+    this.onShowProfile(customer);
+  }
   onShowProfile(rowData:any){
     console.log('clicked');
     this.selectedProfile = rowData;
-    this.showProfile = !this.showProfile;
-    // this.isVisibleProfileDialog = true;
+    this.isVisibleProfileDialog = true;
 }
-
   showCustomerCard(customer:any){
     this.selectedCustomer = customer;
     this.showCard = !this.showCard;
   }
-
   syncProfile(){
-    this.isVisibleProfile = true;
+    this.isVisibleProfileDialog = false;
+    this.isVisibleHisProfileDialog = true;
+    this.synced = !this.synced;
+    this.syncLabel = this.synced ? "Bỏ đồng bộ HIS" : "Đồng bộ hồ sơ HIS";
   }
-
+  updateProfile(){
+    this.isVisibleHisProfileDialog = false;
+    this.isVisibleProfileDialog = true;
+  }
   stopPropagation(event: Event) {
     event.stopPropagation();
   }
-
 }
