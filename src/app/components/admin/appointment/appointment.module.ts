@@ -10,6 +10,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { CalendarModule } from 'primeng/calendar';
 import { DropdownModule } from 'primeng/dropdown';
 import { ScrollPanelModule } from 'primeng/scrollpanel';
+import { PipeModule } from 'src/app/shared/pipes/pipe.module';
 
 
 @NgModule({
@@ -25,7 +26,8 @@ import { ScrollPanelModule } from 'primeng/scrollpanel';
     InputTextModule,
     CalendarModule,
     DropdownModule,
-    ScrollPanelModule
+    ScrollPanelModule,
+    PipeModule,
   ]
 })
 export class AppointmentModule { }
