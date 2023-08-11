@@ -14,7 +14,6 @@ import moment from 'moment';
 export class AppointmentComponent implements OnInit {
     breadcrumbItem: MenuItem[];
     home: MenuItem;
-
     loading = false;
     listItems: any = [];
     lstDepartments: any = [];
@@ -31,13 +30,11 @@ export class AppointmentComponent implements OnInit {
     visitTimeStringDate: any;
     APPOINTMENT_STATUS = Constants.APPOINTMENT_STATUS;
     APPOINTMENT_PRIORITY = Constants.APPOINTMENT_PRIORITY;
-
     searchData = {
         skip: 0,
         take: 40,
         status: null,
     }
-
     searchForm = {
         appointmentDate: new Date(),
         dateCreated: new Date(),
@@ -55,7 +52,10 @@ export class AppointmentComponent implements OnInit {
         private fb: FormBuilder,
     ) {
         this.statusForm = this.fb.group({
+            id: [null],
             status: [null],
+            node: [null],
+            priority: [null]
         })
         this.breadcrumbItem = [
             { label: 'Quản lý lịch hẹn' },
@@ -85,7 +85,6 @@ export class AppointmentComponent implements OnInit {
                 if (res.data != undefined) {
                     this.listItems = res.data;
                     this.totalItemCount = res.total;
-                    console.log("listItems", this.listItems);
                 } else {
                     if (res.errors && res.errors.length > 0) {
                         res.errors.forEach((el: any) => {
@@ -124,12 +123,14 @@ export class AppointmentComponent implements OnInit {
         this.statusForm.patchValue({
             id: item.id,
             status: item.status,
+            node: item.node,
+            priority: item.priority,
         })
     }
 
     updateStatus() {
         if (this.statusForm.valid) {
-            this.appointmentAPI.putStatus(this.statusForm.value, this.selectedItem.id).subscribe({
+            this.appointmentAPI.putStatus(this.selectedItem.id, this.statusForm.value).subscribe({
                 next: (res) => {
                     if (res.ret && res.ret[0].code == 200) {
                         this.notification.success('Cập nhật trạng thái thành công', '');
@@ -143,7 +144,6 @@ export class AppointmentComponent implements OnInit {
                             this.notification.error('Cập nhật trạng thái không thành công! Error: ' + res.ret[0].message);
                         } else {
                             this.notification.error('Cập nhật trạng thái không thành công! Error: unknown');
-                            console.error(res);
                         }
                     }
                 }
@@ -177,18 +177,12 @@ export class AppointmentComponent implements OnInit {
         this.search();
     }
 
-    selectItem(item: any) {
-        this.selectedItem = item;
-        console.log(this.selectedItem);
-    }
-
     dbClickUpdate(data: any) {
         this.isVisibleAppointmentDlg = true;
-        this.dbSelected = data;
-        this.appointmentDateStr = moment(this.dbSelected.appointmentDate).toDate();
-        this.dobStringDate = moment(this.dbSelected.dob).toDate();
-        this.visitTimeStringDate = moment(this.dbSelected.visitTime).toDate();
-        console.log('dbSelected', this.dbSelected);
+        this.selectedItem = data;
+        this.appointmentDateStr = moment(this.selectedItem.appointmentDate).toDate();
+        this.dobStringDate = moment(this.selectedItem.dob).toDate();
+        this.visitTimeStringDate = moment(this.selectedItem.visitTime).toDate();
     }
 
     convertStringToDate(dateString: any) {

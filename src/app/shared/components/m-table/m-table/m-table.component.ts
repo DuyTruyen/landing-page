@@ -29,7 +29,6 @@ export class MTableComponent implements OnInit, AfterViewInit {
   @Output() onEditItem = new EventEmitter<any>();
   @Output() onDeleteItem = new EventEmitter<any>();
   @Output() selectRow = new EventEmitter<any>();
-  @Output() doubleClickRow = new EventEmitter<any>();
   @Output() onPageChange = new EventEmitter<any>();
   @ViewChild("dt", {read: ElementRef}) dataTable!: ElementRef;
   constructor() {}

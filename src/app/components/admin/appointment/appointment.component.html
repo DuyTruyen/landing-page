@@ -34,25 +34,33 @@
           <button pButton [style]="{ height: '37px' }" pRipple icon="pi pi-times" class="p-button-secondary p-button-sm" (click)="onClearSearch()"></button>
         </div>
       </div>
-      <m-table [cols]="cols" [customBodyTemplate]="customBodyTemplate" [customHeaderTemplate]="customHeaderTemplate" [calcHeight]="264" class="table-admin" [dataKey]="'id'" [loading]="loading" [items]="listItems" (onPageChange)="onPageChange($event)" [totalRecords]="totalItemCount" (selectRow)="selectItem($event)" (doubleClickRow)="dbClickUpdate($event)"></m-table>
-      <ng-template #customHeaderTemplate>
-        <th [style.minWidth]="col['width']" *ngFor="let col of cols; let i = index">
-          {{ col['header'] }}
-        </th>
-        <th [style.minWidth]="'12rem'">Trạng thái</th>
-        <th [style.minWidth]="'14rem'">Ngày hẹn khám</th>
-        <th [style.minWidth]="'14rem'">Ngày đặt lịch</th>
-        <th [style.minWidth]="'14rem'">Khung giờ</th>
-      </ng-template>
-      <ng-template #customBodyTemplate let-rowData>
-        <td [style.minWidth]="col.width || '12rem'" *ngFor="let col of cols">{{ rowData[col['field']] }}</td>
-        <td [style.minWidth]="'12rem'">{{ rowData.status | statusToText }}</td>
-        <td [style.minWidth]="'14rem'">{{ rowData.appointmentDate | date : 'hh:mm:ss dd/MM/yyyy' }}</td>
-        <td [style.minWidth]="'14rem'">{{ rowData.dob | date : 'hh:mm:ss dd/MM/yyyy' }}</td>
-        <td [style.minWidth]="'14rem'">{{ rowData.visitTime | date : 'hh:mm:ss dd/MM/yyyy' }}</td>
-      </ng-template>
+      <p-table styleClass="p-datatable-striped p-datatable-sm p-datatable-gridlines table-admin" [dataKey]="'id'" selectionMode="single" [(selection)]="selectedItem" [paginator]="true" [rows]="40" [rowsPerPageOptions]="[40, 60, 80]" [scrollable]="true" [value]="listItems" [totalRecords]="totalItemCount" (onPageChange)="onPageChange($event)" [loading]="loading">
+        <ng-template pTemplate="header">
+          <tr>
+            <th [style.minWidth]="'2rem'" class="text-center">STT</th>
+            <th [style.minWidth]="'15rem'">Họ tên</th>
+            <th [style.minWidth]="'15rem'">SDT</th>
+            <th [style.minWidth]="'15rem'">Chuyên khoa</th>
+            <th [style.minWidth]="'15rem'">Trạng thái</th>
+            <th [style.minWidth]="'15rem'">Ngày hẹn khám</th>
+            <th [style.minWidth]="'15rem'">Ngày đặt lịch</th>
+            <th [style.minWidth]="'13rem'">Khung giờ</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-rowData let-rowIndex="rowIndex">
+          <tr (dblclick)="dbClickUpdate(rowData)">
+            <td [style.minWidth]="'2rem'" class="text-center">{{ rowIndex + 1 }}</td>
+            <td [style.minWidth]="'15rem'">{{ rowData['name'] }}</td>
+            <td [style.minWidth]="'15rem'">{{ rowData['phoneNo'] }}</td>
+            <td [style.minWidth]="'15rem'">{{ rowData['departmentName'] }}</td>
+            <td [style.minWidth]="'15rem'">{{ rowData['status'] | statusToText }}</td>
+            <td [style.minWidth]="'15rem'">{{ rowData['appointmentDate'] | date : 'hh:mm:ss dd/MM/yyyy' }}</td>
+            <td [style.minWidth]="'15rem'">{{ rowData['dob'] | date : 'hh:mm:ss dd/MM/yyyy' }}</td>
+            <td [style.minWidth]="'13rem'">{{ rowData['visitTime'] | date : 'hh:mm:ss dd/MM/yyyy' }}</td>
+          </tr>
+        </ng-template>
+      </p-table>
     </div>
-
     <p-dialog [(visible)]="isVisibleAppointmentDlg" [style]="{ width: '65rem' }" [modal]="true" [header]="header" class="p-fluid">
       <ng-template pTemplate="content">
         <div class="grid">
@@ -60,7 +68,7 @@
             <div class="formgrid grid">
               <div class="field col">
                 <label><strong>Họ tên</strong></label>
-                <input type="text" pInputText placeholder="Tên" [(ngModel)]="dbSelected.name" [disabled]="true" />
+                <input type="text" pInputText placeholder="Tên" [(ngModel)]="selectedItem.name" [disabled]="true" />
               </div>
               <div class="field col">
                 <label><strong>Giới tính</strong></label>
@@ -70,17 +78,17 @@
             <div class="formgrid grid">
               <div class="field col">
                 <label><strong>Địa chỉ</strong></label>
-                <input type="text" pInputText placeholder="Địa chỉ" [(ngModel)]="dbSelected.address" [disabled]="true" />
+                <input type="text" pInputText placeholder="Địa chỉ" [(ngModel)]="selectedItem.address" [disabled]="true" />
               </div>
               <div class="field col">
                 <label><strong>Số điện thoại</strong></label>
-                <input type="text" pInputText placeholder="" [(ngModel)]="dbSelected.phoneNo" [disabled]="true" />
+                <input type="text" pInputText placeholder="" [(ngModel)]="selectedItem.phoneNo" [disabled]="true" />
               </div>
             </div>
             <div class="formgrid grid">
               <div class="field col">
                 <label><strong>Chuyên khoa</strong></label>
-                <input type="text" pInputText placeholder="" [(ngModel)]="dbSelected.departmentName" [disabled]="true" />
+                <input type="text" pInputText placeholder="" [(ngModel)]="selectedItem.departmentName" [disabled]="true" />
               </div>
               <div class="field col">
                 <label><strong>Ngày hẹn khám</strong></label>
@@ -100,7 +108,7 @@
             <form [formGroup]="statusForm">
               <div class="formgrid grid">
                 <div class="field col">
-                  <textarea pKeyFilter="int" rows="5" cols="30" class="w-full" pInputTextarea placeholder="Ghi chú"></textarea>
+                  <textarea pKeyFilter="int" rows="5" cols="30" class="w-full" pInputTextarea placeholder="Ghi chú" formControlName="node"></textarea>
                 </div>
               </div>
               <div class="formgrid grid">
@@ -115,21 +123,29 @@
               <div class="formgrid grid">
                 <div class="field col">
                   <label
-                    ><strong>Trạng thái: </strong><span class="text-red-500">{{ dbSelected.status | statusToText }}</span></label
+                    ><strong>Trạng thái: </strong><span class="text-red-500">{{ selectedItem.status | statusToText }}</span></label
                   >
                   <p-dropdown placeholder="Trạng thái" [options]="APPOINTMENT_STATUS" optionLabel="label" optionValue="value" appendTo="body" [style]="{ height: '40px', width: '250px' }" class="" formControlName="status"></p-dropdown>
+                </div>
+              </div>
+              <div class="formgrid grid">
+                <div class="field col">
+                  <label
+                    ><strong>Trạng thái: </strong><span class="text-red-500">{{ selectedItem.status | statusToText }}</span></label
+                  >
+                  <p-dropdown placeholder="Trạng thái" [options]="APPOINTMENT_PRIORITY" optionLabel="label" optionValue="value" appendTo="body" [style]="{ height: '40px', width: '250px' }" class="" formControlName="priority"></p-dropdown>
                 </div>
               </div>
             </form>
           </div>
         </div>
-        <div class="car">
-          <h4><strong>Lịch sử chỉnh sửa</strong></h4>
-          <p-scrollPanel [style]="{ height: '150px', width: '100%' }">
-            <!-- <h5>sadas</h5>
+        <!-- <div class="car"> -->
+        <!-- <h4><strong>Lịch sử chỉnh sửa</strong></h4> -->
+        <!-- <p-scrollPanel [style]="{ height: '150px', width: '100%' }"> -->
+        <!-- <h5>sadas</h5>
             <span>ssdasdsa</span> -->
-          </p-scrollPanel>
-        </div>
+        <!-- </p-scrollPanel> -->
+        <!-- </div> -->
       </ng-template>
 
       <ng-template pTemplate="footer">
