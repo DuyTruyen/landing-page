@@ -21,7 +21,7 @@ export class AppointmentComponent implements OnInit {
     cols: any[] = [];
     totalItemCount = 0;
     selectedItem: any;
-    dbSelected: any
+    selectedGender: any;
     isVisibleAppointmentDlg = false;
     header = 'Xử lý thông tin hẹn khám';
     statusForm: FormGroup;
@@ -30,6 +30,7 @@ export class AppointmentComponent implements OnInit {
     visitTimeStringDate: any;
     APPOINTMENT_STATUS = Constants.APPOINTMENT_STATUS;
     APPOINTMENT_PRIORITY = Constants.APPOINTMENT_PRIORITY;
+    GENDERS = Constants.GENDERS_PAPSMEAR;
     searchData = {
         skip: 0,
         take: 40,
@@ -183,6 +184,10 @@ export class AppointmentComponent implements OnInit {
         this.appointmentDateStr = moment(this.selectedItem.appointmentDate).toDate();
         this.dobStringDate = moment(this.selectedItem.dob).toDate();
         this.visitTimeStringDate = moment(this.selectedItem.visitTime).toDate();
+        const selectedGender = this.GENDERS.find(g => g.value == this.selectedItem.gender);
+        if(selectedGender) {
+            this.selectedGender = selectedGender;
+        }
     }
 
     convertStringToDate(dateString: any) {

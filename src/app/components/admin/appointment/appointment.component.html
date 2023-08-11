@@ -72,7 +72,7 @@
               </div>
               <div class="field col">
                 <label><strong>Giới tính</strong></label>
-                <input type="text" pInputText placeholder="Giới tính" [disabled]="true" />
+                <p-dropdown placeholder="Giới tính" [options]="GENDERS" [(ngModel)]="selectedGender" [disabled]="true" optionLabel="label"></p-dropdown>
               </div>
             </div>
             <div class="formgrid grid">
@@ -131,7 +131,7 @@
               <div class="formgrid grid">
                 <div class="field col">
                   <label
-                    ><strong>Trạng thái: </strong><span class="text-red-500">{{ selectedItem.status | statusToText }}</span></label
+                    ><strong>Trạng thái: </strong><span class="text-red-500">{{ selectedItem.priority | priorityToText }}</span></label
                   >
                   <p-dropdown placeholder="Trạng thái" [options]="APPOINTMENT_PRIORITY" optionLabel="label" optionValue="value" appendTo="body" [style]="{ height: '40px', width: '250px' }" class="" formControlName="priority"></p-dropdown>
                 </div>
@@ -147,7 +147,6 @@
         <!-- </p-scrollPanel> -->
         <!-- </div> -->
       </ng-template>
-
       <ng-template pTemplate="footer">
         <button pButton pRipple label="Đóng" icon="pi pi-times" class="p-button-text text-red-600" (click)="isVisibleAppointmentDlg = false"></button>
       </ng-template>
