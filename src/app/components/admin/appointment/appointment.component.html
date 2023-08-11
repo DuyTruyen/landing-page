@@ -34,7 +34,7 @@
           <button pButton [style]="{ height: '37px' }" pRipple icon="pi pi-times" class="p-button-secondary p-button-sm" (click)="onClearSearch()"></button>
         </div>
       </div>
-      <p-table styleClass="p-datatable-striped p-datatable-sm p-datatable-gridlines table-admin" [dataKey]="'id'" selectionMode="single" [(selection)]="selectedItem" [paginator]="true" [rows]="40" [rowsPerPageOptions]="[40, 60, 80]" [scrollable]="true" [value]="listItems" [totalRecords]="totalItemCount" (onPageChange)="onPageChange($event)" [loading]="loading">
+      <p-table styleClass="p-datatable-striped p-datatable-sm p-datatable-gridlines table-admin" [scrollable]="true" scrollHeight="650px" [dataKey]="'id'" selectionMode="single" [(selection)]="selectedItem" [paginator]="true" [rows]="40" [rowsPerPageOptions]="[40, 60, 80]" [scrollable]="true" [value]="listItems" [totalRecords]="totalItemCount" (onPageChange)="onPageChange($event)" [loading]="loading">
         <ng-template pTemplate="header">
           <tr>
             <th [style.minWidth]="'2rem'" class="text-center">STT</th>
