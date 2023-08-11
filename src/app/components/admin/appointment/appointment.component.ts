@@ -30,7 +30,7 @@ export class AppointmentComponent implements OnInit {
     visitTimeStringDate: any;
     APPOINTMENT_STATUS = Constants.APPOINTMENT_STATUS;
     APPOINTMENT_PRIORITY = Constants.APPOINTMENT_PRIORITY;
-    GENDERS = Constants.GENDERS_PAPSMEAR;
+    GENDERS = Constants.GENDERS;
     searchData = {
         skip: 0,
         take: 40,
