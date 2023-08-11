@@ -30,7 +30,7 @@ export class AuthGuard implements CanActivate, OnDestroy {
       route: ActivatedRouteSnapshot,
       state: RouterStateSnapshot): Promise<boolean> {
     if (route.data['role']) {
-      if (this.currentUser.menus?.includes(route.data['role'])) {
+      if (this.currentUser.roles?.includes(route.data['role'])) {
         return true;
       }
     } else if (this.currentUser.id) {

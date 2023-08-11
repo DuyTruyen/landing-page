@@ -62,7 +62,7 @@ export class ListUsersComponent implements OnInit {
   confirmLabelDisable = "";
   confirmLabelEnable = "";
   isVisibleListGroups = false;
-
+  currentUser:any = {};
   _isVisibleAddAccountDialog = false;
   set isVisibleAddAccountDialog(value: boolean) {
     this._isVisibleAddAccountDialog = value;
@@ -87,9 +87,8 @@ export class ListUsersComponent implements OnInit {
       email: [null, [Validators.required, Validators.email]],
       phoneNo: [null],
       username: [null, [Validators.required, Validators.pattern(/^[A-Za-z0-9]+$/)]],
-      password: [null, [Validators.required, Validators.minLength(6)]],
-      repass: [null, [Validators.required, this.confirmationValidator]],
-      hisCode: [null],
+      password: [null, [Validators.required, Validators.minLength(8)]],
+      repeatPassword: [null, [Validators.required, this.confirmationValidator]],
     });
     this.usersFormEdit = this.fb.group({
       id: [null],
@@ -97,10 +96,10 @@ export class ListUsersComponent implements OnInit {
       email: [null, [Validators.required, Validators.email]],
       phoneNo: [null],
       username: [null, [Validators.required]],
-      password: [null, [Validators.required]],
-      disable: [null],
-      enable: [null],
-      hisCode: [null],
+    //   password: [null, [Validators.required]],
+    //   disable: [null],
+    //   enable: [null],
+    //   hisCode: [null],
     });
     this.accountForm = this.fb.group({
       username: [null, [Validators.required, Validators.pattern(/^[A-Za-z0-9]+$/)]],
@@ -145,29 +144,30 @@ export class ListUsersComponent implements OnInit {
       { field: 'fullname', header: 'Họ và tên', isOpSort: true, iconSort : 0, width: '15rem' },
       { field: 'username', header: 'Tài khoản', isOpSort: true, iconSort : 0, width: '25rem' },
       { field: 'phoneNo', header: 'SĐT', isOpSort: true, iconSort : 0, width: '15rem' },
-      { field: 'email', header: 'Email', isOpSort: true, iconSort : 0, width: '50rem' },
+      { field: 'email', header: 'Email', isOpSort: true, iconSort : 0, width: '25rem' },
     ];
     this.search();
   }
 
   search() {
     this.loading = true;
-    this.userService.getUsers(this.searchData).subscribe({
+    this.userService.getAll().subscribe({
       next: (res) => {
-        if (res.isValid) {
-          this.users = res.jsonData.data;
-          console.log(this.users);
-          this.users.forEach((u: any) => (u.enable = !u.disable));
-          this.total = res.jsonData.total;
-        }else{
-            if(res.errors && res.errors.length > 0){
-                res.errors.forEach((el: any) => {
-                    this.notification.error(el.errorMessage)
-                })
-            }else{
-                this.notification.error('Tìm kiếm không thành công')
-            }
-        }
+        this.users = res
+        // if (res.isValid) {
+        //   this.users = res
+        //   console.log(this.users);
+        //   this.users.forEach((u: any) => (u.enable = !u.disable));
+        //   this.total = res.jsonData.total;
+        // }else{
+        //     if(res.errors && res.errors.length > 0){
+        //         res.errors.forEach((el: any) => {
+        //             this.notification.error(el.errorMessage)
+        //         })
+        //     }else{
+        //         this.notification.error('Tìm kiếm không thành công')
+        //     }
+        // }
       },
     })
       .add(() => {
@@ -215,14 +215,15 @@ export class ListUsersComponent implements OnInit {
   }
 
   onEditUser(item: any) {
+    this.currentUser = item;
     this.usersFormEdit.patchValue({
       id: item.id,
       fullname: item.fullname,
       email: item.email,
       phoneNo: item.phoneNo,
       username: item.username,
-      password: '********',
-      hisCode: item.hisCode
+    //   password: '********',
+    //   hisCode: item.hisCode
     });
     this.isVisibleUserEdit = true;
     this.isEditUser = true;
@@ -276,22 +277,26 @@ export class ListUsersComponent implements OnInit {
       password: formValue.password,
       email: formValue.email,
       phoneNo: formValue.phoneNo,
+      repeatPassword: formValue.repeatPassword,
     };
-    this.userService.registerUser(payload).subscribe({
+    this.userService.create(payload).subscribe({
       next: (res) => {
-        if (res.isValid) {
           this.notification.success('Thêm mới user thành công', '');
           this.isVisibleUserDialog = false;
           this.search();
-        }else{
-            if(res.errors && res.errors.length > 0){
-                res.errors.forEach((el: any) => {
-                    this.notification.error(el.errorMessage)
-                })
-            }else{
-                this.notification.error('Thêm mới user không thành công')
-            }
-        }
+        // if (res.isValid) {
+        // }else{
+        //     if(res.errors && res.errors.length > 0){
+        //         res.errors.forEach((el: any) => {
+        //             this.notification.error(el.errorMessage)
+        //         })
+        //     }else{
+        //         this.notification.error('Thêm mới user không thành công')
+        //     }
+        // }
+      },
+      error: ()=>{
+        this.notification.error('Thêm mới user không thành công')
       }
     });
   }
@@ -328,8 +333,9 @@ export class ListUsersComponent implements OnInit {
       email: formEditValue.email,
       phoneNo: formEditValue.phoneNo,
       username: formEditValue.username,
-      password: formEditValue.password,
-      hisCode: formEditValue.hisCode,
+      role : this.currentUser.userRoles?.map((el:any)=>el.roleId),
+    //   password: formEditValue.password,
+    //   hisCode: formEditValue.hisCode,
     };
     this.userService.update(formEditValue.id, payloadEdit).subscribe({
       next: (res) => {
@@ -447,6 +453,7 @@ export class ListUsersComponent implements OnInit {
 
     // Luật sắp xếp
     customSort(col: any) {
+        return
         var dataField = col.field;
         // console.log(dataField);
         dataField = dataField.charAt(0).toUpperCase() + dataField.slice(1);

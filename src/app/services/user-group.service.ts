@@ -11,14 +11,13 @@ export class UserGroupService extends BaseService {
   }
   removeUser(userId: string, groupId: string) {
     let payload = { userId, groupId };
-    return this.post(`${this.url}/RemoveUser`, payload);
+    return this.post(`${this.url}/RemoveUserFromGroup`, payload);
   }
-  addUser(userId: string, groupId: string) {
-    let payload = { userId, groupId };
-    return this.post(`${this.url}/AddUser`, payload);
+  addUser(payload:any) {
+    return this.post(`${this.url}/AddUser2Group`, payload);
   }
-  updateGroupRoles(groupId: string, roleIds: string[]) {
-    return this.post(`${this.url}/Role/${groupId}`, { roleIds });
+  updateGroupRoles(payload:any) {
+    return this.post(`${this.url}/UpdateGroupRoles`, payload);
   }
   getListGroupOfUser(userId: string) {
     return this.get(`${this.url}/UserGroup/${userId}`);

@@ -40,7 +40,8 @@ export class AppConfigService {
                 .subscribe({
                     next: (data: any) => {
                         this.setConfig(data);
-                        this.loadOtherConfig(resolve);
+                        resolve(true);
+                        // this.loadOtherConfig(resolve);
                     },
                     error: (error) => {
                         console.log('error', error);

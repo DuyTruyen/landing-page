@@ -50,7 +50,7 @@
                 </td>
             </ng-template>
         </div>
-        <p-dialog [(visible)]="isVisibleNewsDlg" [style]="{width: '700px', height:'1000px'}" [header]="newsDialogHeader" [modal]="true"
+        <p-dialog [(visible)]="isVisibleNewsDlg" [style]="{width: '800px', height:'90%'}" [header]="newsDialogHeader" [modal]="true"
         class="p-fluid">
             <ng-template pTemplate="content">
                 <form [formGroup]="newsForm">
@@ -61,26 +61,29 @@
                             *Tiêu đề không được để trống
                         </div>
                     </div>
-                    <div class="field">
-                        <label for="status">Đăng bài</label>
-                        <td class="text-center flex justify-content-left" [style.minWidth]="'5rem'">
-                            <p-inputSwitch formControlName="status"></p-inputSwitch> <span style="margin-left: 5px;">Có</span> 
-                        </td>
-                    </div>
-                    <div class="field">
-                        <label for="image">Ảnh bài viết</label>
-                        <div class="grid" style="text-align:center">
-                            <div [innerHtml]='msg' *ngIf="msg" style="color: red;"></div>
-                            <div class="col">
+                    <div class="grid">
+                        <div class="col-6">
+                            <div class="field">
+                                <label for="status">Đăng bài</label>
+                                <div class="text-center flex justify-content-left" [style.minWidth]="'5rem'">
+                                    <p-inputSwitch formControlName="status"></p-inputSwitch> <span style="margin-left: 5px;">Có</span> 
+                                </div>
+                            </div>
+                            <div class="field">
+                                <label for="image">Ảnh bài viết</label>
+                                <div [innerHtml]='msg' *ngIf="msg" style="color: red;"></div>
                                 <input type="file" name="uploadfile" (change)="selectFile($event)">
                             </div>
-                            <div class="col"><img [src]="url" *ngIf="url" style="height: 150px; width: 220px;"></div>
+                        </div>
+                        <div class="col-6 text-center flex justify-content-left">
+                            <img [src]="url" *ngIf="url" style="max-height: 150px; max-width: 240px; margin: 0 auto;">
                         </div>
                     </div>
+                    
                     <div class="field">
                         <label for="summary">Nội dung giới thiệu (nhỏ hơn 120 từ) </label>
                         <div>
-                            <textarea rows="5" cols="86" pInputTextarea formControlName="summary"></textarea>
+                            <textarea rows="5" cols="100" pInputTextarea formControlName="summary" class="p-inputtext"></textarea>
                         </div>
                     </div>
                     <div  class="field">
@@ -92,8 +95,7 @@
             </ng-template>
 
             <ng-template pTemplate="footer">
-                <button pButton pRipple label="Hủy" icon="pi pi-times" class="p-button-text "
-                    (click)="isVisibleNewsDlg=false"></button>
+                <button pButton pRipple label="Hủy" icon="pi pi-times" class="p-button-text text-red-600" (click)="isVisibleNewsDlg=false"></button>
                 <button pButton pRipple label="Lưu bài viết" icon="pi pi-save" class="p-button-text" (click)="onSaveItem()" ></button>
             </ng-template>
         </p-dialog>

@@ -52,12 +52,10 @@ export class LoginComponent implements OnInit, OnDestroy {
   login(): void {
     this.sub = this.authService.login(this.loginForm.value).subscribe(res => {
         if(res !== null) {
-            console.log('res',res);
-            console.log(123);
             localStorage.setItem(StorageKeys.TOKEN, res.token);
             localStorage.setItem(StorageKeys.USER, JSON.stringify(res));
-            location.href = '/admin-dashboard';
-            // this.router.navigate(['/admin-dashboard']);
+            // location.href = '/admin-dashboard';
+            this.router.navigate(['/admin-dashboard']);
         }
     }, error => {
         if(error.error && error.error.message) {

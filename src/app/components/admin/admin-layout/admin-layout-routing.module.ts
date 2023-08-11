@@ -18,7 +18,7 @@ import { AdminLayoutComponent } from './admin.layout.component';
                                 (m) => m.ListUsersModule
                             ),
                         canActivate: [AuthGuard],
-                        data: { role: Roles.MANAGE_USER },
+                        data: { role: Roles.USER_MANAGE },
                     },
                     {
                         path: 'user-roles',
@@ -27,7 +27,7 @@ import { AdminLayoutComponent } from './admin.layout.component';
                                 (m) => m.UserRolesModule
                             ),
                         canActivate: [AuthGuard],
-                        data: { role: Roles.MANAGE_USER },
+                        data: { role: Roles.USER_MANAGE },
                     },
                     {
                         path: 'user-groups',
@@ -36,7 +36,7 @@ import { AdminLayoutComponent } from './admin.layout.component';
                                 (m) => m.UserGroupsModule
                             ),
                         canActivate: [AuthGuard],
-                        data: { role: Roles.MANAGE_GROUP },
+                       data: { role: Roles.GROUP_MANAGE },
                     },
                     {
                         path: 'group-roles',
@@ -45,7 +45,7 @@ import { AdminLayoutComponent } from './admin.layout.component';
                                 (m) => m.GroupRolesModule
                             ),
                         canActivate: [AuthGuard],
-                        data: { role: Roles.MANAGE_GROUP },
+                       data: { role: Roles.GROUP_MANAGE },
                     },
                     {
                         path: 'visit-time',
@@ -54,7 +54,7 @@ import { AdminLayoutComponent } from './admin.layout.component';
                                 (m) => m.VisitTimeModule
                             ),
                         canActivate: [AuthGuard],
-                        // data: { role: Roles.MANAGE_GROUP },
+                        data: { role: Roles.ADMIN },
                     },
                     {
                         path: 'admin-dashboard',

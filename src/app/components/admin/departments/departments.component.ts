@@ -46,7 +46,7 @@ export class DepartmentsComponent implements OnInit {
   ){
     this.departmentForm = this.fb.group({
       id: [null],
-      name: [null, [Validators.required]],
+      name: [null, [Validators.required, Validators.pattern(/\S/)]],
       description: [null],
       status: [null],
     });
@@ -61,11 +61,10 @@ export class DepartmentsComponent implements OnInit {
   }
   ngOnInit(): void {
     this.cols = [
-      { field: 'name', header: 'Tên chuyên khoa', isOpSort: true, iconSort : 0, width: '24rem' },
-      { field: 'description', header: 'Mô tả', isOpSort: true, iconSort : 0, width: '52rem' },
+      { field: 'name', header: 'Tên chuyên khoa', width: '24rem' },
+      { field: 'description', header: 'Mô tả', width: '52rem' },
       { field: 'status', header: 'Trạng thái',  width: '6rem' }
     ];
-    this.getAll();
   }
   getAll(){
     this.loading = true;
@@ -95,19 +94,19 @@ export class DepartmentsComponent implements OnInit {
   }
   saveItem(){
     if(this.departmentForm.valid){
-    if(!this.isEditDepartment){
-      this.createDepartment();
+      if(!this.isEditDepartment){
+        this.createDepartment();
+      }else{
+        this.updateDepartment();
+      }
     }else{
-      this.updateDepartment();
-    }
-    }else{
-       Object.values(this.departmentForm.controls).forEach((control) => {
+      Object.values(this.departmentForm.controls).forEach((control) => {
         if(control.invalid){
           control.markAsDirty();
           control.updateValueAndValidity({onlySelf : true});
-          }
-        });
-      }
+        }
+      });
+    }
   }
   onCreateItem(){
     this.departmentForm.reset();
@@ -126,7 +125,7 @@ export class DepartmentsComponent implements OnInit {
         if(res) {
           this.notification.success('Thêm mới thành công','');
           this.isVisibleDepartmentDialog = false;
-          this.getAll();
+          this.search();
         }else{
           if(res.errors && res.errors.length > 0){
             res.errors.forEach((el:any) => {
@@ -145,8 +144,9 @@ export class DepartmentsComponent implements OnInit {
       id: item.id,
       name: item.name,
       description: item.description,
-      status: !item.checked,
+      status: item.status,
     })
+    this.checked = item.status;
     this.isVisibleDepartmentDialog = true;
     this.isEditDepartment = true;
     this.departmentHeaderDialog = "Sửa thông tin chuyên khoa";
@@ -157,7 +157,7 @@ export class DepartmentsComponent implements OnInit {
         if(res){
           this.notification.success('Cập nhật thành công');
           this.isVisibleDepartmentDialog = false;
-          this.getAll();
+          this.search();
         }else{
           if(res.errors && res.errors.length > 0){
             res.errors.forEach((el:any) => {
@@ -181,7 +181,7 @@ export class DepartmentsComponent implements OnInit {
         if(res){
           this.notification.success('Xoá chuyên khoa thành công');
           this.isVisibleDeleteItemDialog = false;
-          this.getAll();
+          this.search();
         }else{
           if(res.errors && res.errors.length > 0){
             res.errors.forEach((el: any) => {
