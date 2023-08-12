@@ -31,8 +31,6 @@ export class AppointmentComponent implements OnInit {
     APPOINTMENT_STATUS = Constants.APPOINTMENT_STATUS;
     APPOINTMENT_PRIORITY = Constants.APPOINTMENT_PRIORITY;
     GENDERS = Constants.GENDERS;
-    selectedStatus: any;
-    selectedPriority: any;
     searchData = {
         skip: 0,
         take: 40,
@@ -187,5 +185,6 @@ export class AppointmentComponent implements OnInit {
         }
         this.statusForm.get('status')?.setValue(this.selectedItem.status);
         this.statusForm.get('priority')?.setValue(this.selectedItem.priority);
+        this.statusForm.get('node')?.setValue(this.selectedItem.node);
     }
 }
