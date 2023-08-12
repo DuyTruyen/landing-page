@@ -1,7 +1,7 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-    name: 'priorityToText'
+    name: 'appointmentPriorityString'
 })
 export class PriorityToTextPipe implements PipeTransform {
 

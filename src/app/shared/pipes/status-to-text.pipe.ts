@@ -1,7 +1,7 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-    name: 'statusToText'
+    name: 'appointmentStatusString'
 })
 export class StatusToTextPipe implements PipeTransform {
     transform(status: any): string {

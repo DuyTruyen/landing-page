@@ -20,17 +20,19 @@ export class AppointmentComponent implements OnInit {
     totalDepartmen = 0;
     cols: any[] = [];
     totalItemCount = 0;
-    selectedItem: any;
+    selectedItem: any = {};
     selectedGender: any;
     isVisibleAppointmentDlg = false;
     header = 'Xử lý thông tin hẹn khám';
     statusForm: FormGroup;
-    appointmentDateStr: any;
+    appointmentStringDate: any;
     dobStringDate: any;
     visitTimeStringDate: any;
     APPOINTMENT_STATUS = Constants.APPOINTMENT_STATUS;
     APPOINTMENT_PRIORITY = Constants.APPOINTMENT_PRIORITY;
     GENDERS = Constants.GENDERS;
+    selectedStatus: any;
+    selectedPriority: any;
     searchData = {
         skip: 0,
         take: 40,
@@ -72,11 +74,6 @@ export class AppointmentComponent implements OnInit {
     ngOnInit(): void {
         this.search();
         this.getDepartments();
-        this.cols = [
-            { field: 'name', header: 'Họ tên', width: '14%' },
-            { field: 'phoneNo', header: 'SDT', width: '14%' },
-            { field: 'departmentName', header: 'Chuyên khoa', width: '12%' },
-        ]
     }
 
     search() {
@@ -181,17 +178,14 @@ export class AppointmentComponent implements OnInit {
     dbClickUpdate(data: any) {
         this.isVisibleAppointmentDlg = true;
         this.selectedItem = data;
-        this.appointmentDateStr = moment(this.selectedItem.appointmentDate).toDate();
+        this.appointmentStringDate = moment(this.selectedItem.appointmentDate).toDate();
         this.dobStringDate = moment(this.selectedItem.dob).toDate();
         this.visitTimeStringDate = moment(this.selectedItem.visitTime).toDate();
         const selectedGender = this.GENDERS.find(g => g.value == this.selectedItem.gender);
         if(selectedGender) {
             this.selectedGender = selectedGender;
         }
-    }
-
-    convertStringToDate(dateString: any) {
-        //cover string to date
-        return moment(dateString).toDate();
+        this.statusForm.get('status')?.setValue(this.selectedItem.status);
+        this.statusForm.get('priority')?.setValue(this.selectedItem.priority);
     }
 }
