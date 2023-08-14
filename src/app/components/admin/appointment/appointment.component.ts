@@ -185,6 +185,5 @@ export class AppointmentComponent implements OnInit {
         }
         this.statusForm.get('status')?.setValue(this.selectedItem.status);
         this.statusForm.get('priority')?.setValue(this.selectedItem.priority);
-        this.statusForm.get('node')?.setValue(this.selectedItem.node);
     }
 }
