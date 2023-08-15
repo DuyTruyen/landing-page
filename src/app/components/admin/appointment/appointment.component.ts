@@ -37,8 +37,8 @@ export class AppointmentComponent implements OnInit {
         status: null,
     }
     searchForm = {
-        appointmentDate: new Date(),
-        dateCreated: new Date(),
+        appointmentDate: null,
+        dateCreated: null,
         phoneNo: '',
         name: '',
         departmentId: null,
@@ -76,7 +76,13 @@ export class AppointmentComponent implements OnInit {
 
     search() {
         this.loading = true;
-        this.appointmentAPI.getAppointment(this.searchForm).subscribe({
+        const payload = {
+            ...this.searchForm,
+            appointmentDate: (this.searchForm.appointmentDate != null) ? (moment(this.searchForm.appointmentDate).format('YYYY-MM-DDTHH:mm:ssZ')) : '',
+            dateCreated: (this.searchForm.dateCreated != null) ? (moment(this.searchForm.dateCreated).format('YYYY-MM-DDTHH:mm:ssZ')) : '',
+        };
+
+        this.appointmentAPI.getAppointment(payload).subscribe({
             next: (res) => {
                 if (res.data != undefined) {
                     this.listItems = res.data;
@@ -155,8 +161,8 @@ export class AppointmentComponent implements OnInit {
 
     onClearSearch() {
         this.searchForm = {
-            appointmentDate: new Date(),
-            dateCreated: new Date(),
+            appointmentDate: null,
+            dateCreated: null,
             phoneNo: '',
             name: '',
             departmentId: null,

@@ -7,8 +7,8 @@
         <input type="text" class="w-full sm:w-auto p-inputtext-sm" pInputText placeholder="Tên khách hàng" [(ngModel)]="searchForm.name" />
         <input type="text" class="w-full sm:w-auto p-inputtext-sm" pInputText placeholder="Số điện thoại" [(ngModel)]="searchForm.phoneNo" />
         <p-dropdown placeholder="Chuyên khoa" [options]="lstDepartments" class="w-full sm:w-auto p-inputtext-sm" [style]="{ width: '180px' }" appendTo="body" optionLabel="name" optionValue="id" [(ngModel)]="searchForm.departmentId" [virtualScroll]="true" [ngModelOptions]="{ standalone: true }" [showClear]="true" [virtualScrollItemSize]="50"></p-dropdown>
-        <p-calendar [style]="{ height: '37px', width: '180px' }" [showClear]="true" class="w-full sm:w-auto p-inputtext-sm" [showButtonBar]="true" placeholder="Ngày đăng kí" [showIcon]="true" appendTo="body" [dateFormat]="'dd/mm/yy'" [(ngModel)]="searchForm.dateCreated"></p-calendar>
         <p-calendar [showClear]="true" [style]="{ height: '37px', width: '180px' }" class="w-full sm:w-auto p-inputtext-sm" [showButtonBar]="true" placeholder="Ngày hẹn khám" [showIcon]="true" appendTo="body" [dateFormat]="'dd/mm/yy'" [(ngModel)]="searchForm.appointmentDate"></p-calendar>
+        <p-calendar [style]="{ height: '37px', width: '180px' }" [showClear]="true" class="w-full sm:w-auto p-inputtext-sm" [showButtonBar]="true" placeholder="Ngày đặt lịch" [showIcon]="true" appendTo="body" [dateFormat]="'dd/mm/yy'" [(ngModel)]="searchForm.dateCreated"></p-calendar>
         <button pButton [style]="{ height: '37px' }" pRipple icon="pi pi-search" class="p-button-primary p-button-sm" (click)="onSearch()"></button>
         <button pButton [style]="{ height: '37px' }" pRipple icon="pi pi-times" class="p-button-secondary p-button-sm" (click)="onClearSearch()"></button>
       </div>
