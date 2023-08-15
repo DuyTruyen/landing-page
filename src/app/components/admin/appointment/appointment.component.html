@@ -3,26 +3,14 @@
     <div class="card admin-content m-0">
       <p-breadcrumb [model]="breadcrumbItem" [home]="home" styleClass="breadcrumb-admin"></p-breadcrumb>
       <!--End: Title Danh sách group -->
-      <div class="grid">
-        <div class="col">
-          <input type="text" [style]="{ height: '37px', width: '220px' }" pInputText placeholder="Tên khách hàng" [(ngModel)]="searchForm.name" />
-        </div>
-        <div class="col">
-          <input type="text" [style]="{ height: '37px', width: '220px' }" pInputText placeholder="Số điện thoại" [(ngModel)]="searchForm.phoneNo" />
-        </div>
-        <div class="col">
-          <p-dropdown placeholder="Chuyên khoa" [options]="lstDepartments" [style]="{ height: '37px', width: '220px' }" appendTo="body" optionLabel="name" optionValue="id" [(ngModel)]="searchForm.departmentId" [virtualScroll]="true" [ngModelOptions]="{ standalone: true }" [showClear]="true" [virtualScrollItemSize]="30"></p-dropdown>
-        </div>
-        <div class="col ">
-          <p-calendar [style]="{ height: '37px' }" [showClear]="true" class="w-full sm:w-auto p-inputtext-sm" [showButtonBar]="true" placeholder="Ngày đăng kí" [showIcon]="true" appendTo="body" [dateFormat]="'dd/mm/yy'" [(ngModel)]="searchForm.dateCreated"></p-calendar>
-        </div>
-        <div class="col ">
-          <p-calendar [showClear]="true" [style]="{ height: '37px' }" class="w-full sm:w-auto p-inputtext-sm" [showButtonBar]="true" placeholder="Ngày hẹn khám" [showIcon]="true" appendTo="body" [dateFormat]="'dd/mm/yy'" [(ngModel)]="searchForm.appointmentDate"></p-calendar>
-        </div>
-        <div class="col">
-          <button pButton [style]="{ height: '37px' }" pRipple icon="pi pi-search" class="p-button-primary mr-3 p-button-sm" (click)="onSearch()"></button>
-          <button pButton [style]="{ height: '37px' }" pRipple icon="pi pi-times" class="p-button-secondary p-button-sm" (click)="onClearSearch()"></button>
-        </div>
+      <div class="flex flex-wrap column-gap-2 row-gap-6 pb-2">
+        <input type="text" [style]="{ height: '37px', width: '220px' }" pInputText placeholder="Tên khách hàng" [(ngModel)]="searchForm.name" />
+        <input type="text" [style]="{ height: '37px', width: '220px' }" pInputText placeholder="Số điện thoại" [(ngModel)]="searchForm.phoneNo" />
+        <p-dropdown placeholder="Chuyên khoa" [options]="lstDepartments" [style]="{ height: '37px', width: '220px' }" appendTo="body" optionLabel="name" optionValue="id" [(ngModel)]="searchForm.departmentId" [virtualScroll]="true" [ngModelOptions]="{ standalone: true }" [showClear]="true" [virtualScrollItemSize]="30"></p-dropdown>
+        <p-calendar [style]="{ height: '37px' }" [showClear]="true" class="w-full sm:w-auto p-inputtext-sm" [showButtonBar]="true" placeholder="Ngày đăng kí" [showIcon]="true" appendTo="body" [dateFormat]="'dd/mm/yy'" [(ngModel)]="searchForm.dateCreated"></p-calendar>
+        <p-calendar [showClear]="true" [style]="{ height: '37px' }" class="w-full sm:w-auto p-inputtext-sm" [showButtonBar]="true" placeholder="Ngày hẹn khám" [showIcon]="true" appendTo="body" [dateFormat]="'dd/mm/yy'" [(ngModel)]="searchForm.appointmentDate"></p-calendar>
+        <button pButton [style]="{ height: '37px' }" pRipple icon="pi pi-search" class="p-button-primary p-button-sm" (click)="onSearch()"></button>
+        <button pButton [style]="{ height: '37px' }" pRipple icon="pi pi-times" class="p-button-secondary p-button-sm" (click)="onClearSearch()"></button>
       </div>
       <p-table styleClass="p-datatable-striped p-datatable-sm p-datatable-gridlines" class="table-admin" [scrollable]="true" scrollHeight="650px" [dataKey]="'id'" selectionMode="single" [(selection)]="selectedItem" [paginator]="true" [rows]="40" [rowsPerPageOptions]="[40, 60, 80]" [scrollable]="true" [value]="listItems" [totalRecords]="totalItemCount" (onPageChange)="onPageChange($event)" [loading]="loading">
         <ng-template pTemplate="header">
@@ -101,11 +89,6 @@
                   <textarea pKeyFilter="int" rows="5" cols="30" class="w-full" pInputTextarea placeholder="Ghi chú" formControlName="node"></textarea>
                 </div>
               </div>
-              <div class="formgrid grid">
-                <div class="field col">
-                  <button pButton pRipple label="Lưu" icon="pi pi-check" class="p-button-text" (click)="updateStatus()"></button>
-                </div>
-              </div>
             </form>
           </div>
           <div class="col-5">
@@ -139,6 +122,7 @@
       </ng-template>
       <ng-template pTemplate="footer">
         <button pButton pRipple label="Đóng" icon="pi pi-times" class="p-button-text text-red-600" (click)="isVisibleAppointmentDlg = false"></button>
+        <button pButton pRipple label="Lưu" icon="pi pi-check" class="p-button-text" (click)="updateStatus()"></button>
       </ng-template>
     </p-dialog>
   </div>
