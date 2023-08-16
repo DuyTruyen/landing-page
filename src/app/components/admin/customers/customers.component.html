@@ -12,18 +12,12 @@
         </span>
       </div>
 
-      <m-table [isLazyLoad]="false" [cols]="cols" [items]="customers" (selectRow)="selectItem($event)" [dataKey]="'id'" [customHeaderTemplate]="customHeaderTemplate" [customBodyTemplate]="customBodyTemplate" class="table-admin" [calcHeight]="303"></m-table>
+      <m-table [isLazyLoad]="false" [cols]="cols" [items]="customers" (selectRow)="selectItem($event)" [dataKey]="'id'" [customHeaderTemplate]="customHeaderTemplate" [customBodyTemplate]="customBodyTemplate" class="table-admin" [calcHeight]="303"> </m-table>
 
       <ng-template #customHeaderTemplate>
-        <th *ngFor="let col of cols; let i = index" [style.minWidth]="col['width'] || '12rem'" class="{{ col.isOpSort ? 'cursor-pointer' : '' }}">
+        <th *ngFor="let col of cols; let i = index" [style.minWidth]="col['width'] || '12rem'">
           {{ col['header'] }}
-
-          <!-- Icon Sort -->
-          <div class="ml-1">
-            <i class="{{ col.isOpSort ? (col.iconSort == 0 ? 'pi pi-sort-alt' : col.iconSort == 1 ? 'pi pi-sort-amount-up-alt' : 'pi pi-sort-amount-down') : '' }}" style="font-size: 1.01rem"></i>
-          </div>
         </th>
-
         <th [style.minWidth]="'6rem'" pFrozenColumn alignFrozen="right"></th>
       </ng-template>
 
@@ -39,44 +33,43 @@
 
       <p-dialog header="Danh sách hồ sơ" [(visible)]="isVisibleProfileDialog" [modal]="true" class="p-fluid" [style]="{ width: '70rem', height: '90%' }">
         <ng-template pTemplate="content">
-          <div class="panel-body" *ngFor="let customer of customers" (click)="showCustomerCard(customer)">
+          <div class="panel-body" *ngFor="let member of members" (click)="showCustomerCard(member)">
             <h4 class="mt-3">
               <i class="pi pi-id-card mr-3 mb-3 mt-3" style="font-size: 1.5rem"></i>
               <span>
-                {{ customer.name }}
+                {{ member.name }}
               </span>
             </h4>
-            <p-card *ngIf="selectedCustomer === customer && showCard">
+            <p-card *ngIf="selectedCustomer === member && showCard">
               <div class="flex flex-row">
                 <p-card header="Thông tin cá nhân" [style]="{ width: '100%' }">
                   <div class="flex flex-row">
                     <ul [style]="{ width: '100%' }">
-                      <li class="flex flex-row mr-1">
+                      <li class="flex flex-row mr-3">
                         <i class="pi pi-id-card -ml-6 mr-2 mb-5" style="font-size: 1rem"></i>
-                        {{ customer.transformedDob }}
+                        {{ member.transformedDob }}
                       </li>
-                      <li class="flex flex-row mr-1">
+                      <li class="flex flex-row mr-3">
                         <i class="pi pi-phone -ml-6 mr-2 mb-5" style="font-size: 1rem"></i>
-                        {{ customer.phoneNo }}
+                        {{ member.phoneNo }}
                       </li>
-                      <li class="flex flex-row mr-1">
+                      <li class="flex flex-row mr-3">
                         <i class="pi pi-user-edit -ml-6 mr-2 mb-5" style="font-size: 1rem"> </i>
-                        {{ customer.job }}
+                        {{ member.job }}
                       </li>
-                      <li class="flex flex-row mr-1">
+                      <li class="flex flex-row mr-3">
                         <i class="pi pi-envelope -ml-6 mr-2 mb-5" style="font-size: 1rem"></i>
-                        {{ customer.email }}
+                        {{ member.email }}
                       </li>
                       <p class="flex flex-row">
-                        <i class="pi pi-map -ml-6 mr-1" style="font-size: 1rem"></i>
-                        {{ customer.address }}
-                        P108, N3 ,Khu tap the Khuong Thuong, Dong Da,
+                        <i class="pi pi-map -ml-6 mr-2" style="font-size: 1rem"></i>
+                        {{ member.address }} P108, N3 ,Khu tap the Khuong Thuong, Dong Da,
                       </p>
                     </ul>
                     <ul [style]="{ width: '100%' }">
                       <li class="flex flex-row">
                         <i class="pi pi-info ml-3 mr-2 mb-5" style="font-size: 1rem"></i>
-                        {{ customer.genderName }}
+                        {{ member.genderName }}
                       </li>
                       <li class="flex flex-row">
                         <i class="pi pi-users ml-3 mr-2 mb-5" style="font-size: 1rem"></i>
@@ -90,7 +83,11 @@
                 </p-card>
                 <p-card header="Thông tin y tế" [style]="{ width: '100%' }">
                   <div>
-                    <li class="flex flex-row mr-8">
+                    <li class="flex flex-row mr-8" *ngIf="synced" [style.color]="'var(--green-400)'">
+                      <i class="pi pi-download mr-3 mb-5" style="font-size: 1rem"></i>
+                      Đã đồng bộ
+                    </li>
+                    <li class="flex flex-row mr-8" *ngIf="!synced" [style.color]="'var(--red-400)'">
                       <i class="pi pi-download mr-3 mb-5" style="font-size: 1rem"></i>
                       Chưa đồng bộ
                     </li>
@@ -99,12 +96,14 @@
                       Mã bệnh nhân
                     </li>
                     <div class="flex flex-row mb-5" (click)="stopPropagation($event)">
-                      <input type="text" pInputText class="mr-3" value="{{ customer.patientCode }}" (click)="stopPropagation($event)" />
-                      <button pButton pRipple label="{{ syncLabel }}" class="p-button-warning" [class.p-button-danger]="synced" style="color: #fff" (click)="syncProfile()"></button>
+                      <input type="text" pInputText class="mr-3" value="{{ 23060710 }}" [(ngModel)]="hisCode" (keydown.enter)="syncProfile()" (click)="stopPropagation($event)" />
+                      <button pButton pRipple *ngIf="!synced" [label]="syncLabel" class="p-button-warning" style="color: #fff" (click)="syncProfile()"></button>
+                      <button pButton pRipple *ngIf="synced" [label]="syncLabel" class="p-button-danger" style="color: #fff" (click)="syncProfile()"></button>
                     </div>
                     <li class="flex flex-row mr-8">
                       <i class="pi pi-calendar-plus mr-3 mb-3" style="font-size: 1rem"></i>
-                      <a routerLink="/customers">Danh sách ca khám (0)</a>
+                      <p *ngIf="!synced">Danh sách ca khám</p>
+                      <a *ngIf="synced" routerLink="/" [style.color]="'var(--blue-500)'">Danh sách ca khám (0)</a>
                     </li>
                   </div>
                 </p-card>
@@ -119,8 +118,7 @@
           <i class="pi pi-user mt-3 mr-3 mb-3" style="font-size: 1.5rem"> </i>
           <span [style]="{ color: '#000' }">Mã bệnh nhân:</span>
         </h4>
-
-        <p-table [value]="customers" [tableStyle]="{ 'min-width': '60rem', border: '0', cursor: 'pointer' }">
+        <p-table [value]="hisProfiles" [tableStyle]="{ 'min-width': '60rem', border: '0', cursor: 'pointer' }">
           <ng-template pTemplate="header">
             <tr>
               <th [style]="{ width: '40rem', color: '#000' }">Thông tin bệnh nhân</th>
@@ -130,14 +128,14 @@
               <th [style]="{ width: '10rem', color: '#000' }"></th>
             </tr>
           </ng-template>
-          <ng-template pTemplate="body" let-customer>
+          <ng-template pTemplate="body" let-profile>
             <tr>
-              <td>{{ customer.name }}</td>
+              <td>{{ profile.name }}</td>
               <td>{{ 26382632136928 }}</td>
-              <td>{{ customer.phoneNo }}</td>
-              <td>{{ customer.registerDate }}</td>
+              <td>{{ profile.phoneNo }}</td>
+              <td>{{ profile.registerDate }}</td>
               <td>
-                <button pButton pRipple label="Chọn" class="p-button-info" (click)="updateProfile()"></button>
+                <button pButton pRipple label="Chọn" class="p-button-info" (click)="updateProfile(profile)"></button>
               </td>
             </tr>
           </ng-template>
