@@ -183,6 +183,26 @@ export class Constants {
         { label: '1 tháng', value: 720 },
         { label: 'Vô thời hạn', value: -1 },
     ];
+    public static readonly APPOINTMENT_STATUS = [
+        { label: 'Chờ xác nhận', value: 1 },
+        { label: 'Đang xử lý', value: 2 },
+        { label: 'KH đã xác nhận', value: 3 },
+        { label: 'KH tắt máy', value: 4 },
+        { label: 'Đổ chuông chưa nghe máy', value: 5 },
+        { label: 'KH đang bận', value: 6 },
+        { label: 'Chờ KH kiểm tra thông tin', value: 7 },
+        { label: 'Chờ NV kiểm tra thông tin', value: 8 },
+        { label: 'KH hủy lịch hẹn', value: 9 },
+        { label: 'KH đã đến', value: 10 },
+    ]
+
+
+    public static readonly APPOINTMENT_PRIORITY = [
+        { label: 'Not set', value: 0},
+        { label: 'Cao', value: 1},
+        { label: 'Trung bình', value: 2},
+        { label: 'Thấp', value: 3},
+    ]
     public static readonly REPORT_EDITING_STATES = {
         READING: 1,
         APPROVING: 3,

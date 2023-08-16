@@ -1,7 +1,130 @@
 <div class="grid">
-    <div class="col-12 p-0">
-        <div class="card admin-content m-0">
-            <p-breadcrumb [model]="breadcrumbItem" [home]="home" styleClass="breadcrumb-admin"></p-breadcrumb>
-        </div>
+  <div class="col-12 p-0">
+    <div class="card admin-content m-0">
+      <p-breadcrumb [model]="breadcrumbItem" [home]="home" styleClass="breadcrumb-admin"></p-breadcrumb>
+      <!--End: Title Danh sách group -->
+      <div class="flex flex-wrap column-gap-2 row-gap-6 pb-2">
+        <input type="text" class="w-full sm:w-auto p-inputtext-sm" pInputText placeholder="Tên khách hàng" [(ngModel)]="searchForm.name" />
+        <input type="text" class="w-full sm:w-auto p-inputtext-sm" pInputText placeholder="Số điện thoại" [(ngModel)]="searchForm.phoneNo" />
+        <p-dropdown placeholder="Chuyên khoa" [style]="{ width: '180px'}" [options]="lstDepartments" class="w-full sm:w-auto p-inputtext-sm" appendTo="body" optionLabel="name" optionValue="id" [(ngModel)]="searchForm.departmentId" [virtualScroll]="true" [ngModelOptions]="{ standalone: true }" [showClear]="true" [virtualScrollItemSize]="50"></p-dropdown>
+        <p-calendar [showClear]="true" [style]="{ width: '180px' }" class="w-full sm:w-auto p-inputtext-sm" [showButtonBar]="true" placeholder="Ngày hẹn khám" [showIcon]="true" appendTo="body" [dateFormat]="'dd/mm/yy'" [(ngModel)]="searchForm.appointmentDate"></p-calendar>
+        <p-calendar [style]="{ width: '180px' }" [showClear]="true" class="w-full sm:w-auto p-inputtext-sm" [showButtonBar]="true" placeholder="Ngày đặt lịch" [showIcon]="true" appendTo="body" [dateFormat]="'dd/mm/yy'" [(ngModel)]="searchForm.dateCreated"></p-calendar>
+        <button pButton pRipple icon="pi pi-search" class="p-button-primary p-button-sm" (click)="onSearch()"></button>
+        <button pButton pRipple icon="pi pi-times" class="p-button-secondary p-button-sm" (click)="onClearSearch()"></button>
+      </div>
+      <p-table styleClass="p-datatable-striped p-datatable-sm p-datatable-gridlines" class="table-admin" [scrollable]="true" scrollHeight="650px" [dataKey]="'id'" selectionMode="single" [(selection)]="selectedItem" [paginator]="true" [rows]="40" [rowsPerPageOptions]="[40, 60, 80]" [scrollable]="true" [value]="listItems" [totalRecords]="totalItemCount" (onPageChange)="onPageChange($event)" [loading]="loading">
+        <ng-template pTemplate="header">
+          <tr>
+            <th [style.minWidth]="'2rem'" class="text-center">STT</th>
+            <th [style.minWidth]="'15rem'">Họ tên</th>
+            <th [style.minWidth]="'15rem'">SDT</th>
+            <th [style.minWidth]="'15rem'">Chuyên khoa</th>
+            <th [style.minWidth]="'15rem'">Trạng thái</th>
+            <th [style.minWidth]="'15rem'">Ngày hẹn khám</th>
+            <th [style.minWidth]="'15rem'">Ngày đặt lịch</th>
+            <th [style.minWidth]="'13rem'">Khung giờ</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-rowData let-rowIndex="rowIndex">
+          <tr (dblclick)="dbClickUpdate(rowData)">
+            <td [style.minWidth]="'2rem'" class="text-center">{{ rowIndex + 1 }}</td>
+            <td [style.minWidth]="'15rem'">{{ rowData['name'] }}</td>
+            <td [style.minWidth]="'15rem'">{{ rowData['phoneNo'] }}</td>
+            <td [style.minWidth]="'15rem'">{{ rowData['departmentName'] }}</td>
+            <td [style.minWidth]="'15rem'">{{ rowData['status'] | appointmentStatusString }}</td>
+            <td [style.minWidth]="'15rem'">{{ rowData['appointmentDate'] | date : 'dd/MM/yyyy hh:mm:ss' }}</td>
+            <td [style.minWidth]="'15rem'">{{ rowData['dob'] | date : 'dd/MM/yyyy hh:mm:ss' }}</td>
+            <td [style.minWidth]="'13rem'">{{ rowData['visitTime'] | date : 'dd/MM/yyyy hh:mm:ss' }}</td>
+          </tr>
+        </ng-template>
+      </p-table>
     </div>
+    <p-dialog [(visible)]="isVisibleAppointmentDlg" [style]="{ width: '65rem' }" [modal]="true" [header]="header" class="p-fluid">
+      <ng-template pTemplate="content">
+        <div class="grid">
+          <div class="col-7">
+            <div class="formgrid grid">
+              <div class="field col">
+                <label><strong>Họ tên</strong></label>
+                <input type="text" pInputText placeholder="Tên" [(ngModel)]="selectedItem.name" [disabled]="true" />
+              </div>
+              <div class="field col">
+                <label><strong>Giới tính</strong></label>
+                <p-dropdown placeholder="Giới tính" [options]="GENDERS" [(ngModel)]="selectedGender" [disabled]="true" optionLabel="label"></p-dropdown>
+              </div>
+            </div>
+            <div class="formgrid grid">
+              <div class="field col">
+                <label><strong>Địa chỉ</strong></label>
+                <input type="text" pInputText placeholder="Địa chỉ" [(ngModel)]="selectedItem.address" [disabled]="true" />
+              </div>
+              <div class="field col">
+                <label><strong>Số điện thoại</strong></label>
+                <input type="text" pInputText placeholder="Số điện thoại" [(ngModel)]="selectedItem.phoneNo" [disabled]="true" />
+              </div>
+            </div>
+            <div class="formgrid grid">
+              <div class="field col">
+                <label><strong>Chuyên khoa</strong></label>
+                <input type="text" pInputText placeholder="Chuyên khoa" [(ngModel)]="selectedItem.departmentName" [disabled]="true" />
+              </div>
+              <div class="field col">
+                <label><strong>Ngày hẹn khám</strong></label>
+                <p-calendar [showIcon]="true" [showIcon]="true" appendTo="body" [dateFormat]="'dd/mm/yy'" [(ngModel)]="appointmentStringDate" [disabled]="true"></p-calendar>
+              </div>
+            </div>
+            <div class="formgrid grid">
+              <div class="field col">
+                <label><strong>Ngày đặt lịch</strong></label>
+                <p-calendar [showIcon]="true" [showIcon]="true" appendTo="body" [dateFormat]="'dd/mm/yy'" [disabled]="true" [(ngModel)]="dobStringDate"></p-calendar>
+              </div>
+              <div class="field col">
+                <label><strong>Khung giờ</strong></label>
+                <p-calendar [showButtonBar]="true" placeholder="Ngày đăng kí" [showIcon]="true" [disabled]="true" appendTo="body" [(ngModel)]="visitTimeStringDate"></p-calendar>
+              </div>
+            </div>
+            <form [formGroup]="statusForm">
+              <div class="formgrid grid">
+                <div class="field col">
+                  <label><strong>Ghi chú của nhân viên</strong></label>
+                  <textarea pKeyFilter="int" rows="5" cols="30" class="w-full" pInputTextarea placeholder="Ghi chú" formControlName="node"></textarea>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="col-5">
+            <form [formGroup]="statusForm">
+              <div class="formgrid grid">
+                <div class="field col">
+                  <label
+                    ><strong>Trạng thái: </strong><span class="text-red-500">{{ selectedItem.status | appointmentStatusString }}</span></label
+                  >
+                  <p-dropdown [options]="APPOINTMENT_STATUS" optionLabel="label" optionValue="value" appendTo="body" class="w-full" [style]="{ height: '40px' }" formControlName="status"></p-dropdown>
+                </div>
+              </div>
+              <div class="formgrid grid">
+                <div class="field col">
+                  <label
+                    ><strong>Mức độ ưu tiên: </strong><span class="text-red-500">{{ selectedItem.priority | appointmentPriorityString }}</span></label
+                  >
+                  <p-dropdown [options]="APPOINTMENT_PRIORITY" optionLabel="label" optionValue="value" appendTo="body" class="w-full" [style]="{ height: '40px' }" formControlName="priority"></p-dropdown>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+        <!-- <div class="car"> -->
+        <!-- <h4><strong>Lịch sử chỉnh sửa</strong></h4> -->
+        <!-- <p-scrollPanel [style]="{ height: '150px', width: '100%' }"> -->
+        <!-- <h5>sadas</h5>
+            <span>ssdasdsa</span> -->
+        <!-- </p-scrollPanel> -->
+        <!-- </div> -->
+      </ng-template>
+      <ng-template pTemplate="footer">
+        <button pButton pRipple label="Đóng" icon="pi pi-times" class="p-button-text text-red-600" (click)="isVisibleAppointmentDlg = false"></button>
+        <button pButton pRipple label="Lưu" icon="pi pi-check" class="p-button-text" (click)="updateStatus()"></button>
+      </ng-template>
+    </p-dialog>
+  </div>
 </div>

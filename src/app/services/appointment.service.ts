@@ -7,4 +7,12 @@ import { BaseService } from './base-service';
 })
 export class AppointmentService extends BaseService {
     override url = '/Appointment';
+
+    getAppointment(data: any): Observable<any> {
+        return this.get(this.url, data);
+    }
+
+    putStatus(statusId: any, status: any) {
+        return this.put('/Appointment/Status/' + statusId, status);
+    }
 }
