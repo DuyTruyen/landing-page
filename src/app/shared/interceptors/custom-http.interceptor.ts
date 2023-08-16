@@ -40,20 +40,20 @@ export class CustomHttpInterceptor  implements HttpInterceptor {
       map((res: HttpEvent<any>) => {
         if (res instanceof HttpResponse && !environment.production) {
           if (res.body.isValid === false && res.body.errors[0]) {
-            this.notification.error('DEV: Có lỗi xảy ra! Error: ' + res.body.errors[0].errorMessage, request.url);
+            // this.notification.error('DEV: Có lỗi xảy ra! Error: ' + res.body.errors[0].errorMessage, request.url);
           }
         }
         return res;
       }),
       catchError((error:HttpErrorResponse) => {
         if (error.status === 401) {
-            this.notification.error('Lỗi xác thực người dùng ', '');
+            // this.notification.error('Lỗi xác thực người dùng ', '');
             // localStorage.removeItem(StorageKeys.TOKEN);
             // localStorage.removeItem(StorageKeys.USER);
             // this.router.navigate(['/login']);
         }
         else if(!environment.production) {
-          this.notification.error('DEV: Có lỗi xảy ra! Error: ' + error.status, request.url);
+        //   this.notification.error('DEV: Có lỗi xảy ra! Error: ' + error.status, request.url);
         }
         return throwError(() => error);
       }));

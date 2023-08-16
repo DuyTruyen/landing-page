@@ -37,12 +37,12 @@ export class AuthGuard implements CanActivate, OnDestroy {
       return true;
     }
     else if (state.url.includes('share/')) {
-      //console.log('return here!!!');
       return true;
     }
+    else{
+        this.router.navigate(['/login'], { queryParams: { returnUrl: state.url} });
 
-    // this.notification.warn('Bạn không có quyền truy cập đường dẫn này', '');
-    this.router.navigate(['/login'], { queryParams: { returnUrl: state.url} });
+    }
     return false;
   }
 }
