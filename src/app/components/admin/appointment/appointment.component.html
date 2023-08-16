@@ -6,11 +6,11 @@
       <div class="flex flex-wrap column-gap-2 row-gap-6 pb-2">
         <input type="text" class="w-full sm:w-auto p-inputtext-sm" pInputText placeholder="Tên khách hàng" [(ngModel)]="searchForm.name" />
         <input type="text" class="w-full sm:w-auto p-inputtext-sm" pInputText placeholder="Số điện thoại" [(ngModel)]="searchForm.phoneNo" />
-        <p-dropdown placeholder="Chuyên khoa" [options]="lstDepartments" class="w-full sm:w-auto p-inputtext-sm" [style]="{ width: '180px' }" appendTo="body" optionLabel="name" optionValue="id" [(ngModel)]="searchForm.departmentId" [virtualScroll]="true" [ngModelOptions]="{ standalone: true }" [showClear]="true" [virtualScrollItemSize]="50"></p-dropdown>
-        <p-calendar [showClear]="true" [style]="{ height: '37px', width: '180px' }" class="w-full sm:w-auto p-inputtext-sm" [showButtonBar]="true" placeholder="Ngày hẹn khám" [showIcon]="true" appendTo="body" [dateFormat]="'dd/mm/yy'" [(ngModel)]="searchForm.appointmentDate"></p-calendar>
-        <p-calendar [style]="{ height: '37px', width: '180px' }" [showClear]="true" class="w-full sm:w-auto p-inputtext-sm" [showButtonBar]="true" placeholder="Ngày đặt lịch" [showIcon]="true" appendTo="body" [dateFormat]="'dd/mm/yy'" [(ngModel)]="searchForm.dateCreated"></p-calendar>
-        <button pButton [style]="{ height: '37px' }" pRipple icon="pi pi-search" class="p-button-primary p-button-sm" (click)="onSearch()"></button>
-        <button pButton [style]="{ height: '37px' }" pRipple icon="pi pi-times" class="p-button-secondary p-button-sm" (click)="onClearSearch()"></button>
+        <p-dropdown placeholder="Chuyên khoa" [style]="{ width: '180px'}" [options]="lstDepartments" class="w-full sm:w-auto p-inputtext-sm" appendTo="body" optionLabel="name" optionValue="id" [(ngModel)]="searchForm.departmentId" [virtualScroll]="true" [ngModelOptions]="{ standalone: true }" [showClear]="true" [virtualScrollItemSize]="50"></p-dropdown>
+        <p-calendar [showClear]="true" [style]="{ width: '180px' }" class="w-full sm:w-auto p-inputtext-sm" [showButtonBar]="true" placeholder="Ngày hẹn khám" [showIcon]="true" appendTo="body" [dateFormat]="'dd/mm/yy'" [(ngModel)]="searchForm.appointmentDate"></p-calendar>
+        <p-calendar [style]="{ width: '180px' }" [showClear]="true" class="w-full sm:w-auto p-inputtext-sm" [showButtonBar]="true" placeholder="Ngày đặt lịch" [showIcon]="true" appendTo="body" [dateFormat]="'dd/mm/yy'" [(ngModel)]="searchForm.dateCreated"></p-calendar>
+        <button pButton pRipple icon="pi pi-search" class="p-button-primary p-button-sm" (click)="onSearch()"></button>
+        <button pButton pRipple icon="pi pi-times" class="p-button-secondary p-button-sm" (click)="onClearSearch()"></button>
       </div>
       <p-table styleClass="p-datatable-striped p-datatable-sm p-datatable-gridlines" class="table-admin" [scrollable]="true" scrollHeight="650px" [dataKey]="'id'" selectionMode="single" [(selection)]="selectedItem" [paginator]="true" [rows]="40" [rowsPerPageOptions]="[40, 60, 80]" [scrollable]="true" [value]="listItems" [totalRecords]="totalItemCount" (onPageChange)="onPageChange($event)" [loading]="loading">
         <ng-template pTemplate="header">
@@ -86,6 +86,7 @@
             <form [formGroup]="statusForm">
               <div class="formgrid grid">
                 <div class="field col">
+                  <label><strong>Ghi chú của nhân viên</strong></label>
                   <textarea pKeyFilter="int" rows="5" cols="30" class="w-full" pInputTextarea placeholder="Ghi chú" formControlName="node"></textarea>
                 </div>
               </div>
@@ -98,7 +99,7 @@
                   <label
                     ><strong>Trạng thái: </strong><span class="text-red-500">{{ selectedItem.status | appointmentStatusString }}</span></label
                   >
-                  <p-dropdown [options]="APPOINTMENT_STATUS" optionLabel="label" optionValue="value" appendTo="body" [style]="{ height: '40px', width: '250px' }" formControlName="status"></p-dropdown>
+                  <p-dropdown [options]="APPOINTMENT_STATUS" optionLabel="label" optionValue="value" appendTo="body" class="w-full" [style]="{ height: '40px' }" formControlName="status"></p-dropdown>
                 </div>
               </div>
               <div class="formgrid grid">
@@ -106,7 +107,7 @@
                   <label
                     ><strong>Mức độ ưu tiên: </strong><span class="text-red-500">{{ selectedItem.priority | appointmentPriorityString }}</span></label
                   >
-                  <p-dropdown [options]="APPOINTMENT_PRIORITY" optionLabel="label" optionValue="value" appendTo="body" [style]="{ height: '40px', width: '250px' }" formControlName="priority"></p-dropdown>
+                  <p-dropdown [options]="APPOINTMENT_PRIORITY" optionLabel="label" optionValue="value" appendTo="body" class="w-full" [style]="{ height: '40px' }" formControlName="priority"></p-dropdown>
                 </div>
               </div>
             </form>

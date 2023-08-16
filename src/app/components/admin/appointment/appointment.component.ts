@@ -137,6 +137,7 @@ export class AppointmentComponent implements OnInit {
                     if (res.ret && res.ret[0].code == 200) {
                         this.notification.success('Cập nhật trạng thái thành công', '');
                         this.search();
+                        this.isVisibleAppointmentDlg = false;
                     } else {
                         if (res.errors && res.errors.length > 0) {
                             res.errors.forEach((el: any) => {
