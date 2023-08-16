@@ -15,7 +15,7 @@
         </div>
       </div>
 
-      <m-table [isLazyLoad]="true" [cols]="cols" [items]="departments" (selectRow)="selectItem($event)" [customHeaderTemplate]="customHeaderTemplate" [customBodyTemplate]="customBodyTemplate" (onEditItem)="onEditItem($event)" (onDeleteItem)="onDeleteItem($event)" [calcHeight]="303" [totalRecords]="total" [take]="searchData.take" (onPageChange)="onPageChange($event)" [dataKey]="'id'" [loading]="loading"> </m-table>
+      <m-table [isLazyLoad]="true" [cols]="cols" [items]="departments" (selectRow)="selectItem($event)" [customHeaderTemplate]="customHeaderTemplate" [customBodyTemplate]="customBodyTemplate" (onEditItem)="onEditItem($event)" (onDeleteItem)="onDeleteItem($event)" [calcHeight]="284" [totalRecords]="total" [take]="searchData.take" (onPageChange)="onPageChange($event)" [dataKey]="'id'" [loading]="loading"> </m-table>
 
       <ng-template #customHeaderTemplate>
         <th *ngFor="let col of cols; let i = index" [style.minWidth]="col['width'] || '12rem'">
