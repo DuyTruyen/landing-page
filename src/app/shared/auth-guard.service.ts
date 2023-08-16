@@ -39,10 +39,7 @@ export class AuthGuard implements CanActivate, OnDestroy {
     else if (state.url.includes('share/')) {
       return true;
     }
-    else{
-        this.router.navigate(['/login'], { queryParams: { returnUrl: state.url} });
-
-    }
+    this.router.navigate(['/login'], { queryParams: { returnUrl: state.url} });
     return false;
   }
 }
