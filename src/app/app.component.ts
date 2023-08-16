@@ -7,6 +7,7 @@ import { Router } from '@angular/router';
 import { AuthStateService } from './shared/app-state/auth-state.service';
 import { INIT_AUTH_MODEL } from './models/auth-model';
 import { NotificationService } from './shared/notification.service';
+import { StorageKeys } from './shared/constants/constants';
 
 @Component({
   selector: 'app-root',
@@ -33,6 +34,8 @@ export class AppComponent {
     this.translateService.get('primeng').subscribe((res) => this.primengConfig.setTranslation(res));
   }
   validateToken() {
+    let localAuthData = localStorage.getItem(StorageKeys.USER);
+    if (localAuthData) {
     this.authService.validate().subscribe({
       next: (res) => {
         if (res.ret[0].code != 0) {
@@ -49,5 +52,5 @@ export class AppComponent {
         this.authStateService.dispatch(INIT_AUTH_MODEL);
       },
     });
-  }
+  }}
 }
