@@ -7,11 +7,6 @@ import { AuthService } from 'src/app/services/auth.service';
 import { AuthStateService } from 'src/app/shared/app-state/auth-state.service';
 import { StorageKeys } from 'src/app/shared/constants/constants';
 import { AdminLayoutService } from './service/admin.layout.service';
-import { UserSettingStateService } from 'src/app/shared/app-state/user-setting-state.service';
-import { SystemConfigStateService } from 'src/app/shared/app-state/system-config-state.service';
-import { INIT_USER_SETTING } from 'src/app/models/user-setting';
-import { DEFAULT_SYSTEM_CONFIG } from 'src/app/models/system-config';
-import { INIT_SEARCH_CASE_STUDY } from 'src/app/models/search-case-study';
 
 @Component({
   selector: 'admin-topbar',
@@ -28,7 +23,7 @@ export class AdminTopBarComponent {
   protected _authSubscription: Subscription;
   currentUser = INIT_AUTH_MODEL;
 
-  constructor(public layoutService: AdminLayoutService, private router: Router, private authState: AuthStateService, private authService: AuthService, private userSettingsStateService: UserSettingStateService, private systemConfigState: SystemConfigStateService) {
+  constructor(public layoutService: AdminLayoutService, private router: Router, private authState: AuthStateService, private authService: AuthService) {
     this.profileMenuItems = [
       {
         label: 'Trang chủ',
@@ -57,8 +52,6 @@ export class AdminTopBarComponent {
         localStorage.removeItem(StorageKeys.TOKEN);
         localStorage.removeItem(StorageKeys.USER);
         this.authState.dispatch(null);
-        this.userSettingsStateService.dispatch(INIT_USER_SETTING);
-        this.systemConfigState.dispatch(DEFAULT_SYSTEM_CONFIG);
         this.router.navigate(['/login']);
       });
   }
