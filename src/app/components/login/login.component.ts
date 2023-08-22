@@ -37,7 +37,6 @@ export class LoginComponent implements OnInit, OnDestroy {
         username: ['', [Validators.required, Validators.pattern(nonWhiteSpaceRegExp)]],
         password: ['', [Validators.required]],
       });
-    this.slogan = this.configService.getConfig().slogan;
   }
 
   ngOnDestroy(): void {

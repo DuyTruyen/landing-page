@@ -29,9 +29,12 @@ export class AuthGuard implements CanActivate, OnDestroy {
       if (this.currentUser.roles?.includes(route.data['role'])) {
         return true;
       }
-    } else if (state.url.includes('login') && token) {
-      this.router.navigate(['']);
-      return false;
+    } else if (state.url.includes('login')) {
+      if (token) {
+        return false;
+      } else {
+        return true;
+      }
     } else if (this.currentUser.id) {
       return true;
     } else if (state.url.includes('share/')) {
