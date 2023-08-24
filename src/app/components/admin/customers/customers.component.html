@@ -6,32 +6,34 @@
       <div class="my-2 flex justify-content-between flex-wrap">
         <span class="block p-input-icon-left">
           <i class="pi pi-search"></i>
-          <input pInputText type="text" placeholder="Tìm kiếm ..." class="inline-block lg:w-17rem sm:w-auto p-inputtext-sm" />
-          <button pButton pRipple icon="pi pi-search" class="p-button-primary mr-2 ml-2 p-button-sm"></button>
-          <button pButton pRipple icon="pi pi-times" class="p-button-secondary p-button-sm"></button>
+          <input pInputText type="text" placeholder="Tìm kiếm ..." class="inline-block lg:w-17rem sm:w-auto p-inputtext-sm"
+           [(ngModel)]="searchData.keyword" (keydown.enter)="search()"/>
+          <button pButton pRipple icon="pi pi-search" class="p-button-primary mr-2 ml-2 p-button-sm" (click)="search()"></button>
+          <button pButton pRipple icon="pi pi-times" class="p-button-secondary p-button-sm" (click)="resetSearch()"></button>
         </span>
       </div>
 
-      <m-table [isLazyLoad]="false" [cols]="cols" [items]="customers" (selectRow)="selectItem($event)" [dataKey]="'id'" [customHeaderTemplate]="customHeaderTemplate" [customBodyTemplate]="customBodyTemplate" class="table-admin" [calcHeight]="303"> </m-table>
+      <m-table [isLazyLoad]="false" [cols]="cols" [items]="customers" (selectRow)="selectItem($event)" [dataKey]="'id'" 
+      [customHeaderTemplate]="customHeaderTemplate" [customBodyTemplate]="customBodyTemplate" [tableStyleClass]="'p-datatable-sm'" [calcHeight]="303"> 
+      </m-table>
 
       <ng-template #customHeaderTemplate>
         <th *ngFor="let col of cols; let i = index" [style.minWidth]="col['width'] || '12rem'">
           {{ col['header'] }}
         </th>
-        <th [style.minWidth]="'6rem'" pFrozenColumn alignFrozen="right"></th>
       </ng-template>
 
       <ng-template #customBodyTemplate let-rowData>
-        <td [style.minWidth]="col.width" *ngFor="let col of cols" [ngClass]="{ 'justify-content-start': col.field }">
-          {{ rowData[col['field']] }}
-        </td>
-        <td [style.minWidth]="'6rem'" class="text-center flex justify-content-center" pFrozenColumn alignFrozen="right">
-          <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success p-button-xs mr-2"></button>
-          <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning p-button-xs"></button>
-        </td>
+        <td [style.minWidth]="'15rem'" >{{ rowData['name']}}</td>
+        <td [style.minWidth]="'10rem'" >{{ rowData['phoneNo']}}</td>
+        <td [style.minWidth]="'10rem'" >{{ rowData['transformedDob']}}</td>
+        <td [style.minWidth]="'25rem'" >{{ rowData['address']}}</td>
+        <td [style.minWidth]="'10rem'" >{{ rowData['patientCode']}}</td>
+        <td [style.minWidth]="'10rem'" >{{ rowData['syncStatus']}}</td>
+        <td [style.minWidth]="'10rem'" >{{ rowData['registerDate']}}</td>
       </ng-template>
 
-      <p-dialog header="Danh sách hồ sơ" [(visible)]="isVisibleProfileDialog" [modal]="true" class="p-fluid" [style]="{ width: '70rem', height: '90%' }">
+      <p-dialog header="Danh sách hồ sơ" [(visible)]="isVisibleProfileDialog" [modal]="true" class="p-fluid" [style]="{ width: '70rem', height: '80%' }">
         <ng-template pTemplate="content">
           <div class="panel-body" *ngFor="let member of members" (click)="showCustomerCard(member)">
             <h4 class="mt-3">
@@ -76,7 +78,7 @@
                       </li>
                       <li class="flex flex-row">
                         <i class="pi pi-id-card ml-3 mr-2 mb-3" style="font-size: 1rem"></i>
-                        {{ 26382632136928 }}
+                        {{ member.id }}
                       </li>
                     </ul>
                   </div>
@@ -95,15 +97,15 @@
                       <i class="pi pi-user mr-3 mb-3" style="font-size: 1rem"></i>
                       Mã bệnh nhân
                     </li>
-                    <div class="flex flex-row mb-5" (click)="stopPropagation($event)">
-                      <input type="text" pInputText class="mr-3" value="{{ 23060710 }}" [(ngModel)]="hisCode" (keydown.enter)="syncProfile()" (click)="stopPropagation($event)" />
-                      <button pButton pRipple *ngIf="!synced" [label]="syncLabel" class="p-button-warning" style="color: #fff" (click)="syncProfile()"></button>
-                      <button pButton pRipple *ngIf="synced" [label]="syncLabel" class="p-button-danger" style="color: #fff" (click)="syncProfile()"></button>
+                    <div class="flex flex-row mb-3" (click)="stopPropagation($event)">
+                        <input type="text" pInputText class="mr-3" [(ngModel)]="hisCode" (keydown.enter)="syncProfile()" (click)="stopPropagation($event)" />
+                        <button pButton pRipple *ngIf="!synced" [label]="syncLabel" class="p-button-warning" style="color: #fff" (click)="syncProfile()"></button>
+                        <button pButton pRipple *ngIf="synced" [label]="syncLabel" class="p-button-danger" style="color: #fff" (click)="syncOffProfile(member.id)"></button>
                     </div>
                     <li class="flex flex-row mr-8">
                       <i class="pi pi-calendar-plus mr-3 mb-3" style="font-size: 1rem"></i>
                       <p *ngIf="!synced">Danh sách ca khám</p>
-                      <a *ngIf="synced" routerLink="/" [style.color]="'var(--blue-500)'">Danh sách ca khám (0)</a>
+                      <a *ngIf="synced" [style.color]="'var(--blue-500)'" (click)="showSession()">Danh sách ca khám ({{sessions.length}})</a>
                     </li>
                   </div>
                 </p-card>
@@ -121,7 +123,7 @@
         <p-table [value]="hisProfiles" [tableStyle]="{ 'min-width': '60rem', border: '0', cursor: 'pointer' }">
           <ng-template pTemplate="header">
             <tr>
-              <th [style]="{ width: '40rem', color: '#000' }">Thông tin bệnh nhân</th>
+              <th [style]="{ width: '50rem', color: '#000' }">Thông tin bệnh nhân</th>
               <th [style]="{ width: '15rem', color: '#000' }">Mã BN</th>
               <th [style]="{ width: '15rem', color: '#000' }">Số điện thoại</th>
               <th [style]="{ width: '20rem', color: '#000' }">Ca khám gần nhất</th>
@@ -130,13 +132,44 @@
           </ng-template>
           <ng-template pTemplate="body" let-profile>
             <tr>
-              <td>{{ profile.name }}</td>
-              <td>{{ 26382632136928 }}</td>
+              <td>{{ profile.name }} - {{profile.gender | genderText }}  {{profile.dob | date : "dd/MM/yyyy"}} <br/>
+                  {{profile.address}}
+              </td>
+              <td>{{ hisCode }}</td>
               <td>{{ profile.phoneNo }}</td>
               <td>{{ profile.registerDate }}</td>
               <td>
                 <button pButton pRipple label="Chọn" class="p-button-info" (click)="updateProfile(profile)"></button>
               </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </p-dialog>
+
+      <p-dialog header="Danh sách ca khám" [(visible)]="isVisibleSessionDialog" [style]="{ width: '70rem' }" [modal]="true" class="p-fluid">
+        <h4 class="mt-3">
+          <i class="pi pi-user mt-3 mr-3 mb-3" style="font-size: 1.5rem"> </i>
+          <span [style]="{ color: '#000' }">Danh sách ca khám:</span>
+        </h4>
+        <p-table [value]="sessions" [tableStyle]="{ 'min-width': '60rem', border: '0', cursor: 'pointer' }">
+          <ng-template pTemplate="header">
+            <tr>
+              <th [style]="{ width: '15rem', color: '#000' }">Thời gian khám</th>
+              <th [style]="{ width: '15rem', color: '#000' }">Lý do khám</th>
+              <th [style]="{ width: '15rem', color: '#000' }">Khoa, phòng</th>
+              <th [style]="{ width: '20rem', color: '#000' }">Chẩn đoán</th>
+              <th [style]="{ width: '10rem', color: '#000' }">Kết luận</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-session>
+            <tr>
+              <td>
+                {{session.visitDate | date : "dd/MM/yyyy" }}
+              </td>
+              <td></td>
+              <td>{{ session.departmentName }}</td>
+              <td></td>
+              <td>{{ session.conclusion }}</td>
             </tr>
           </ng-template>
         </p-table>
