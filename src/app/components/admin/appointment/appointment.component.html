@@ -14,8 +14,8 @@
       </div> -->
 
       <div class="flex flex-wrap column-gap-2 row-gap-6 pb-1">
-        <input type="text" class="w-full sm:w-auto p-inputtext-sm" pInputText placeholder="Tên khách hàng" [(ngModel)]="searchForm.name" />
-        <input type="text" class="w-full sm:w-auto p-inputtext-sm" pInputText placeholder="Số điện thoại" [(ngModel)]="searchForm.phoneNo" />
+        <input type="text" class="w-full sm:w-auto p-inputtext-sm" pInputText style="width: 168px !important;" placeholder="Tên khách hàng" [(ngModel)]="searchForm.name" />
+        <input type="text" class="w-full sm:w-auto p-inputtext-sm" pInputText style="width: 168px !important;" placeholder="Số điện thoại" [(ngModel)]="searchForm.phoneNo" />
         <p-dropdown placeholder="Chuyên khoa" [style]="{ width: '168px' }" [options]="lstDepartments" class="w-full sm:w-auto p-inputtext-sm" appendTo="body" optionLabel="name" optionValue="id" [(ngModel)]="searchForm.departmentId" [virtualScroll]="true" [ngModelOptions]="{ standalone: true }" [showClear]="true" [virtualScrollItemSize]="50"></p-dropdown>
         <p-dropdown placeholder="Trạng thái" [style]="{ width: '168px' }" [options]="APPOINTMENT_STATUS" class="w-full sm:w-auto p-inputtext-sm" appendTo="body" optionLabel="label" optionValue="value" [(ngModel)]="searchForm.status" [virtualScroll]="true" [ngModelOptions]="{ standalone: true }" [showClear]="true" [virtualScrollItemSize]="50"></p-dropdown>
         <button pButton pRipple icon="pi pi-search" class="p-button-primary p-button-sm" (click)="onSearch()"></button>
