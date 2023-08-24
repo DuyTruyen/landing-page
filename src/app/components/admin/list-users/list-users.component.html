@@ -25,10 +25,10 @@
             (click)="onCreatUser()"></button>
         </div>
       </div>
-      <m-table [isLazyLoad]="true" [cols]="cols" [items]="users" [take]="searchData.take"
+      <m-table [isLazyLoad]="false" [cols]="cols" [items]="users"
         (selectRow)="selectUser($event)" [customBodyTemplate]="customBodyTemplate"
         [customHeaderTemplate]="customHeaderTemplate" [calcHeight]="303" (onPageChange)="onPageChange($event)"
-        [totalRecords]="total" [dataKey]="'id'" [loading]="loading" class="table-admin">
+        [dataKey]="'id'" [loading]="loading" class="table-admin">
       </m-table>
       <ng-template #customHeaderTemplate>
         <th *ngFor="let col of cols; let i = index" [style.minWidth]="col['width']" (click)="customSort(col)">{{col['header']}}

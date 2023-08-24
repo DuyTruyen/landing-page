@@ -22,7 +22,7 @@
                         class="p-button-success p-button-sm" (click)="onCreateItem()"></button>
                 </div>
             </div>
-            <m-table [isLazyLoad]="true" [cols]="cols" [items]="userGroups" (onEditItem)="onEditItem($event)"
+            <m-table [isLazyLoad]="false" [cols]="cols" [items]="userGroups" (onEditItem)="onEditItem($event)"
                 (onDeleteItem)="onDeleteItem($event)" [take]="searchData.take"
                 [customHeaderTemplate]="customHeaderTemplate" (selectRow)="selectUserGroup($event)"
                 (onPageChange)="onPageChange($event)" [totalRecords]="total" [dataKey]="'id'" [loading]="loading"

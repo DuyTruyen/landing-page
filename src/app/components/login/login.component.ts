@@ -37,7 +37,6 @@ export class LoginComponent implements OnInit, OnDestroy {
         username: ['', [Validators.required, Validators.pattern(nonWhiteSpaceRegExp)]],
         password: ['', [Validators.required]],
       });
-    this.slogan = this.configService.getConfig().slogan;
   }
 
   ngOnDestroy(): void {
@@ -55,6 +54,7 @@ export class LoginComponent implements OnInit, OnDestroy {
             localStorage.setItem(StorageKeys.TOKEN, res.token);
             localStorage.setItem(StorageKeys.USER, JSON.stringify(res));
             // location.href = '/admin-dashboard';
+            this.authState.dispatch(res);
             this.router.navigate(['/admin-dashboard']);
         }
     }, error => {

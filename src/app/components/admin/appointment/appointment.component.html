@@ -29,7 +29,7 @@
         <p-calendar [showClear]="true" [style]="{ width: '168px' }" class="w-full sm:w-auto p-inputtext-sm" [showButtonBar]="true" placeholder="Đến ngày" [showIcon]="true" appendTo="body" [dateFormat]="'dd/mm/yy'" [(ngModel)]="searchForm.createDateTo"></p-calendar>
       </div>
 
-      <p-table styleClass="p-datatable-striped p-datatable-sm p-datatable-gridlines" class="table-admin" [scrollable]="true" scrollHeight="650px" [dataKey]="'id'" selectionMode="single" [(selection)]="selectedItem" [paginator]="true" [rows]="40" [rowsPerPageOptions]="[40, 60, 80]" [scrollable]="true" [value]="listItems" [totalRecords]="totalItemCount" (onPageChange)="onPageChange($event)" [loading]="loading">
+      <p-table styleClass="p-datatable-striped p-datatable-sm p-datatable-gridlines" class="table-admin" [scrollable]="true" scrollHeight="calc(100vh - 326px)" [dataKey]="'id'" selectionMode="single" [(selection)]="selectedItem" [paginator]="true" [rows]="40" [rowsPerPageOptions]="[40, 60, 80]" [scrollable]="true" [value]="listItems" [totalRecords]="totalItemCount" (onPageChange)="onPageChange($event)" [loading]="loading">
         <ng-template pTemplate="header">
           <tr>
             <th [style.minWidth]="'2rem'" class="text-center">STT</th>

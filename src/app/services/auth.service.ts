@@ -10,6 +10,9 @@ export class AuthService extends BaseService {
   login(payload: any): Observable<any> {
     return this.post('/login', payload);
   }
+  validate(): Observable<any> {
+    return this.post('/Login/Validate', null);
+  }
 
   logout(): Observable<any> {
     let token = localStorage.getItem(Constants.FIREBASE_TOKEN);
