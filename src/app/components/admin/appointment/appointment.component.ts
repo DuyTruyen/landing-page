@@ -37,12 +37,14 @@ export class AppointmentComponent implements OnInit {
         status: null,
     }
     searchForm = {
-        appointmentDate: null,
-        dateCreated: null,
+        appointmentDateFrom: null,
+        appointmentDateTo: null,
+        createDateFrom: null,
+        createDateTo: null,
         phoneNo: '',
         name: '',
         departmentId: null,
-        status: this.searchData.status,
+        status: null,
         take: this.searchData.take,
         skip: this.searchData.skip,
     }
@@ -78,8 +80,10 @@ export class AppointmentComponent implements OnInit {
         this.loading = true;
         const payload = {
             ...this.searchForm,
-            appointmentDate: (this.searchForm.appointmentDate != null) ? (moment(this.searchForm.appointmentDate).format('YYYY-MM-DDTHH:mm:ssZ')) : '',
-            dateCreated: (this.searchForm.dateCreated != null) ? (moment(this.searchForm.dateCreated).format('YYYY-MM-DDTHH:mm:ssZ')) : '',
+            appointmentDateFrom: (this.searchForm.appointmentDateFrom != null) ? (moment(this.searchForm.appointmentDateFrom).format('YYYY-MM-DDTHH:mm:ssZ')) : '',
+            appointmentDateTo: (this.searchForm.appointmentDateTo != null) ? (moment(this.searchForm.appointmentDateTo).format('YYYY-MM-DDTHH:mm:ssZ')) : '',
+            createDateFrom: (this.searchForm.createDateFrom != null) ? (moment(this.searchForm.createDateFrom).format('YYYY-MM-DDTHH:mm:ssZ')) : '',
+            createDateTo: (this.searchForm.createDateTo != null) ? (moment(this.searchForm.createDateTo).format('YYYY-MM-DDTHH:mm:ssZ')) : '',
         };
 
         this.appointmentAPI.getAppointment(payload).subscribe({
@@ -162,12 +166,14 @@ export class AppointmentComponent implements OnInit {
 
     onClearSearch() {
         this.searchForm = {
-            appointmentDate: null,
-            dateCreated: null,
+            appointmentDateFrom: null,
+            appointmentDateTo: null,
+            createDateFrom: null,
+            createDateTo: null,
             phoneNo: '',
             name: '',
             departmentId: null,
-            status: this.searchData.status,
+            status: null,
             take: this.searchData.take,
             skip: this.searchData.skip,
         };
@@ -187,7 +193,7 @@ export class AppointmentComponent implements OnInit {
         this.dobStringDate = moment(this.selectedItem.dob).toDate();
         this.visitTimeStringDate = moment(this.selectedItem.visitTime).toDate();
         const selectedGender = this.GENDERS.find(g => g.value == this.selectedItem.gender);
-        if(selectedGender) {
+        if (selectedGender) {
             this.selectedGender = selectedGender;
         }
         this.statusForm.get('status')?.setValue(this.selectedItem.status);
