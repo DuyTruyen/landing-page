@@ -50,8 +50,8 @@
             <td [style.minWidth]="'15rem'">{{ rowData['departmentName'] }}</td>
             <td [style.minWidth]="'15rem'">{{ rowData['status'] | appointmentStatusString }}</td>
             <td [style.minWidth]="'15rem'">{{ rowData['appointmentDate'] | date : 'dd/MM/yyyy hh:mm:ss' }}</td>
-            <td [style.minWidth]="'15rem'">{{ rowData['dob'] | date : 'dd/MM/yyyy hh:mm:ss' }}</td>
-            <td [style.minWidth]="'13rem'">{{ rowData['visitTime'] | date : 'dd/MM/yyyy hh:mm:ss' }}</td>
+            <td [style.minWidth]="'15rem'">{{ rowData['dateCreated'] | date : 'dd/MM/yyyy hh:mm:ss' }}</td>
+            <td [style.minWidth]="'13rem'">{{ rowData['visitTime'] | date : 'hh:mm' }}</td>
           </tr>
         </ng-template>
       </p-table>
@@ -86,14 +86,14 @@
                 <input type="text" pInputText placeholder="Chuyên khoa" [(ngModel)]="selectedItem.departmentName" [disabled]="true" />
               </div>
               <div class="field col">
-                <label><strong>Ngày hẹn khám</strong></label>
-                <p-calendar [showIcon]="true" [showIcon]="true" appendTo="body" [dateFormat]="'dd/mm/yy'" [(ngModel)]="appointmentStringDate" [disabled]="true"></p-calendar>
+                <label><strong>Ngày đặt lịch</strong></label>
+                <p-calendar [showIcon]="true" [showIcon]="true" appendTo="body" [dateFormat]="'dd/mm/yy'" [disabled]="true" [(ngModel)]="createStringDate"></p-calendar>
               </div>
             </div>
             <div class="formgrid grid">
               <div class="field col">
-                <label><strong>Ngày đặt lịch</strong></label>
-                <p-calendar [showIcon]="true" [showIcon]="true" appendTo="body" [dateFormat]="'dd/mm/yy'" [disabled]="true" [(ngModel)]="dobStringDate"></p-calendar>
+                <label><strong>Ngày hẹn khám</strong></label>
+                <p-calendar [showIcon]="true" [showIcon]="true" appendTo="body" [dateFormat]="'dd/mm/yy'" [(ngModel)]="appointmentStringDate" [disabled]="true"></p-calendar>
               </div>
               <div class="field col">
                 <label><strong>Khung giờ</strong></label>
