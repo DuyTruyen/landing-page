@@ -26,7 +26,7 @@ export class AppointmentComponent implements OnInit {
     header = 'Xử lý thông tin hẹn khám';
     statusForm: FormGroup;
     appointmentStringDate: any;
-    dobStringDate: any;
+    createStringDate: any;
     visitTimeStringDate: any;
     APPOINTMENT_STATUS = Constants.APPOINTMENT_STATUS;
     APPOINTMENT_PRIORITY = Constants.APPOINTMENT_PRIORITY;
@@ -81,9 +81,9 @@ export class AppointmentComponent implements OnInit {
         const payload = {
             ...this.searchForm,
             appointmentDateFrom: (this.searchForm.appointmentDateFrom != null) ? (moment(this.searchForm.appointmentDateFrom).format('YYYY-MM-DDTHH:mm:ssZ')) : '',
-            appointmentDateTo: (this.searchForm.appointmentDateTo != null) ? (moment(this.searchForm.appointmentDateTo).format('YYYY-MM-DDTHH:mm:ssZ')) : '',
+            appointmentDateTo: (this.searchForm.appointmentDateTo != null) ? (moment(this.searchForm.appointmentDateTo).add(1, 'days').format('YYYY-MM-DDTHH:mm:ssZ')) : '',
             createDateFrom: (this.searchForm.createDateFrom != null) ? (moment(this.searchForm.createDateFrom).format('YYYY-MM-DDTHH:mm:ssZ')) : '',
-            createDateTo: (this.searchForm.createDateTo != null) ? (moment(this.searchForm.createDateTo).format('YYYY-MM-DDTHH:mm:ssZ')) : '',
+            createDateTo: (this.searchForm.createDateTo != null) ? (moment(this.searchForm.createDateTo).add(1, 'days').format('YYYY-MM-DDTHH:mm:ssZ')) : '',
         };
 
         this.appointmentAPI.getAppointment(payload).subscribe({
@@ -190,7 +190,7 @@ export class AppointmentComponent implements OnInit {
         this.isVisibleAppointmentDlg = true;
         this.selectedItem = data;
         this.appointmentStringDate = moment(this.selectedItem.appointmentDate).toDate();
-        this.dobStringDate = moment(this.selectedItem.dob).toDate();
+        this.createStringDate = moment(this.selectedItem.dateCreated).toDate();
         this.visitTimeStringDate = moment(this.selectedItem.visitTime).toDate();
         const selectedGender = this.GENDERS.find(g => g.value == this.selectedItem.gender);
         if (selectedGender) {
