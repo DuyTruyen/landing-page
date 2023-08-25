@@ -15,4 +15,8 @@ export class AppointmentService extends BaseService {
     putStatus(statusId: any, status: any) {
         return this.put('/Appointment/Status/' + statusId, status);
     }
+
+    historyAppointment(appointmentId: any) {
+        return this.get('/Appointment/History/' + appointmentId);
+    }
 }

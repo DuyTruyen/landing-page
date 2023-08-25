@@ -15,7 +15,9 @@ export class AppointmentComponent implements OnInit {
     breadcrumbItem: MenuItem[];
     home: MenuItem;
     loading = false;
+    loadingHistory = false;
     listItems: any = [];
+    listHistory: any = [];
     lstDepartments: any = [];
     totalDepartmen = 0;
     cols: any[] = [];
@@ -106,6 +108,27 @@ export class AppointmentComponent implements OnInit {
         });
     }
 
+    getHistoryAppointment() {
+        this.loadingHistory = true;
+        this.appointmentAPI.historyAppointment(this.selectedItem.id).subscribe({
+            next: (res) => {
+                if (res != undefined) {
+                    this.listHistory = res;
+                    this.loadingHistory = false;
+                } else {
+                    if (res.errors && res.errors.length > 0) {
+                        res.errors.forEach((el: any) => {
+                            this.notification.error(el.errorMessage);
+                        });
+                    } else {
+                        this.notification.error('Lấy dữ liệu không thành công !');
+                    }
+                }
+
+            }
+        })
+    }
+
     getDepartments() {
         this.departmentService.getAll().subscribe({
             next: (res) => {
@@ -187,6 +210,7 @@ export class AppointmentComponent implements OnInit {
     }
 
     dbClickUpdate(data: any) {
+        this.getHistoryAppointment();
         this.isVisibleAppointmentDlg = true;
         this.selectedItem = data;
         this.appointmentStringDate = moment(this.selectedItem.appointmentDate).toDate();
