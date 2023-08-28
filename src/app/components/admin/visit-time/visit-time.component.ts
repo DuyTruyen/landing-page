@@ -159,7 +159,6 @@ export class VisitTimeComponent implements OnInit {
 
   onDeleteItem(item: any) {
     this.deletedItem = item;
-    console.log('onDeleteItem', item);
     const dateTime = new Date(item.name);
     const formattedTime = this.datePipe.transform(dateTime, 'HH:mm') || '';
     this.textConfirmDelete = `Xác nhận xóa khung giờ khám <b>${formattedTime}</b>?`;
