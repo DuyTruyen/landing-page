@@ -131,9 +131,9 @@
           </div>
         </div>
         <div class="car">
-        <h4><strong>Lịch sử chỉnh sửa</strong></h4>
-        <p-scrollPanel [style]="{ height: '150px', width: '100%' }" *ngFor="let history of listHistory">
-        <h5>{{selectedItem.name}}</h5>
+        <h4 class="font-bold">Lịch sử chỉnh sửa</h4>
+        <p-scrollPanel [style]="{ height: '100px', width: '100%' }" *ngFor="let history of listHistory">
+        <h5 class="font-bold">{{selectedItem.name}}</h5>
             <span>{{history.content}}</span>
         </p-scrollPanel>
         </div>

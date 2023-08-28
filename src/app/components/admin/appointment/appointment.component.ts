@@ -210,9 +210,9 @@ export class AppointmentComponent implements OnInit {
     }
 
     dbClickUpdate(data: any) {
-        this.getHistoryAppointment();
         this.isVisibleAppointmentDlg = true;
         this.selectedItem = data;
+        this.getHistoryAppointment();
         this.appointmentStringDate = moment(this.selectedItem.appointmentDate).toDate();
         this.createStringDate = moment(this.selectedItem.dateCreated).toDate();
         this.visitTimeStringDate = moment(this.selectedItem.visitTime).toDate();
