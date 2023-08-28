@@ -52,7 +52,7 @@ export class VisitTimeComponent implements OnInit {
   constructor(private fb: FormBuilder, private notification: NotificationService, private visitTimeService: VisitTimeService, private datePipe: DatePipe) {
     this.visitTimeForm = this.fb.group({
       id: [null],
-      name: [new Date('1970-01-01T07:00:00'), [Validators.required]],
+      name: [new Date(), [Validators.required]],
       session: [null, [Validators.required]],
       enable: [true],
     });
@@ -94,7 +94,7 @@ export class VisitTimeComponent implements OnInit {
     this.visitTimeForm.reset();
     this.visitTimeForm.patchValue({
       id: 0,
-      name: new Date('1970-01-01T07:00:00'),
+      name: new Date(),
       session: 1,
       enable: true,
     });
@@ -161,7 +161,7 @@ export class VisitTimeComponent implements OnInit {
     this.deletedItem = item;
     const dateTime = new Date(item.name);
     const formattedTime = this.datePipe.transform(dateTime, 'HH:mm') || '';
-    this.textConfirmDelete = `Xác nhận xóa khung giờ khám <b>${formattedTime}</b>?`;
+    this.textConfirmDelete = `Xác nhận xóa khung giờ khám <b>${formattedTime}</b> ?`;
     this.isVisibleDeleteItemDialog = true;
   }
 
@@ -178,7 +178,7 @@ export class VisitTimeComponent implements OnInit {
   search() {
     this.loading = true;
     this.visitTimeService
-      .search(this.searchData)
+      .getAll(this.searchData)
       .subscribe({
         next: (res: any) => {
           this.visitTimes = res.data;

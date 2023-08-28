@@ -67,7 +67,7 @@
                         <label for="address">Buổi <span class="text-red-500">*</span></label>
                         <p-dropdown [options]="session" formControlName="session" optionLabel="label" optionValue="key"></p-dropdown>
                         <div class="m-error"
-                        *ngIf="visitTimeForm.controls['session'].invalid && visitTimeForm.controls['name'].dirty">
+                        *ngIf="visitTimeForm.controls['session'].invalid && visitTimeForm.controls['session'].dirty">
                         *Chưa chọn buổi
                     </div>
                     </div>
