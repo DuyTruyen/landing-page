@@ -5,6 +5,7 @@ import { VisitTimeService } from 'src/app/services/visit-time.service';
 import { Constants } from 'src/app/shared/constants/constants';
 import { NotificationService } from 'src/app/shared/notification.service';
 import { NoWhitespaceValidator } from 'src/app/shared/validators/no-whitespace.validator';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-visit-time',
@@ -48,10 +49,10 @@ export class VisitTimeComponent implements OnInit {
   breadcrumbItem: MenuItem[];
   breadcrumbHome: MenuItem;
 
-  constructor(private fb: FormBuilder, private notification: NotificationService, private visitTimeService: VisitTimeService) {
+  constructor(private fb: FormBuilder, private notification: NotificationService, private visitTimeService: VisitTimeService, private datePipe: DatePipe) {
     this.visitTimeForm = this.fb.group({
       id: [null],
-      name: [new Date('1970-01-01T07:00:00'), [Validators.required]],
+      name: [new Date(), [Validators.required]],
       session: [null, [Validators.required]],
       enable: [true],
     });
@@ -93,7 +94,7 @@ export class VisitTimeComponent implements OnInit {
     this.visitTimeForm.reset();
     this.visitTimeForm.patchValue({
       id: 0,
-      name: new Date('1970-01-01T07:00:00'),
+      name: new Date(),
       session: 1,
       enable: true,
     });
@@ -158,7 +159,9 @@ export class VisitTimeComponent implements OnInit {
 
   onDeleteItem(item: any) {
     this.deletedItem = item;
-    this.textConfirmDelete = `Xác nhận xóa khung giờ khám <b>${item.name}</b>?`;
+    const dateTime = new Date(item.name);
+    const formattedTime = this.datePipe.transform(dateTime, 'HH:mm') || '';
+    this.textConfirmDelete = `Xác nhận xóa khung giờ khám <b>${formattedTime}</b> ?`;
     this.isVisibleDeleteItemDialog = true;
   }
 
@@ -175,7 +178,7 @@ export class VisitTimeComponent implements OnInit {
   search() {
     this.loading = true;
     this.visitTimeService
-      .search(this.searchData)
+      .getAll(this.searchData)
       .subscribe({
         next: (res: any) => {
           this.visitTimes = res.data;
