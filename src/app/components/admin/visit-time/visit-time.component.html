@@ -32,13 +32,13 @@
                 <th [style.minWidth]="'6rem'" pFrozenColumn alignFrozen="right"></th>
             </ng-template>
             <ng-template #customBodyTemplate let-rowData>
-                <td [style.minWidth]="'40rem'" class="text-center">
+                <td [style.minWidth]="'40rem'" class="text-center" (click)="onEditItem(rowData)">
                     {{ rowData.name | date: 'hh:mm'  }}
                 </td>
-                <td [style.minWidth]="'40rem'" class="text-center">
+                <td [style.minWidth]="'40rem'" class="text-center" (click)="onEditItem(rowData)">
                     {{ rowData.session| visitSession }}
                 </td>
-                <td [style.minWidth]="'10rem'" class="justify-content-center">
+                <td [style.minWidth]="'10rem'" class="justify-content-center" (click)="onEditItem(rowData)">
                     <i *ngIf="!rowData.disabled else noStatus" class="pi pi-check" [style.color]="'var(--green-400)'"></i>
                     <ng-template #noStatus>
                       <i class="pi pi-ban" [style.color]="'var(--red-400)'"></i>
@@ -67,7 +67,7 @@
                         <label for="address">Buổi <span class="text-red-500">*</span></label>
                         <p-dropdown [options]="session" formControlName="session" optionLabel="label" optionValue="key"></p-dropdown>
                         <div class="m-error"
-                        *ngIf="visitTimeForm.controls['session'].invalid && visitTimeForm.controls['name'].dirty">
+                        *ngIf="visitTimeForm.controls['session'].invalid && visitTimeForm.controls['session'].dirty">
                         *Chưa chọn buổi
                     </div>
                     </div>
