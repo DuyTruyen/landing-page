@@ -4,7 +4,6 @@ import { MenuItem } from 'primeng/api';
 import { VisitTimeService } from 'src/app/services/visit-time.service';
 import { Constants } from 'src/app/shared/constants/constants';
 import { NotificationService } from 'src/app/shared/notification.service';
-import { NoWhitespaceValidator } from 'src/app/shared/validators/no-whitespace.validator';
 import { DatePipe } from '@angular/common';
 
 @Component({
@@ -40,9 +39,14 @@ export class VisitTimeComponent implements OnInit {
   searchData = {
     skip: 0,
     take: 40,
+  };
+
+  searchForm = {
+    skip: this.searchData.skip,
+    take: this.searchData.take,
     keyword: '',
-    disabled: '',
-    session: '',
+    disabled: null,
+    session: null,
   };
 
   // Breakcrum Page source-hospital
@@ -178,7 +182,7 @@ export class VisitTimeComponent implements OnInit {
   search() {
     this.loading = true;
     this.visitTimeService
-      .getAll(this.searchData)
+      .getAll(this.searchForm)
       .subscribe({
         next: (res: any) => {
           this.visitTimes = res.data;
@@ -191,13 +195,13 @@ export class VisitTimeComponent implements OnInit {
   }
 
   resetSearch() {
-    this.searchData = {
-      skip: 0,
-      take: 40,
-      keyword: '',
-      session: '',
-      disabled: '',
-    };
+    this.searchForm = {
+        skip: this.searchData.skip,
+        take: this.searchData.take,
+        keyword: '',
+        disabled: null,
+        session: null,
+    }
     this.search();
   }
 }
