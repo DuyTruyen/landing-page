@@ -47,7 +47,7 @@
         <td [style.minWidth]="'11rem'">{{ rowData['dateCreated'] | date : 'dd/MM/yyyy hh:mm:ss' }}</td>
         <td [style.minWidth]="'11rem'">{{ rowData['visitTime'] | date : 'hh:mm' }}</td>
         <td [style.minWidth]="'11rem'" class="flex justify-content-evenly text-center">
-        <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success p-button-xs" (click)="dbClickUpdate(rowData)"></button>
+        <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success p-button-xs" (click)="clickUpdate(rowData)"></button>
         </td>
       </ng-template>
     </div>

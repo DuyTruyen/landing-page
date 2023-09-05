@@ -214,7 +214,7 @@ export class AppointmentComponent implements OnInit {
         this.search();
     }
 
-    dbClickUpdate(data: any) {
+    clickUpdate(data: any) {
         this.isVisibleAppointmentDlg = true;
         this.selectedItem = data;
         this.getHistoryAppointment();
