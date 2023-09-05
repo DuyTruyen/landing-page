@@ -18,50 +18,38 @@
         <p-calendar [showClear]="true" [style]="{ width: '168px' }" class="w-full sm:w-auto p-inputtext-sm" [showButtonBar]="true" placeholder="Ngày đặt lịch từ" [showIcon]="true" appendTo="body" [dateFormat]="'dd/mm/yy'" [(ngModel)]="searchForm.createDateFrom"></p-calendar>
         <p-calendar [showClear]="true" [style]="{ width: '168px' }" class="w-full sm:w-auto p-inputtext-sm" [showButtonBar]="true" placeholder="Đến ngày" [showIcon]="true" appendTo="body" [dateFormat]="'dd/mm/yy'" [(ngModel)]="searchForm.createDateTo"></p-calendar>
       </div>
-
-      <p-table
-       styleClass="p-datatable-striped p-datatable-sm p-datatable-gridlines"
-       class="table-admin"
-       [scrollable]="true"
-       scrollHeight="calc(100vh - 326px)"
-       [dataKey]="'id'"
-       selectionMode="single"
-       [(selection)]="selectedItem"
-       [paginator]="true"
-       [rows]="40"
-       [rowsPerPageOptions]="[40, 60, 80]"
-       [value]="listItems"
-       [totalRecords]="totalItemCount"
-       [showCurrentPageReport]="true"
-       (onPageChange)="onPageChange($event)"
-       [loading]="loading"
-       currentPageReportTemplate="{first} đến {last} trong tổng số {totalRecords}"
-       >
-        <ng-template pTemplate="header">
-          <tr>
-            <th [style.minWidth]="'2rem'" class="text-center">STT</th>
-            <th [style.minWidth]="'15rem'">Họ tên</th>
-            <th [style.minWidth]="'15rem'">SDT</th>
-            <th [style.minWidth]="'15rem'">Chuyên khoa</th>
-            <th [style.minWidth]="'15rem'">Trạng thái</th>
-            <th [style.minWidth]="'15rem'">Ngày hẹn khám</th>
-            <th [style.minWidth]="'15rem'">Ngày đặt lịch</th>
-            <th [style.minWidth]="'13rem'">Khung giờ</th>
-          </tr>
-        </ng-template>
-        <ng-template pTemplate="body" let-rowData let-rowIndex="rowIndex">
-          <tr (dblclick)="dbClickUpdate(rowData)">
-            <td [style.minWidth]="'2rem'" class="text-center">{{ rowIndex + 1 }}</td>
-            <td [style.minWidth]="'15rem'">{{ rowData['name'] }}</td>
-            <td [style.minWidth]="'15rem'">{{ rowData['phoneNo'] }}</td>
-            <td [style.minWidth]="'15rem'">{{ rowData['departmentName'] }}</td>
-            <td [style.minWidth]="'15rem'">{{ rowData['status'] | appointmentStatusString }}</td>
-            <td [style.minWidth]="'15rem'">{{ rowData['appointmentDate'] | date : 'dd/MM/yyyy hh:mm:ss' }}</td>
-            <td [style.minWidth]="'15rem'">{{ rowData['dateCreated'] | date : 'dd/MM/yyyy hh:mm:ss' }}</td>
-            <td [style.minWidth]="'13rem'">{{ rowData['visitTime'] | date : 'hh:mm' }}</td>
-          </tr>
-        </ng-template>
-      </p-table>
+      <m-table
+      [isLazyLoad]="false"
+      [cols]="cols"
+      [items]="listItems"
+      [dataKey]="'id'"
+      [loading]="loading"
+      [take]="searchForm.take"
+      [calcHeight]="303"
+      [customHeaderTemplate]="customHeaderTemplate"
+      [customBodyTemplate]="customBodyTemplate"
+      class="table-admin"
+      [totalRecords]="totalItemCount"
+      (onPageChange)="onPageChange($event)">
+      </m-table>
+      <ng-template #customHeaderTemplate>
+        <th *ngFor="let col of cols; let i = index" [style.minWidth]="col['width']">{{ col["header"] }}</th>
+        <th [style.minWidth]="'11rem'">Trạng thái</th>
+        <th [style.minWidth]="'11rem'">Ngày hẹn khám</th>
+        <th [style.minWidth]="'11rem'">Ngày đặt lịch</th>
+        <th [style.minWidth]="'11rem'">Khung giờ</th>
+        <th [style.minWidth]="'11rem'"></th>
+      </ng-template>
+      <ng-template #customBodyTemplate let-rowData>
+        <td [style.minWidth]="col.width || '12rem'" *ngFor="let col of cols"> {{ rowData[col["field"]] }} </td>
+        <td [style.minWidth]="'11rem'">{{ rowData['status'] | appointmentStatusString }}</td>
+        <td [style.minWidth]="'11rem'">{{ rowData['appointmentDate'] | date : 'dd/MM/yyyy hh:mm:ss' }}</td>
+        <td [style.minWidth]="'11rem'">{{ rowData['dateCreated'] | date : 'dd/MM/yyyy hh:mm:ss' }}</td>
+        <td [style.minWidth]="'11rem'">{{ rowData['visitTime'] | date : 'hh:mm' }}</td>
+        <td [style.minWidth]="'11rem'" class="flex justify-content-evenly text-center">
+        <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success p-button-xs" (click)="dbClickUpdate(rowData)"></button>
+        </td>
+      </ng-template>
     </div>
     <p-dialog [(visible)]="isVisibleAppointmentDlg" [style]="{ width: '65rem' }" [modal]="true" [header]="header" class="p-fluid">
       <ng-template pTemplate="content">

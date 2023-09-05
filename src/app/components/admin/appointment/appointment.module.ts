@@ -4,14 +4,13 @@ import { AppointmentRoutingModule } from './appointment-routing.module';
 import { BreadcrumbModule } from 'primeng/breadcrumb';
 import { AppointmentComponent } from './appointment.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-// import { MTableModule } from 'src/app/shared/components/m-table/m-table.module';
+import { MTableModule } from 'src/app/shared/components/m-table/m-table.module';
 import { DialogModule } from 'primeng/dialog';
 import { InputTextModule } from 'primeng/inputtext';
 import { CalendarModule } from 'primeng/calendar';
 import { DropdownModule } from 'primeng/dropdown';
 import { ScrollPanelModule } from 'primeng/scrollpanel';
 import { PipeModule } from 'src/app/shared/pipes/pipe.module';
-import { TableModule } from 'primeng/table';
 
 
 @NgModule({
@@ -22,14 +21,13 @@ import { TableModule } from 'primeng/table';
     BreadcrumbModule,
     FormsModule,
     ReactiveFormsModule,
-    // MTableModule,
+    MTableModule,
     DialogModule,
     InputTextModule,
     CalendarModule,
     DropdownModule,
     ScrollPanelModule,
     PipeModule,
-    TableModule,
   ]
 })
 export class AppointmentModule { }

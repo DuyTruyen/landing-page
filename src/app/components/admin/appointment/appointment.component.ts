@@ -74,6 +74,11 @@ export class AppointmentComponent implements OnInit {
     }
 
     ngOnInit(): void {
+        this.cols = [
+            { field: 'name', header: 'Họ tên', isOpSort: true, iconSort: 0, width: '15rem' },
+            { field: 'phoneNo', header: 'SDT', isOpSort: true, iconSort: 0, width: '15rem' },
+            { field: 'departmentName', header: 'Chuyên khoa', isOpSort: true, iconSort: 0, width: '15rem' },
+        ]
         this.search();
         this.getDepartments();
     }
