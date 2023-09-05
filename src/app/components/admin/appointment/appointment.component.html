@@ -3,16 +3,6 @@
     <div class="card admin-content m-0">
       <p-breadcrumb [model]="breadcrumbItem" [home]="home" styleClass="breadcrumb-admin"></p-breadcrumb>
       <!--End: Title Danh sách group -->
-      <!-- <div class="flex flex-wrap column-gap-2 row-gap-6 pb-2">
-        <input type="text" class="w-full sm:w-auto p-inputtext-sm" pInputText placeholder="Tên khách hàng" [(ngModel)]="searchForm.name" />
-        <input type="text" class="w-full sm:w-auto p-inputtext-sm" pInputText placeholder="Số điện thoại" [(ngModel)]="searchForm.phoneNo" />
-        <p-dropdown placeholder="Chuyên khoa" [style]="{ width: '180px'}" [options]="lstDepartments" class="w-full sm:w-auto p-inputtext-sm" appendTo="body" optionLabel="name" optionValue="id" [(ngModel)]="searchForm.departmentId" [virtualScroll]="true" [ngModelOptions]="{ standalone: true }" [showClear]="true" [virtualScrollItemSize]="50"></p-dropdown>
-        <p-calendar [showClear]="true" [style]="{ width: '180px' }" class="w-full sm:w-auto p-inputtext-sm" [showButtonBar]="true" placeholder="Ngày hẹn khám" [showIcon]="true" appendTo="body" [dateFormat]="'dd/mm/yy'" [(ngModel)]="searchForm.appointmentDate"></p-calendar>
-        <p-calendar [style]="{ width: '180px' }" [showClear]="true" class="w-full sm:w-auto p-inputtext-sm" [showButtonBar]="true" placeholder="Ngày đặt lịch" [showIcon]="true" appendTo="body" [dateFormat]="'dd/mm/yy'" [(ngModel)]="searchForm.dateCreated"></p-calendar>
-        <button pButton pRipple icon="pi pi-search" class="p-button-primary p-button-sm" (click)="onSearch()"></button>
-        <button pButton pRipple icon="pi pi-times" class="p-button-secondary p-button-sm" (click)="onClearSearch()"></button>
-      </div> -->
-
       <div class="flex flex-wrap column-gap-2 row-gap-6 pb-1">
         <input type="text" class="w-full sm:w-auto p-inputtext-sm" pInputText style="width: 168px !important;" placeholder="Tên khách hàng" [(ngModel)]="searchForm.name" />
         <input type="text" class="w-full sm:w-auto p-inputtext-sm" pInputText style="width: 168px !important;" placeholder="Số điện thoại" [(ngModel)]="searchForm.phoneNo" />
@@ -29,7 +19,24 @@
         <p-calendar [showClear]="true" [style]="{ width: '168px' }" class="w-full sm:w-auto p-inputtext-sm" [showButtonBar]="true" placeholder="Đến ngày" [showIcon]="true" appendTo="body" [dateFormat]="'dd/mm/yy'" [(ngModel)]="searchForm.createDateTo"></p-calendar>
       </div>
 
-      <p-table styleClass="p-datatable-striped p-datatable-sm p-datatable-gridlines" class="table-admin" [scrollable]="true" scrollHeight="calc(100vh - 326px)" [dataKey]="'id'" selectionMode="single" [(selection)]="selectedItem" [paginator]="true" [rows]="40" [rowsPerPageOptions]="[40, 60, 80]" [scrollable]="true" [value]="listItems" [totalRecords]="totalItemCount" (onPageChange)="onPageChange($event)" [loading]="loading">
+      <p-table
+       styleClass="p-datatable-striped p-datatable-sm p-datatable-gridlines"
+       class="table-admin"
+       [scrollable]="true"
+       scrollHeight="calc(100vh - 326px)"
+       [dataKey]="'id'"
+       selectionMode="single"
+       [(selection)]="selectedItem"
+       [paginator]="true"
+       [rows]="40"
+       [rowsPerPageOptions]="[40, 60, 80]"
+       [value]="listItems"
+       [totalRecords]="totalItemCount"
+       [showCurrentPageReport]="true"
+       (onPageChange)="onPageChange($event)"
+       [loading]="loading"
+       currentPageReportTemplate="{first} đến {last} trong tổng số {totalRecords}"
+       >
         <ng-template pTemplate="header">
           <tr>
             <th [style.minWidth]="'2rem'" class="text-center">STT</th>
