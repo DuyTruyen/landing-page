@@ -7,14 +7,14 @@
         <span class="block p-input-icon-left">
           <i class="pi pi-search"></i>
           <input pInputText type="text" placeholder="Tìm kiếm ..." class="inline-block lg:w-17rem sm:w-auto p-inputtext-sm"
-           [(ngModel)]="searchData.keyword" (keydown.enter)="search()"/>
+           [(ngModel)]="searchData.name" (keydown.enter)="search()"/>
           <button pButton pRipple icon="pi pi-search" class="p-button-primary mr-2 ml-2 p-button-sm" (click)="search()"></button>
           <button pButton pRipple icon="pi pi-times" class="p-button-secondary p-button-sm" (click)="resetSearch()"></button>
         </span>
       </div>
 
       <m-table [isLazyLoad]="false" [cols]="cols" [items]="customers" (selectRow)="selectItem($event)" [dataKey]="'id'" 
-      [customHeaderTemplate]="customHeaderTemplate" [customBodyTemplate]="customBodyTemplate" [tableStyleClass]="'p-datatable-sm'" [calcHeight]="303"> 
+      [customHeaderTemplate]="customHeaderTemplate" [customBodyTemplate]="customBodyTemplate" [loading]="loading" [tableStyleClass]="'p-datatable-sm'" [calcHeight]="303"> 
       </m-table>
 
       <ng-template #customHeaderTemplate>
@@ -24,13 +24,7 @@
       </ng-template>
 
       <ng-template #customBodyTemplate let-rowData>
-        <td [style.minWidth]="'15rem'" >{{ rowData['name']}}</td>
-        <td [style.minWidth]="'10rem'" >{{ rowData['phoneNo']}}</td>
-        <td [style.minWidth]="'10rem'" >{{ rowData['transformedDob']}}</td>
-        <td [style.minWidth]="'25rem'" >{{ rowData['address']}}</td>
-        <td [style.minWidth]="'10rem'" >{{ rowData['patientCode']}}</td>
-        <td [style.minWidth]="'10rem'" >{{ rowData['syncStatus']}}</td>
-        <td [style.minWidth]="'10rem'" >{{ rowData['registerDate']}}</td>
+        <td *ngFor="let col of cols; let i = index" [style.minWidth]="col['width']">{{rowData[col['field']]}}</td>
       </ng-template>
 
       <p-dialog header="Danh sách hồ sơ" [(visible)]="isVisibleProfileDialog" [modal]="true" class="p-fluid" [style]="{ width: '70rem', height: '80%' }">
@@ -39,73 +33,95 @@
             <h4 class="mt-3">
               <i class="pi pi-id-card mr-3 mb-3 mt-3" style="font-size: 1.5rem"></i>
               <span>
-                {{ member.name }}
+                <ng-container *ngIf="member.isPrimary === true">
+                  {{ member.name }} <i class="pi pi-key ml-3" [style.color]="'var(--blue-400)'"></i>
+                </ng-container>
+                <ng-container *ngIf="member.isPrimary === false">
+                  {{ member.name }}
+                </ng-container>
               </span>
             </h4>
-            <p-card *ngIf="selectedCustomer === member && showCard">
+            <p-card class="p-fluid" *ngIf="selectedCustomer === member && showCard">
               <div class="flex flex-row">
-                <p-card header="Thông tin cá nhân" [style]="{ width: '100%' }">
+                <p-card class="p-fluid" header="Thông tin cá nhân" [style]="{ width: '26vw' }">
                   <div class="flex flex-row">
-                    <ul [style]="{ width: '100%' }">
+                    <ul [style]="{ width: '100%' }" >
                       <li class="flex flex-row mr-3">
-                        <i class="pi pi-id-card -ml-6 mr-2 mb-5" style="font-size: 1rem"></i>
-                        {{ member.transformedDob }}
+                        <i class="pi pi-id-card -ml-6 mr-3 mb-5"></i>
+                        <p>
+                          {{ member.transformedDob }}
+                        </p>
                       </li>
                       <li class="flex flex-row mr-3">
-                        <i class="pi pi-phone -ml-6 mr-2 mb-5" style="font-size: 1rem"></i>
-                        {{ member.phoneNo }}
+                        <i class="pi pi-phone -ml-6 mr-3 mb-5"></i>
+                        <p>
+                          {{ member.phoneNo }}
+                        </p>
                       </li>
                       <li class="flex flex-row mr-3">
-                        <i class="pi pi-user-edit -ml-6 mr-2 mb-5" style="font-size: 1rem"> </i>
-                        {{ member.job }}
+                        <i class="pi pi-user-edit -ml-6 mr-3 mb-5"> </i>
+                        <p>
+                          {{ member.job }}
+                        </p>
                       </li>
                       <li class="flex flex-row mr-3">
-                        <i class="pi pi-envelope -ml-6 mr-2 mb-5" style="font-size: 1rem"></i>
-                        {{ member.email }}
+                        <i class="pi pi-envelope -ml-6 mr-3 mb-5"></i>
+                        <p>
+                          {{ member.email }}
+                        </p>
                       </li>
                       <p class="flex flex-row">
-                        <i class="pi pi-map -ml-6 mr-2" style="font-size: 1rem"></i>
-                        {{ member.address }} P108, N3 ,Khu tap the Khuong Thuong, Dong Da,
+                        <i class="pi pi-map -ml-6 mr-3" ></i>
+                        {{ member.address }}
                       </p>
                     </ul>
-                    <ul [style]="{ width: '100%' }">
+                    <ul [style]="{ width: '100%' }" >
                       <li class="flex flex-row">
-                        <i class="pi pi-info ml-3 mr-2 mb-5" style="font-size: 1rem"></i>
-                        {{ member.genderName }}
+                        <i class="pi pi-info ml-3 mr-3 mb-5" ></i>
+                        <p>
+                          {{ member.genderName }}
+                        </p>
                       </li>
                       <li class="flex flex-row">
-                        <i class="pi pi-users ml-3 mr-2 mb-5" style="font-size: 1rem"></i>
+                        <i class="pi pi-users ml-3 mr-3 mb-5" ></i>
+                        <p>
+                          {{member.nation}}
+                        </p>
                       </li>
                       <li class="flex flex-row">
-                        <i class="pi pi-id-card ml-3 mr-2 mb-3" style="font-size: 1rem"></i>
-                        {{ member.id }}
+                        <i class="pi pi-id-card ml-3 mr-3" ></i>
+                          <p>
+                            {{ member.id }}
+                          </p>
                       </li>
                     </ul>
                   </div>
                 </p-card>
-                <p-card header="Thông tin y tế" [style]="{ width: '100%' }">
+                <p-card class="p-fluid" header="Thông tin y tế" [style]="{ 'width': '28vw'}">
                   <div>
                     <li class="flex flex-row mr-8" *ngIf="synced" [style.color]="'var(--green-400)'">
-                      <i class="pi pi-download mr-3 mb-5" style="font-size: 1rem"></i>
+                      <i class="pi pi-download mr-3 mb-5" ></i>
                       Đã đồng bộ
                     </li>
                     <li class="flex flex-row mr-8" *ngIf="!synced" [style.color]="'var(--red-400)'">
-                      <i class="pi pi-download mr-3 mb-5" style="font-size: 1rem"></i>
+                      <i class="pi pi-download mr-3 mb-5"></i>
                       Chưa đồng bộ
                     </li>
                     <li class="flex flex-row mr-8">
-                      <i class="pi pi-user mr-3 mb-3" style="font-size: 1rem"></i>
+                      <i class="pi pi-user mr-3 mb-5" ></i>
                       Mã bệnh nhân
                     </li>
-                    <div class="flex flex-row mb-3" (click)="stopPropagation($event)">
+                    <div class="flex flex-row mb-3" (click)="stopPropagation($event)" >
                         <input type="text" pInputText class="mr-3" [(ngModel)]="hisCode" (keydown.enter)="syncProfile()" (click)="stopPropagation($event)" />
-                        <button pButton pRipple *ngIf="!synced" [label]="syncLabel" class="p-button-warning" style="color: #fff" (click)="syncProfile()"></button>
-                        <button pButton pRipple *ngIf="synced" [label]="syncLabel" class="p-button-danger" style="color: #fff" (click)="syncOffProfile(member.id)"></button>
+                        <button pButton pRipple *ngIf="!synced" [label]="'Đồng bộ hồ sơ HIS'" class="p-button-warning" style="color: #fff" (click)="syncProfile()"></button>
+                        <button pButton pRipple *ngIf="synced" [label]="'Bỏ đồng bộ HIS'" class="p-button-danger" style="color: #fff" (click)="syncOffProfile(member.id)"></button>
                     </div>
                     <li class="flex flex-row mr-8">
-                      <i class="pi pi-calendar-plus mr-3 mb-3" style="font-size: 1rem"></i>
+                      <i class="pi pi-calendar-plus mr-3" ></i>
                       <p *ngIf="!synced">Danh sách ca khám</p>
-                      <a *ngIf="synced" [style.color]="'var(--blue-500)'" (click)="showSession()">Danh sách ca khám ({{sessions.length}})</a>
+                      <a *ngIf="synced" [style.color]="'var(--blue-500)'" (click)="showSession()">
+                        Danh sách ca khám ({{sessionLengthMap.get(selectedCustomer.id) || 0}})
+                      </a>
                     </li>
                   </div>
                 </p-card>
@@ -118,16 +134,14 @@
       <p-dialog header="Danh sách hồ sơ từ HIS" [(visible)]="isVisibleHisProfileDialog" [style]="{ width: '70rem' }" [modal]="true" class="p-fluid">
         <h4 class="mt-3">
           <i class="pi pi-user mt-3 mr-3 mb-3" style="font-size: 1.5rem"> </i>
-          <span [style]="{ color: '#000' }">Mã bệnh nhân:</span>
+          <span [style]="{ color: '#000' }">Mã bệnh nhân: {{hisCode}}</span>
         </h4>
-        <p-table [value]="hisProfiles" [tableStyle]="{ 'min-width': '60rem', border: '0', cursor: 'pointer' }">
+        <p-table [value]="hisProfiles" [loading]="loading" [tableStyle]="{ 'min-width': '60rem', border: '0', cursor: 'pointer' }">
           <ng-template pTemplate="header">
             <tr>
-              <th [style]="{ width: '50rem', color: '#000' }">Thông tin bệnh nhân</th>
-              <th [style]="{ width: '15rem', color: '#000' }">Mã BN</th>
-              <th [style]="{ width: '15rem', color: '#000' }">Số điện thoại</th>
-              <th [style]="{ width: '20rem', color: '#000' }">Ca khám gần nhất</th>
-              <th [style]="{ width: '10rem', color: '#000' }"></th>
+              <th *ngFor="let col of profileCols" [style.width]="col['width'] || '12rem'">
+                {{col['header']}}
+              </th>
             </tr>
           </ng-template>
           <ng-template pTemplate="body" let-profile>
@@ -146,33 +160,31 @@
         </p-table>
       </p-dialog>
 
-      <p-dialog header="Danh sách ca khám" [(visible)]="isVisibleSessionDialog" [style]="{ width: '70rem' }" [modal]="true" class="p-fluid">
+      <p-dialog header="Danh sách ca khám" [(visible)]="isVisibleSessionDialog" [style]="{ width: '80rem' }" [modal]="true" class="p-fluid">
         <h4 class="mt-3">
-          <i class="pi pi-user mt-3 mr-3 mb-3" style="font-size: 1.5rem"> </i>
-          <span [style]="{ color: '#000' }">Danh sách ca khám:</span>
+          <span [style]="{ color: '#000' }">Ca khám mã bệnh nhân: {{hisCode}}</span>
         </h4>
-        <p-table [value]="sessions" [tableStyle]="{ 'min-width': '60rem', border: '0', cursor: 'pointer' }">
-          <ng-template pTemplate="header">
-            <tr>
-              <th [style]="{ width: '15rem', color: '#000' }">Thời gian khám</th>
-              <th [style]="{ width: '15rem', color: '#000' }">Lý do khám</th>
-              <th [style]="{ width: '15rem', color: '#000' }">Khoa, phòng</th>
-              <th [style]="{ width: '20rem', color: '#000' }">Chẩn đoán</th>
-              <th [style]="{ width: '10rem', color: '#000' }">Kết luận</th>
-            </tr>
-          </ng-template>
-          <ng-template pTemplate="body" let-session>
-            <tr>
-              <td>
-                {{session.visitDate | date : "dd/MM/yyyy" }}
-              </td>
-              <td></td>
-              <td>{{ session.departmentName }}</td>
-              <td></td>
-              <td>{{ session.conclusion }}</td>
-            </tr>
-          </ng-template>
-        </p-table>
+        
+        <m-table [isLazyLoad]="false" [cols]="sessionCols" [items]="sessions" (selectRow)="selectItem($event)" [dataKey]="'id'" 
+        [customHeaderTemplate]="customSessionHeaderTemplate" [customBodyTemplate]="customSessionBodyTemplate" [loading]="loading" [tableStyleClass]="'p-datatable-sm'" [calcHeight]="303"> 
+        </m-table>
+
+        <ng-template #customSessionHeaderTemplate>
+          <th *ngFor="let col of sessionCols; let i = index" [style.minWidth]="col['width'] || '12rem'">
+            {{ col['header'] }}
+          </th>
+        </ng-template>
+
+        <ng-template #customSessionBodyTemplate let-rowData>
+          <td *ngFor="let col of sessionCols; let i = index" [style.minWidth]="col['width']">
+            <ng-container *ngIf="col.field === 'visitDate'">
+              {{rowData[col.field] | date : "dd/MM/yyyy"}} 
+            </ng-container>
+            <ng-container *ngIf="col.field !== 'visitDate'">
+              {{ rowData[col.field] }}
+            </ng-container>
+          </td> 
+        </ng-template>
       </p-dialog>
     </div>
   </div>

@@ -1,19 +1,23 @@
-:host ::ng-deep .p-dialog-header {
+:host .p-fluid ::ng-deep .p-dialog-header {
     background-color: var(--blue-600)!important;
     color: #fff;
 }
-:host ::ng-deep .p-dialog-content {
+:host .p-fluid ::ng-deep .p-dialog-content {
     background-color: var(--blue-50);
-}
-:host ::ng-deep .panel-body a{
     cursor: pointer;
 }
-:host ::ng-deep .p-dialog .p-dialog-header .p-dialog-header-icon {
+:host .p-fluid ::ng-deep .p-dialog .p-dialog-header .p-dialog-header-icon {
     color: #fff;
 }
 ul > li{
     list-style: none;
 }
-:host ::ng-deep .p-card{
+span > i{
+    font-size: 1.5rem;
+}
+p{
+    line-height: 1rem;
+}
+:host .p-fluid ::ng-deep .p-card{
     box-shadow: none !important;
 }

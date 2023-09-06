@@ -1,5 +1,4 @@
-import { Component, OnInit, ViewChild , TemplateRef} from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, OnInit} from '@angular/core';
 import { CustomerService } from 'src/app/services/customer.service';
 import { NotificationService } from 'src/app/shared/notification.service';
 import { MenuItem } from 'primeng/api';
@@ -36,9 +35,10 @@ export class CustomersComponent implements OnInit {
   }
   
   cols: any[] = [];
+  profileCols: any[] = [];
+  sessionCols: any[] = [];
   customers:any[] = [];
   members:any[] = [];
-  dataColumn:any[] = [];
   breadcrumbItem: MenuItem[];
   home: MenuItem;
   loading = false;
@@ -53,17 +53,16 @@ export class CustomersComponent implements OnInit {
   hisProfiles:any[] = [];
   sessions:any[] = [];
   synced = false;
-  syncLabel = 'Đồng bộ hồ sơ HIS';
+  sessionLengthMap: Map<number, number> = new Map<number, number>();
   total = 0;
   searchData = {
     skip: 0,
     take: 40,
-    keyword: '',
+    name: '',
   };
 
   constructor(
     private notification: NotificationService,
-    private fb: FormBuilder,
     private customerService: CustomerService,
   ) {
     this.breadcrumbItem = [
@@ -78,13 +77,27 @@ export class CustomersComponent implements OnInit {
    }
   ngOnInit(): void {
     this.cols = [
-      {field: 'name', header: 'Họ tên', width: '15rem'},
+      {field: 'name', header: 'Họ tên', width: '16rem'},
       {field: 'phoneNo', header: 'SĐT', width: '10rem'},
       {field: 'transformedDob', header: 'Ngày sinh', width: '10rem'},
-      {field: 'address', header:'Địa chỉ', width: '25rem'},
+      {field: 'address', header:'Địa chỉ', width: '22rem'},
       {field: 'patientCode', header: 'Mã BN', width: '10rem'},
       {field: 'syncStatus', header: 'Trạng thái', width: '10rem'},
       {field: 'registerDate', header: 'Ngày đăng kí', width: '10rem'},
+    ]
+    this.profileCols = [
+      {header:'Thông tin bệnh nhân', width: '50rem'},
+      {header:'Mã BN',width: '15rem'},
+      {header:'Số điện thoại',width:'15rem'},
+      {header:'Ca khám gần nhất',width:'20rem'},
+      {header:'', width:'15rem'}
+    ]
+    this.sessionCols = [
+      {field:'visitDate', header:'Thời gian khám', width: '12rem'},
+      {field:'reason', header:'Lý do khám', width: '16rem'},
+      {field:'departmentName', header:'Khoa, phòng', width: '12rem'},
+      {field:'diagnostic', header:'Chẩn đoán',width: '20rem'},
+      {field:'conclusion', header:'Kết luận', width: '12rem'}
     ]
     this.getAll();
   }
@@ -109,6 +122,8 @@ export class CustomersComponent implements OnInit {
             this.notification.error('Lấy dữ liệu không thành công')
           }
         }
+      }, complete: () => {
+        this.loading = false; 
       }
     }) .add(() => {
       this.loading = false
@@ -126,8 +141,17 @@ export class CustomersComponent implements OnInit {
     this.isVisibleProfileDialog = true;
     this.selectedProfile = rowData;
     const selectedUserId = rowData.userId;
-    this.members = this.customers.filter(customer => customer.userId === selectedUserId);
-}
+    const filteredCustomers = this.members = this.customers.filter(customer => customer.userId === selectedUserId);
+    this.members = filteredCustomers.sort((a, b) => {
+      if (a.isPrimary && !b.isPrimary) {
+        return -1; 
+      } else if (!a.isPrimary && b.isPrimary) {
+        return 1;
+      } else {
+        return 0;
+      }
+    });
+  }
   showCustomerCard(customer:any){
     this.selectedCustomer = customer;
     this.showCard = !this.showCard;
@@ -147,26 +171,29 @@ export class CustomersComponent implements OnInit {
             this.notification.error('Lấy dữ liệu không thành công')
           }
         }
+      }, complete: () => {
+        this.loading = false; 
       }
     });
     this.isVisibleProfileDialog = false;
     this.isVisibleHisProfileDialog = true;
   }
-  syncOffProfile(id:any){}
-
+  syncOffProfile(id:any){
+    this.synced = !this.synced;
+    this.hisCode = null;
+  }
   updateProfile(profile:any){
     this.loading = true;
     this.customerService.sync(this.hisCode,this.selectedProfile.id).subscribe({
       next: (res) => {
-        console.log(res);
-        if(res.ret[0].message){
-          this.notification.warn(res.ret[0].message);
-          this.members.push(profile);
+        if(res.ret[0].code === 200){
+          this.notification.success("Đồng bộ hồ sơ thành công");
           this.selectedCustomer = profile;
-          console.log(this.selectedProfile);
           this.synced = this.selectedProfile.isSync;
-          this.syncLabel = this.synced ? "Bỏ đồng bộ HIS" : "Đồng bộ hồ sơ HIS";
-        } else{
+          this.search();
+        } else if(res.ret[0].code === 400){
+          this.notification.warn(res.ret[0].message);
+        }else{
           if(res.errors && res.errors.length > 0){
             res.errors.forEach((el: any) => {
               this.notification.error(el.errorMessage)
@@ -175,6 +202,8 @@ export class CustomersComponent implements OnInit {
             this.notification.error('Lấy dữ liệu không thành công')
           }
         }
+      }, complete: () => {
+        this.loading = false; 
       }
     });
     this.isVisibleHisProfileDialog = false;
@@ -185,9 +214,8 @@ export class CustomersComponent implements OnInit {
     this.customerService.getSession(this.selectedProfile.id).subscribe({
       next: (res) => {
         if(res){
-          console.log('session', res);  
-          res.sort((a:any, b:any) => new Date(b.visitDate).getTime() - new Date(a.visitDate).getTime());       
           this.sessions = res;
+          this.sessionLengthMap.set(this.selectedProfile.id, res.length);
         } else{
           if(res.errors && res.errors.length > 0){
             res.errors.forEach((el: any) => {
@@ -197,6 +225,9 @@ export class CustomersComponent implements OnInit {
             this.notification.error('Lấy dữ liệu không thành công')
           }
         }
+      }, 
+      complete: () => {
+        this.loading = false; 
       }
     });
     this.isVisibleSessionDialog = true;
@@ -207,7 +238,13 @@ export class CustomersComponent implements OnInit {
     this.customerService.search(this.searchData).subscribe({
       next:(res) => {
         if(res){
-          this.customers = res.customers;
+          this.customers = res.customers.map((customer: any) => ({
+            ...customer,
+            genderName: customer.gender === 0 ? 'Nữ' : 'Nam',
+            syncStatus: customer.isSync == true ? "Đã đồng bộ" : "Chưa đồng bộ",
+            transformedDob: new DatePipe('en-US').transform(customer.dob, 'dd/MM/yyyy'),
+            registerDate: new DatePipe('en-US').transform(customer.dateCreated, 'dd/MM/yyyy')
+            }));
           this.total = res.total;
         }else{
           if( res.errors && res.errors.length > 0){
@@ -218,7 +255,9 @@ export class CustomersComponent implements OnInit {
             this.notification.error('Tìm kiếm khách hàng không thành công')
             }
           }
-        },
+        },complete: () => {
+          this.loading = false; 
+        }
       })
       .add(() => {
         this.loading = false;
@@ -228,11 +267,10 @@ export class CustomersComponent implements OnInit {
     this.searchData = {
         skip: 0,
         take: 40,
-        keyword: '',
+        name: '',
     };
     this.search();
   }
-  
   stopPropagation(event: Event) {
     event.stopPropagation();
   }
