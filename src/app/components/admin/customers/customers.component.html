@@ -5,7 +5,7 @@
 
       <div class="my-2 flex justify-content-between flex-wrap">
         <span class="block p-input-icon-left">
-          <i class="pi pi-search"></i>
+          <i class="pi pi-search text-base"></i>
           <input pInputText type="text" placeholder="Tìm kiếm ..." class="inline-block lg:w-17rem sm:w-auto p-inputtext-sm"
            [(ngModel)]="searchData.name" (keydown.enter)="search()"/>
           <button pButton pRipple icon="pi pi-search" class="p-button-primary mr-2 ml-2 p-button-sm" (click)="search()"></button>
@@ -43,67 +43,43 @@
             </h4>
             <p-card class="p-fluid" *ngIf="selectedCustomer === member && showCard">
               <div class="flex flex-row">
-                <p-card class="p-fluid" header="Thông tin cá nhân" [style]="{ width: '26vw' }">
+                <p-card class="p-fluid" header="Thông tin cá nhân" [style]="{ width: '450px' }">
                   <div class="flex flex-row">
-                    <ul [style]="{ width: '100%' }" >
-                      <li class="flex flex-row mr-3">
-                        <i class="pi pi-id-card -ml-6 mr-3 mb-5"></i>
-                        <p>
-                          {{ member.transformedDob }}
-                        </p>
-                      </li>
-                      <li class="flex flex-row mr-3">
-                        <i class="pi pi-phone -ml-6 mr-3 mb-5"></i>
-                        <p>
-                          {{ member.phoneNo }}
-                        </p>
-                      </li>
-                      <li class="flex flex-row mr-3">
-                        <i class="pi pi-user-edit -ml-6 mr-3 mb-5"> </i>
-                        <p>
-                          {{ member.job }}
-                        </p>
-                      </li>
-                      <li class="flex flex-row mr-3">
-                        <i class="pi pi-envelope -ml-6 mr-3 mb-5"></i>
-                        <p>
-                          {{ member.email }}
-                        </p>
-                      </li>
-                      <p class="flex flex-row">
-                        <i class="pi pi-map -ml-6 mr-3" ></i>
-                        {{ member.address }}
-                      </p>
+                    <ul [style]="{ width: '100%' }">
+                      <ng-container *ngFor="let item of [
+                        { icon: 'pi pi-id-card', value: member.transformedDob },
+                        { icon: 'pi pi-phone', value: member.phoneNo },
+                        { icon: 'pi pi-user-edit', value: member.job },
+                        { icon: 'pi pi-envelope', value: member.email },
+                        { icon: 'pi pi-map', value: member.address }
+                      ]">
+                        <li class="flex flex-row mr-3">
+                          <i [class]="item.icon + ' -ml-6 mr-3 mb-5'"></i>
+                          <p>{{ item.value }}</p>
+                        </li>
+                      </ng-container>
                     </ul>
-                    <ul [style]="{ width: '100%' }" >
-                      <li class="flex flex-row">
-                        <i class="pi pi-info ml-3 mr-3 mb-5" ></i>
-                        <p>
-                          {{ member.genderName }}
-                        </p>
-                      </li>
-                      <li class="flex flex-row">
-                        <i class="pi pi-users ml-3 mr-3 mb-5" ></i>
-                        <p>
-                          {{member.nation}}
-                        </p>
-                      </li>
-                      <li class="flex flex-row">
-                        <i class="pi pi-id-card ml-3 mr-3" ></i>
-                          <p>
-                            {{ member.id }}
-                          </p>
-                      </li>
-                    </ul>
+                    <ul [style]="{ width: '100%' }">
+                      <ng-container *ngFor="let item of [
+                        { icon: 'pi pi-info', value: member.genderName },
+                        { icon: 'pi pi-users', value: member.nation },
+                        { icon: 'pi pi-id-card', value: member.id }
+                      ]">
+                        <li class="flex flex-row">
+                          <i [class]="item.icon + ' ml-3 mr-3 mb-5'"></i>
+                          <p>{{ item.value }}</p>
+                        </li>
+                      </ng-container>
+                    </ul>                    
                   </div>
                 </p-card>
-                <p-card class="p-fluid" header="Thông tin y tế" [style]="{ 'width': '28vw'}">
+                <p-card class="p-fluid" header="Thông tin y tế" [style]="{ 'width': '400px'}">
                   <div>
-                    <li class="flex flex-row mr-8" *ngIf="synced" [style.color]="'var(--green-400)'">
+                    <li class="flex flex-row mr-8" *ngIf="selectedProfile.isSync" [style.color]="'var(--green-400)'">
                       <i class="pi pi-download mr-3 mb-5" ></i>
                       Đã đồng bộ
                     </li>
-                    <li class="flex flex-row mr-8" *ngIf="!synced" [style.color]="'var(--red-400)'">
+                    <li class="flex flex-row mr-8" *ngIf="!selectedProfile.isSync" [style.color]="'var(--red-400)'">
                       <i class="pi pi-download mr-3 mb-5"></i>
                       Chưa đồng bộ
                     </li>
@@ -111,16 +87,16 @@
                       <i class="pi pi-user mr-3 mb-5" ></i>
                       Mã bệnh nhân
                     </li>
-                    <div class="flex flex-row mb-3" (click)="stopPropagation($event)" >
+                    <div class="flex flex-row mb-5" (click)="stopPropagation($event)" >
                         <input type="text" pInputText class="mr-3" [(ngModel)]="hisCode" (keydown.enter)="syncProfile()" (click)="stopPropagation($event)" />
-                        <button pButton pRipple *ngIf="!synced" [label]="'Đồng bộ hồ sơ HIS'" class="p-button-warning" style="color: #fff" (click)="syncProfile()"></button>
-                        <button pButton pRipple *ngIf="synced" [label]="'Bỏ đồng bộ HIS'" class="p-button-danger" style="color: #fff" (click)="syncOffProfile(member.id)"></button>
+                        <button pButton pRipple *ngIf="!selectedProfile.isSync" [label]="'Đồng bộ hồ sơ HIS'" class="p-button-warning" style="color: #fff" (click)="syncProfile()"></button>
+                        <button pButton pRipple *ngIf="selectedProfile.isSync" [label]="'Bỏ đồng bộ HIS'" class="p-button-danger" style="color: #fff" (click)="syncOffProfile(member.id)"></button>
                     </div>
                     <li class="flex flex-row mr-8">
                       <i class="pi pi-calendar-plus mr-3" ></i>
-                      <p *ngIf="!synced">Danh sách ca khám</p>
-                      <a *ngIf="synced" [style.color]="'var(--blue-500)'" (click)="showSession()">
-                        Danh sách ca khám ({{sessionLengthMap.get(selectedCustomer.id) || 0}})
+                      <p *ngIf="!selectedProfile.isSync">Danh sách ca khám</p>
+                      <a *ngIf="selectedProfile.isSync" [style.color]="'var(--blue-500)'" (click)="showSession()">
+                        Danh sách ca khám ({{sessionLength.get(selectedCustomer.id)}})
                       </a>
                     </li>
                   </div>
@@ -146,7 +122,7 @@
           </ng-template>
           <ng-template pTemplate="body" let-profile>
             <tr>
-              <td>{{ profile.name }} - {{profile.gender | genderText }}  {{profile.dob | date : "dd/MM/yyyy"}} <br/>
+              <td>{{ profile.name }} - {{profile.gender | genderText }}  {{profile.dob | date : "dd/MM/yyyy"}} 
                   {{profile.address}}
               </td>
               <td>{{ hisCode }}</td>

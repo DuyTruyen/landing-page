@@ -52,8 +52,7 @@ export class CustomersComponent implements OnInit {
   hisCode:any;
   hisProfiles:any[] = [];
   sessions:any[] = [];
-  synced = false;
-  sessionLengthMap: Map<number, number> = new Map<number, number>();
+  sessionLength: Map<number, number> = new Map<number, number>();
   total = 0;
   searchData = {
     skip: 0,
@@ -87,8 +86,8 @@ export class CustomersComponent implements OnInit {
     ]
     this.profileCols = [
       {header:'Thông tin bệnh nhân', width: '50rem'},
-      {header:'Mã BN',width: '15rem'},
-      {header:'Số điện thoại',width:'15rem'},
+      {header:'Mã BN',width: '10rem'},
+      {header:'Số điện thoại',width:'10rem'},
       {header:'Ca khám gần nhất',width:'20rem'},
       {header:'', width:'15rem'}
     ]
@@ -130,18 +129,18 @@ export class CustomersComponent implements OnInit {
     });
   }
   selectItem(customer: any){
-    this.selectedCustomer = customer;
-    this.onShowProfile(customer);
-    this.hisCode = customer.patientCode;
-    this.synced = customer.isSync;
-    this.sessions = [];
-    this.selectedCustomer = null;
+    if(customer){
+      this.selectedCustomer = customer;
+      this.hisCode = customer.patientCode;
+    }
+    this.onShowProfile(this.selectedCustomer);
+    this.showCard = false; 
   }
-  onShowProfile(rowData:any){
+  onShowProfile(customer:any){
     this.isVisibleProfileDialog = true;
-    this.selectedProfile = rowData;
-    const selectedUserId = rowData.userId;
-    const filteredCustomers = this.members = this.customers.filter(customer => customer.userId === selectedUserId);
+    this.selectedProfile = customer;
+    let selectedUserId = this.selectedProfile.userId;
+    let filteredCustomers = this.members = this.customers.filter(customer => customer.userId === selectedUserId);
     this.members = filteredCustomers.sort((a, b) => {
       if (a.isPrimary && !b.isPrimary) {
         return -1; 
@@ -179,18 +178,25 @@ export class CustomersComponent implements OnInit {
     this.isVisibleHisProfileDialog = true;
   }
   syncOffProfile(id:any){
-    this.synced = !this.synced;
+    this.selectedProfile.isSync = false;
     this.hisCode = null;
   }
   updateProfile(profile:any){
-    this.loading = true;
     this.customerService.sync(this.hisCode,this.selectedProfile.id).subscribe({
       next: (res) => {
         if(res.ret[0].code === 200){
+          this.loading = true;
           this.notification.success("Đồng bộ hồ sơ thành công");
           this.selectedCustomer = profile;
-          this.synced = this.selectedProfile.isSync;
+          this.selectedProfile.isSync = true;
           this.search();
+          this.customerService.getSession(this.selectedProfile.id).subscribe({
+            next: (res) => {
+              if(res){
+                this.sessionLength.set(this.selectedProfile.id, res.length);
+              } 
+            }
+          })
         } else if(res.ret[0].code === 400){
           this.notification.warn(res.ret[0].message);
         }else{
@@ -215,7 +221,6 @@ export class CustomersComponent implements OnInit {
       next: (res) => {
         if(res){
           this.sessions = res;
-          this.sessionLengthMap.set(this.selectedProfile.id, res.length);
         } else{
           if(res.errors && res.errors.length > 0){
             res.errors.forEach((el: any) => {
@@ -259,9 +264,6 @@ export class CustomersComponent implements OnInit {
           this.loading = false; 
         }
       })
-      .add(() => {
-        this.loading = false;
-      });
     }
   resetSearch() {
     this.searchData = {
