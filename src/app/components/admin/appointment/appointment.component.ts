@@ -18,7 +18,16 @@ export class AppointmentComponent implements OnInit {
     loadingHistory = false;
     listItems: any = [];
     listHistory: any = [];
-    lstDepartments: any = [];
+    lstDepartments: any = [
+        {
+            appointments: [],
+            description: "",
+            id: null,
+            isDeleted: false,
+            name: "Tất cả chuyên khoa",
+            status: true
+        }
+    ];
     totalDepartmen = 0;
     cols: any[] = [];
     totalItemCount = 0;
@@ -138,7 +147,7 @@ export class AppointmentComponent implements OnInit {
         this.departmentService.getAll().subscribe({
             next: (res) => {
                 if (res) {
-                    this.lstDepartments = res.data;
+                    this.lstDepartments = this.lstDepartments.concat(res.data);
                 } else {
                     if (res.errors && res.errors.length > 0) {
                         res.errors.forEach((el: any) => {
@@ -205,6 +214,11 @@ export class AppointmentComponent implements OnInit {
             take: this.searchData.take,
             skip: this.searchData.skip,
         };
+        this.search();
+    }
+
+    onChangeMenuDepartments(item: any): void {
+        this.searchForm.departmentId = item.id;
         this.search();
     }
 
