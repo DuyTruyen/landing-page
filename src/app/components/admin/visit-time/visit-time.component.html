@@ -7,9 +7,10 @@
             <div class="my-2 flex justify-content-between flex-wrap">
                 <span class="block p-input-icon-left">
                     <i class="pi pi-search"></i>
-                    <input pInputText type="text" placeholder="Tìm kiếm ..."
+                    <p-dropdown placeholder="Chuyên khoa" [style]="{ width: '180px' }" [options]="session" class="w-full sm:w-auto p-inputtext-sm" appendTo="body" optionLabel="label" optionValue="value" [(ngModel)]="searchForm.session" [ngModelOptions]="{ standalone: true }" [showClear]="true"></p-dropdown>
+                    <!-- <input pInputText type="text" placeholder="Tìm kiếm ..."
                         class="inline-block lg:w-17rem sm:w-auto p-inputtext-sm" [(ngModel)]="searchData.keyword"
-                        (keydown.enter)="search()" />
+                        (keydown.enter)="search()" /> -->
                     <button pButton pRipple icon="pi pi-search" class="p-button-primary mr-2 ml-2 p-button-sm"
                         (click)="search()"></button>
                     <button pButton pRipple icon="pi pi-times" class="p-button-secondary p-button-sm"
@@ -32,13 +33,13 @@
                 <th [style.minWidth]="'6rem'" pFrozenColumn alignFrozen="right"></th>
             </ng-template>
             <ng-template #customBodyTemplate let-rowData>
-                <td [style.minWidth]="'40rem'" class="text-center">
+                <td [style.minWidth]="'40rem'" class="text-center" (click)="onEditItem(rowData)">
                     {{ rowData.name | date: 'hh:mm'  }}
                 </td>
-                <td [style.minWidth]="'40rem'" class="text-center">
+                <td [style.minWidth]="'40rem'" class="text-center" (click)="onEditItem(rowData)">
                     {{ rowData.session| visitSession }}
                 </td>
-                <td [style.minWidth]="'10rem'" class="justify-content-center">
+                <td [style.minWidth]="'10rem'" class="justify-content-center" (click)="onEditItem(rowData)">
                     <i *ngIf="!rowData.disabled else noStatus" class="pi pi-check" [style.color]="'var(--green-400)'"></i>
                     <ng-template #noStatus>
                       <i class="pi pi-ban" [style.color]="'var(--red-400)'"></i>
@@ -67,7 +68,7 @@
                         <label for="address">Buổi <span class="text-red-500">*</span></label>
                         <p-dropdown [options]="session" formControlName="session" optionLabel="label" optionValue="key"></p-dropdown>
                         <div class="m-error"
-                        *ngIf="visitTimeForm.controls['session'].invalid && visitTimeForm.controls['name'].dirty">
+                        *ngIf="visitTimeForm.controls['session'].invalid && visitTimeForm.controls['session'].dirty">
                         *Chưa chọn buổi
                     </div>
                     </div>

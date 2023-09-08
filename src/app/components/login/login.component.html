@@ -13,7 +13,7 @@
     </div>
     <div class="col-5 relative z-1 text-center p-7 login-input mx-0" style="background: rgb(255 255 255 /0.8); height: 105vh; width: 27%">
       <div style="position: absolute; top: 25%; left: 13%">
-        <p class="font-bold text-4xl">HID</p>
+        <p class="font-bold text-4xl">HVID</p>
       </div>
       <div style="position: absolute; top: 25%; left: 8" [formGroup]="loginForm">
         <div class="col-8 m-auto mt-6 w-23rem login-inp-btn-password">
@@ -33,7 +33,7 @@
             </div>
           </div>
 
-          <button [disabled]="loading" pRipple type="button" (click)="login()" style="background-color: #3699ff; border-color: #3699ff" class="w-5 h-4rem border-none border-round-2xl cursor-pointer h-3rem text-white flex align-items-center justify-content-center text-base mt-6 btn-login">
+          <button [disabled]="loading" pRipple type="button" (click)="login()" style="background-color: #3699ff; border-color: #3699ff" class="w-5 border-none border-round-2xl cursor-pointer h-3rem text-white flex align-items-center justify-content-center text-base mt-6 btn-login">
             <i *ngIf="loading" class="pi pi-spin pi-spinner mr-1" style="font-size: 1rem"></i>
             Đăng nhập
           </button>

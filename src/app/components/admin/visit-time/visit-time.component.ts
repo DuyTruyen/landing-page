@@ -4,7 +4,7 @@ import { MenuItem } from 'primeng/api';
 import { VisitTimeService } from 'src/app/services/visit-time.service';
 import { Constants } from 'src/app/shared/constants/constants';
 import { NotificationService } from 'src/app/shared/notification.service';
-import { NoWhitespaceValidator } from 'src/app/shared/validators/no-whitespace.validator';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-visit-time',
@@ -39,19 +39,24 @@ export class VisitTimeComponent implements OnInit {
   searchData = {
     skip: 0,
     take: 40,
+  };
+
+  searchForm = {
+    skip: this.searchData.skip,
+    take: this.searchData.take,
     keyword: '',
-    disabled: '',
-    session: '',
+    disabled: null,
+    session: null,
   };
 
   // Breakcrum Page source-hospital
   breadcrumbItem: MenuItem[];
   breadcrumbHome: MenuItem;
 
-  constructor(private fb: FormBuilder, private notification: NotificationService, private visitTimeService: VisitTimeService) {
+  constructor(private fb: FormBuilder, private notification: NotificationService, private visitTimeService: VisitTimeService, private datePipe: DatePipe) {
     this.visitTimeForm = this.fb.group({
       id: [null],
-      name: [new Date('1970-01-01T07:00:00'), [Validators.required]],
+      name: [new Date(), [Validators.required]],
       session: [null, [Validators.required]],
       enable: [true],
     });
@@ -93,7 +98,7 @@ export class VisitTimeComponent implements OnInit {
     this.visitTimeForm.reset();
     this.visitTimeForm.patchValue({
       id: 0,
-      name: new Date('1970-01-01T07:00:00'),
+      name: new Date(),
       session: 1,
       enable: true,
     });
@@ -158,7 +163,9 @@ export class VisitTimeComponent implements OnInit {
 
   onDeleteItem(item: any) {
     this.deletedItem = item;
-    this.textConfirmDelete = `Xác nhận xóa khung giờ khám <b>${item.name}</b>?`;
+    const dateTime = new Date(item.name);
+    const formattedTime = this.datePipe.transform(dateTime, 'HH:mm') || '';
+    this.textConfirmDelete = `Xác nhận xóa khung giờ khám <b>${formattedTime}</b> ?`;
     this.isVisibleDeleteItemDialog = true;
   }
 
@@ -175,7 +182,7 @@ export class VisitTimeComponent implements OnInit {
   search() {
     this.loading = true;
     this.visitTimeService
-      .search(this.searchData)
+      .getAll(this.searchForm)
       .subscribe({
         next: (res: any) => {
           this.visitTimes = res.data;
@@ -188,13 +195,13 @@ export class VisitTimeComponent implements OnInit {
   }
 
   resetSearch() {
-    this.searchData = {
-      skip: 0,
-      take: 40,
-      keyword: '',
-      session: '',
-      disabled: '',
-    };
+    this.searchForm = {
+        skip: this.searchData.skip,
+        take: this.searchData.take,
+        keyword: '',
+        disabled: null,
+        session: null,
+    }
     this.search();
   }
 }

@@ -17,7 +17,7 @@
             </div>
 
             <m-table [isLazyLoad]="false" [cols]="cols" [items]="listItems" (onPageChange)="onPageChange($event)" [totalRecords]="totalItemCount" (selectRow)="selectItem($event)" class="table-admin"
-                [customBodyTemplate]="customBodyTemplate" [customHeaderTemplate]="customHeaderTemplate" [calcHeight]="264"
+                [customBodyTemplate]="customBodyTemplate" [customHeaderTemplate]="customHeaderTemplate" [calcHeight]="284"
                 [dataKey]="'id'" [loading]="loading" class="table-admin">
             </m-table>
             <ng-template #customHeaderTemplate>

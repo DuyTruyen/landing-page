@@ -9,6 +9,7 @@ import { Roles } from './shared/constants/constants';
             [
                 {
                     path: 'login',
+                    canActivate: [],
                     loadChildren: () =>
                         import('./components/login/login.module').then(
                             (m) => m.LoginModule
@@ -20,7 +21,7 @@ import { Roles } from './shared/constants/constants';
                         import(
                             './components/admin/admin-layout/admin.layout.module'
                         ).then((m) => m.AdminLayoutModule),
-                    // canActivate: [AuthGuard],
+                    canActivate: [AuthGuard],
                     data: { role: Roles.ADMIN },
                 },
                 {

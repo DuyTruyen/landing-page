@@ -67,9 +67,13 @@ export class CustomersComponent implements OnInit {
     this.breadcrumbItem = [
       { label: 'Quản lý khách hàng' },
       { label: 'Danh sách khách hàng' },
+      { label: 'Quản lý khách hàng' },
+      { label: 'Danh sách khách hàng' },
     ];
 
     this.home = {
+      icon: 'pi pi-home',
+      routerLink: '/admin/admin-dashboard',
       icon: 'pi pi-home',
       routerLink: '/admin/admin-dashboard',
     };
@@ -113,6 +117,13 @@ export class CustomersComponent implements OnInit {
           registerDate: new DatePipe('en-US').transform(customer.dateCreated, 'dd/MM/yyyy')
           }));
         }else{
+          if(res.errors && res.errors.length > 0){
+            res.errors.forEach((el: any) => {
+              this.notification.error(el.errorMessage)
+            })
+          }else{
+            this.notification.error('Lấy dữ liệu không thành công')
+          }
           if(res.errors && res.errors.length > 0){
             res.errors.forEach((el: any) => {
               this.notification.error(el.errorMessage)

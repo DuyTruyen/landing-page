@@ -12,6 +12,7 @@ import { ListUsersInGroupComponent } from './list-users-in-group/list-users-in-g
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { ConfirmDialogModule } from 'src/app/shared/components/confirm-dialog/confirm-dialog.module';
 import { BreadcrumbModule } from 'primeng/breadcrumb';
+import { DropdownModule } from 'primeng/dropdown';
 @NgModule({
   declarations: [
     UserGroupsComponent,
@@ -29,7 +30,8 @@ import { BreadcrumbModule } from 'primeng/breadcrumb';
     MTableModule,
     AutoCompleteModule,
     UserGroupsRoutingModule,
-    BreadcrumbModule
+    BreadcrumbModule,
+    DropdownModule
   ]
 })
 export class UserGroupsModule { }
