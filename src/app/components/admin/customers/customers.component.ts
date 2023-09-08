@@ -74,8 +74,6 @@ export class CustomersComponent implements OnInit {
     this.home = {
       icon: 'pi pi-home',
       routerLink: '/admin/admin-dashboard',
-      icon: 'pi pi-home',
-      routerLink: '/admin/admin-dashboard',
     };
    }
   ngOnInit(): void {
