@@ -11,6 +11,7 @@ import { CalendarModule } from 'primeng/calendar';
 import { DropdownModule } from 'primeng/dropdown';
 import { ScrollPanelModule } from 'primeng/scrollpanel';
 import { PipeModule } from 'src/app/shared/pipes/pipe.module';
+import { ListboxModule } from 'primeng/listbox';
 
 
 @NgModule({
@@ -28,6 +29,7 @@ import { PipeModule } from 'src/app/shared/pipes/pipe.module';
     DropdownModule,
     ScrollPanelModule,
     PipeModule,
+    ListboxModule
   ]
 })
 export class AppointmentModule { }
