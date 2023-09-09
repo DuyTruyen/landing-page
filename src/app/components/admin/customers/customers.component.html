@@ -90,7 +90,7 @@
                     <div class="flex flex-row mb-5" (click)="stopPropagation($event)" >
                         <input type="text" pInputText class="mr-3" [(ngModel)]="hisCode" (keydown.enter)="syncProfile()" (click)="stopPropagation($event)" />
                         <button pButton pRipple *ngIf="!selectedProfile.isSync" [label]="'Đồng bộ hồ sơ HIS'" class="p-button-warning" style="color: #fff" (click)="syncProfile()"></button>
-                        <button pButton pRipple *ngIf="selectedProfile.isSync" [label]="'Bỏ đồng bộ HIS'" class="p-button-danger" style="color: #fff" (click)="syncOffProfile(member.id)"></button>
+                        <button pButton pRipple *ngIf="selectedProfile.isSync" [label]="'Bỏ đồng bộ HIS'" class="p-button-danger" style="color: #fff" (click)="unSyncProfile(member.id)"></button>
                     </div>
                     <li class="flex flex-row mr-8">
                       <i class="pi pi-calendar-plus mr-3" ></i>

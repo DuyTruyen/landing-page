@@ -122,13 +122,6 @@ export class CustomersComponent implements OnInit {
           }else{
             this.notification.error('Lấy dữ liệu không thành công')
           }
-          if(res.errors && res.errors.length > 0){
-            res.errors.forEach((el: any) => {
-              this.notification.error(el.errorMessage)
-            })
-          }else{
-            this.notification.error('Lấy dữ liệu không thành công')
-          }
         }
       }, complete: () => {
         this.loading = false; 
@@ -148,9 +141,26 @@ export class CustomersComponent implements OnInit {
   onShowProfile(customer:any){
     this.isVisibleProfileDialog = true;
     this.selectedProfile = customer;
-    let selectedUserId = this.selectedProfile.userId;
-    let filteredCustomers = this.members = this.customers.filter(customer => customer.userId === selectedUserId);
-    this.members = filteredCustomers.sort((a, b) => {
+    this.loading = true;
+    this.customerService.getMember(this.selectedProfile.userId).subscribe({
+      next: (res) => {
+        if(res){
+          this.members = res;
+          console.log('members',this.members)
+        } else{
+          if(res.errors && res.errors.length > 0){
+            res.errors.forEach((el: any) => {
+              this.notification.error(el.errorMessage)
+            })
+          }else{
+            this.notification.error('Lấy dữ liệu không thành công')
+          }
+        }
+      }, complete: () => {
+        this.loading = false;
+      }
+    })
+    this.members = this.members.sort((a, b) => {
       if (a.isPrimary && !b.isPrimary) {
         return -1; 
       } else if (!a.isPrimary && b.isPrimary) {
@@ -158,12 +168,12 @@ export class CustomersComponent implements OnInit {
       } else {
         return 0;
       }
-    });
+    }); 
   }
   showCustomerCard(customer:any){
     this.selectedCustomer = customer;
-    this.showCard = !this.showCard;
-  }
+    this.showCard = !this.showCard
+    }
   syncProfile(){
     this.loading = true;
     this.customerService.getInfo(this.hisCode).subscribe({
@@ -186,15 +196,33 @@ export class CustomersComponent implements OnInit {
     this.isVisibleProfileDialog = false;
     this.isVisibleHisProfileDialog = true;
   }
-  syncOffProfile(id:any){
-    this.selectedProfile.isSync = false;
-    this.hisCode = null;
+  unSyncProfile(id:any){
+    this.customerService.unSync(id).subscribe({
+      next: (res) => {
+        if(res){
+          this.selectedProfile.isSync = false;
+          this.hisCode = null;
+          this.search();
+        } else{
+          if(res.errors && res.errors.length > 0){
+            res.errors.forEach((el: any) => {
+              this.notification.error(el.errorMessage)
+            })
+          }else{
+            this.notification.error('Lấy dữ liệu không thành công')
+          }
+        }
+      }, 
+      complete: () => {
+        this.loading = false; 
+      }
+    });
   }
   updateProfile(profile:any){
     this.customerService.sync(this.hisCode,this.selectedProfile.id).subscribe({
       next: (res) => {
+        this.loading = true;
         if(res.ret[0].code === 200){
-          this.loading = true;
           this.notification.success("Đồng bộ hồ sơ thành công");
           this.selectedCustomer = profile;
           this.selectedProfile.isSync = true;
