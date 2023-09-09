@@ -24,6 +24,10 @@ export class LoginComponent implements OnInit, OnDestroy {
   loading = false;
   sub!: Subscription;
   messageError!: string;
+  showErrorAfterCall: any = {
+    userName: false,
+    password: false
+  }
   constructor(
     public configService: AppConfigService,
     private fb: FormBuilder,
@@ -48,6 +52,15 @@ export class LoginComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
   }
 
+  onHideMessage(field: string): void {
+    if (field === 'userName') {
+        this.showErrorAfterCall.userName = false;
+    }
+    if (field === 'password') {
+        this.showErrorAfterCall.password = false;
+    }
+  }
+
   login(): void {
     this.sub = this.authService.login(this.loginForm.value).subscribe(res => {
         if(res !== null) {
@@ -58,12 +71,16 @@ export class LoginComponent implements OnInit, OnDestroy {
             this.router.navigate(['/admin-dashboard']);
         }
     }, error => {
+        this.showErrorAfterCall.userName = true
+        this.showErrorAfterCall.password = true
         if(error.error && error.error.message) {
             this.messageError = error.error.message;
         } else {
             this.messageError = StorageKeys.LOGIN_FAIL
         }
     })
+
+
     // if (this.loginForm.valid) {
     //   this.loading = true;
     //   this.authService.login(this.loginForm.value).subscribe({
