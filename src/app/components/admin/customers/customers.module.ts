@@ -42,7 +42,8 @@ import { PipeModule } from "../../../shared/pipes/pipe.module";
         ScrollPanelModule,
         DividerModule,
         TableModule,
-        PipeModule
+        PipeModule,
+        ConfirmDialogModule
     ]
 })
 export class CustomersModule { }

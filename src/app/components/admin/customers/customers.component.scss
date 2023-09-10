@@ -21,3 +21,12 @@ p{
 :host .p-fluid ::ng-deep .p-card{
     box-shadow: none !important;
 }
+:host .no-pb-body ::ng-deep .p-card-content{
+    padding-bottom: 0px;
+}
+
+.flex-h100{
+    display: flex;
+    align-items: stretch;
+
+}
