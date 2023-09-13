@@ -17,30 +17,33 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { ScrollPanelModule } from 'primeng/scrollpanel';
 import {DividerModule } from 'primeng/divider';
 import {TableModule} from 'primeng/table';
+import { PipeModule } from "../../../shared/pipes/pipe.module";
 
 
 @NgModule({
-  declarations: [
-    CustomersComponent
-  ],
-  imports: [
-    CommonModule,
-    CustomersRoutingModule,
-    RippleModule,
-    DialogModule,
-    MTableModule,
-    PanelModule,
-    ReactiveFormsModule,
-    FormsModule,
-    ButtonModule,
-    ConfirmDialogModule,
-    InputTextModule,
-    BreadcrumbModule,
-    CardModule,
-    CheckboxModule,
-    ScrollPanelModule,
-    DividerModule,
-    TableModule
-  ]
+    declarations: [
+        CustomersComponent
+    ],
+    imports: [
+        CommonModule,
+        CustomersRoutingModule,
+        RippleModule,
+        DialogModule,
+        MTableModule,
+        PanelModule,
+        ReactiveFormsModule,
+        FormsModule,
+        ButtonModule,
+        ConfirmDialogModule,
+        InputTextModule,
+        BreadcrumbModule,
+        CardModule,
+        CheckboxModule,
+        ScrollPanelModule,
+        DividerModule,
+        TableModule,
+        PipeModule,
+        ConfirmDialogModule
+    ]
 })
 export class CustomersModule { }
