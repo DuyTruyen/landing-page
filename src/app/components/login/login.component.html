@@ -21,17 +21,15 @@
 
           <div class="field">
             <label class="text-label font-bold text-lg" for="Username">Tên đăng nhập</label>
-            <input type="text" placeholder="Tên đăng nhập" (ngModelChange)="onHideMessage('userName')" pInputText formControlName="username" (keydown.enter)="login()" class="w-full border-round-2xl border-500 p-4 h-3rem text-base" />
+            <input type="text" placeholder="Tên đăng nhập" pInputText formControlName="username" (keydown.enter)="login()" class="w-full border-round-2xl border-500 p-4 h-3rem text-base" />
             <div class="m-error text-sm inp-login ml-4" *ngIf="loginForm.controls['username'].invalid && loginForm.controls['username'].dirty">*Vui lòng nhập tên đăng nhập</div>
-            <div class="m-error text-sm inp-login ml-4" *ngIf="showErrorAfterCall.userName">*Tên đăng nhập không đúng</div>
           </div>
 
           <div class="field Smt-6 mb-4 mt-5">
             <label class="text-label font-bold text-lg" for="Password">Mật khẩu</label>
-            <p-password [feedback]="false" [toggleMask]="true" formControlName="password" (ngModelChange)="onHideMessage('password')" inputId="password" (keydown.enter)="login()" (keydown)="removeTextErrorLogin()" styleClass="w-full p-password p-component p-inputwrapper p-input-icon-right" placeholder="Mật khẩu" inputStyleClass=" border-500 p-4 h-3rem border-round-2xl text-base"> </p-password>
+            <p-password [feedback]="false" [toggleMask]="true" formControlName="password" inputId="password" (keydown.enter)="login()" (keydown)="removeTextErrorLogin()" styleClass="w-full p-password p-component p-inputwrapper p-input-icon-right" placeholder="Mật khẩu" inputStyleClass=" border-500 p-4 h-3rem border-round-2xl text-base"> </p-password>
             <div style="display: block">
               <div class="m-error text-sm inp-login ml-4" *ngIf="loginForm.controls['password'].invalid && loginForm.controls['password'].dirty">*Vui lòng nhập mật khẩu</div>
-              <div class="m-error text-sm inp-login ml-4" *ngIf="showErrorAfterCall.password">*Mật khẩu không đúng</div>
             </div>
           </div>
 
