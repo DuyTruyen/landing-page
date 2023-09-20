@@ -1,0 +1,176 @@
+$color-1: #5F00DD;
+$color-2: #DA00DA;
+
+.wrap {
+    background-color: black;
+    width: 100%;
+    height: 100%;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+
+    .title {
+        font-size: 18px;
+
+    }
+}
+
+.action {
+    display: flex;
+    align-items: center;
+
+    button {
+        border-color: $color-2;
+        color: $color-2
+    }
+
+    button:hover {
+        color: white;
+        background: $color-1;
+        border-color: $color-1;
+    }
+
+}
+
+.left,
+.right {
+    width: 50%;
+    flex-basis: 50%;
+    text-align: center;
+
+    img {
+        width: 70%;
+        height: 70%;
+        object-fit: cover;
+
+    }
+
+    .title {
+        font-size: 26px;
+        font-family: 'main-font-bold';
+    }
+
+    button {
+        margin-top: 30px;
+        padding-left: 40px;
+        padding-right: 40px;
+        font-size: 17px;
+
+    }
+
+}
+
+.left {
+    .highlight {
+        color: $color-1;
+    }
+
+    button {
+        color: $color-2;
+        border: 1px solid $color-2;
+        box-shadow: 0 0 5px $color-2, 0 0 5px $color-2 inset;
+        z-index: 1;
+        border-color: $color-1;
+        color: $color-1;
+
+
+    }
+
+    button:hover {
+        color: white;
+        background: $color-2;
+        border-color: $color-2;
+    }
+
+    .btn-mammo:after {
+        position: absolute;
+        content: "";
+        width: 0;
+        height: 100%;
+        top: 0;
+        right: 0;
+        z-index: -1;
+        background: $color-2;
+        box-shadow:
+            0 0 20px $color-2;
+        transition: all 0.3s ease;
+    }
+
+    .btn-mammo:hover {
+        color: #fff;
+    }
+
+    .btn-mammo:hover:after {
+        left: 0;
+        width: 100%;
+    }
+
+    .btn-mammo:active {
+        top: 2px;
+    }
+}
+
+.right {
+    .highlight {
+        color: $color-2;
+    }
+
+    button {
+        box-shadow: 0 0 5px $color-2, 0 0 5px $color-2 inset;
+        z-index: 1;
+        border-color: $color-2;
+        color: $color-2;
+
+    }
+
+    button:hover {
+        color: white;
+        background: $color-1;
+        border-color: $color-1;
+    }
+
+    .btn-dps:after {
+        position: absolute;
+        content: "";
+        width: 0;
+        height: 100%;
+        top: 0;
+        right: 0;
+        z-index: -1;
+        background: $color-1;
+        box-shadow:
+            0 0 20px $color-1;
+        transition: all 0.3s ease;
+    }
+
+    .btn-dps:hover {
+        color: #fff;
+    }
+
+    .btn-dps:hover:after {
+        left: 0;
+        width: 100%;
+    }
+
+    .btn-dps:active {
+        top: 2px;
+    }
+}
+
+.footer {
+    text-align: center;
+    background-color: black;
+
+    img {
+        width: 200px;
+        height: 200px;
+        object-fit: contain;
+    }
+
+    .text-2 {
+        padding-left: 60px;
+        padding-right: 60px;
+    }
+}

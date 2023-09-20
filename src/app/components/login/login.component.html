@@ -1,44 +1,36 @@
-<div class="min-h-screen h-full overflow-hidden">
-  <div>
-    <img class="fixed notmobie left-0 h-full w-full opacity-90" src="assets/images/login_bg.jpg" />
-  </div>
-  <div class="grid login-input">
-    <div class="col-6 mt-10rem">
-      <div class="mt-8 m-auto relative z-1 text-center text-white login-form">
-        <img class="h-13rem login-logoMSC-slogan" src="assets/images/login-hvid.png" />
-        <!-- <h1 class="text-6xl mt-0 login-logoMSC-slogan">HVID</h1> -->
-        <h2 class="font-light mt-7 mx-8 text-2xl login-logoMSC-slogan" style="color: #3156a3">{{ slogan.content }}</h2>
-        <h2 class="font-light mt-5 login-logoMSC-slogan" style="color: #04b0f0">{{ slogan.author }}</h2>
-      </div>
-    </div>
-    <div class="col-5 relative z-1 text-center p-7 login-input mx-0" style="background: rgb(255 255 255 /0.8); height: 105vh; width: 27%">
-      <div style="position: absolute; top: 25%; left: 13%">
-        <p class="font-bold text-4xl">HVID</p>
-      </div>
-      <div style="position: absolute; top: 25%; left: 8" [formGroup]="loginForm">
-        <div class="col-8 m-auto mt-6 w-23rem login-inp-btn-password">
-          <div #notify_login class="text-base inp-login" style="color: #ff5757"></div>
-
-          <div class="field">
-            <label class="text-label font-bold text-lg" for="Username">Tên đăng nhập</label>
-            <input type="text" placeholder="Tên đăng nhập" pInputText formControlName="username" (keydown.enter)="login()" class="w-full border-round-2xl border-500 p-4 h-3rem text-base" />
-            <div class="m-error text-sm inp-login ml-4" *ngIf="loginForm.controls['username'].invalid && loginForm.controls['username'].dirty">*Vui lòng nhập tên đăng nhập</div>
-          </div>
-
-          <div class="field Smt-6 mb-4 mt-5">
-            <label class="text-label font-bold text-lg" for="Password">Mật khẩu</label>
-            <p-password [feedback]="false" [toggleMask]="true" formControlName="password" inputId="password" (keydown.enter)="login()" (keydown)="removeTextErrorLogin()" styleClass="w-full p-password p-component p-inputwrapper p-input-icon-right" placeholder="Mật khẩu" inputStyleClass=" border-500 p-4 h-3rem border-round-2xl text-base"> </p-password>
-            <div style="display: block">
-              <div class="m-error text-sm inp-login ml-4" *ngIf="loginForm.controls['password'].invalid && loginForm.controls['password'].dirty">*Vui lòng nhập mật khẩu</div>
+<div class="wrap">
+    <div class="form-group fadein animation-duration-1000 animation-iteration-1" >
+        <img src="assets/images/logo-breast-expert.png" width="200px" alt="" srcset="" routerLink="/">
+        <form [formGroup]="usersForm">
+            <div class="mt-8">
+                <input type="email" class="w-25rem" pInputText placeholder="Email" required email autocomplete="off" formControlName="email"/>
+                <div *ngIf="usersForm.get('email')?.invalid && (usersForm.get('email')?.dirty || usersForm.get('email')?.touched)">
+                    <div class="m-error" *ngIf="usersForm.get('email')?.hasError('required')">*Email không được để trống</div>
+                </div>
             </div>
-          </div>
+            <div class="mt-4">
+                <!-- <p-password formControlName="password"  [toggleMask]="true"></p-password> -->
+                <input formControlName="pass" type="password" placeholder="Mật khẩu" autocomplete="new-password" pPassword  class="w-full">
 
-          <button [disabled]="loading" pRipple type="button" (click)="login()" style="background-color: #3699ff; border-color: #3699ff" class="w-5 border-none border-round-2xl cursor-pointer h-3rem text-white flex align-items-center justify-content-center text-base mt-6 btn-login">
-            <i *ngIf="loading" class="pi pi-spin pi-spinner mr-1" style="font-size: 1rem"></i>
-            Đăng nhập
-          </button>
-        </div>
-      </div>
+                <div *ngIf="usersForm.get('password')?.invalid && (usersForm.get('password').dirty || usersForm.get('password')?.touched)">
+                    <div class="m-error" *ngIf="usersForm.get('password')?.hasError('required')">*Mật khẩu không được để trống</div>
+                </div>
+            </div>
+            <div class="mt-4 text-left">Quên mật khẩu?</div>
+            <div class="mt-4">
+                <button pButton pRipple type="button" label="Đăng nhập" class="p-button btn-login w-25rem"></button>
+            </div>
+            <div class="flex align-item-center justify-content-center mt-4">
+                <hr width="43%">
+                <span class="mx-2 flex align-items-center">hoặc</span>
+                <hr width="43%">
+            </div>
+            <div class="mt-4">
+                <button pButton pRipple type="button" label="Đăng ký" class="p-button btn-signup w-25rem" routerLink="/signup"></button>
+            </div>
+        </form>
     </div>
-  </div>
+    <div class="footer" >
+        Hệ thống Breast-Expert là sản phẩm của đề tài khoa học công nghệ cấp nhà nước KC4.0-18/19-25, theo Quyết định số 3237/QĐ-BKHCN ngày 24 tháng 11 năm 2020 của Bộ trưởng Bộ Khoa học và Công nghệ.
+    </div>
 </div>

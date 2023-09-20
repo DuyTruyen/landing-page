@@ -1,22 +1,26 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { LoginRoutingModule } from './login-routing.module';
-import { LoginComponent } from './login.component';
+import { SignupRoutingModule } from './signup-routing.module';
+import { SignupComponent } from './signup.component';
+
 import { InputTextModule } from 'primeng/inputtext';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { PasswordModule } from 'primeng/password';
 import { RippleModule } from 'primeng/ripple';
 import { ButtonModule } from 'primeng/button';
 import { ToastModule } from 'primeng/toast';
+import { MessageService } from 'primeng/api';
+import { NotificationService } from 'src/app/shared/notification.service';
+import { CheckboxModule } from 'primeng/checkbox';
 
 @NgModule({
   declarations: [
-    LoginComponent
+    SignupComponent
   ],
   imports: [
     CommonModule,
-    LoginRoutingModule,
+    SignupRoutingModule,
     InputTextModule,
     FormsModule,
     ReactiveFormsModule,
@@ -24,8 +28,7 @@ import { ToastModule } from 'primeng/toast';
     RippleModule,
     ButtonModule,
     ToastModule,
-    PasswordModule
-
+    CheckboxModule
   ]
 })
-export class LoginModule { }
+export class SignupModule { }

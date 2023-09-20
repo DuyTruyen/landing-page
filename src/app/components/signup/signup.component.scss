@@ -1,4 +1,3 @@
-
 .wrap {
     width: 100%;
     height: 100%;
@@ -10,6 +9,10 @@
     justify-content: center;
 }
 
+.title {
+    font-size: 20px;
+}
+
 .footer {
     position: absolute;
     bottom: 0;
@@ -18,27 +21,26 @@
     left: 0;
     right: 0;
 }
-.btn-login{
+
+.btn-signup {
     background: #DA00DA;
     color: white;
     border-color: #DA00DA;
 
+
 }
-button.btn-login:hover{
+
+button.btn-signup:hover {
     background: #ff00ff;
     border-color: #ff00ff;
 
 }
-.btn-signup{
-    background: #7D007D;
-    color: white;
-    border-color: #7D007D;
 
-}
-button.btn-signup:hover{
-    background: #be00be;
-    color: white;
-    border-color: #be00be;
-
+input {
+    background: #281328;
+    border-color: #281328;
 }
 
+.custom-checkbox{
+    background-color: white;
+}

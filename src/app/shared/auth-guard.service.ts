@@ -1,10 +1,10 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot } from '@angular/router';
-import { Subscription } from 'rxjs';
 import { IAuthModel, INIT_AUTH_MODEL } from '../models/auth-model';
 import { AuthStateService } from './app-state/auth-state.service';
 import { NotificationService } from './notification.service';
 import { StorageKeys } from './constants/constants';
+import { Subscription } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',

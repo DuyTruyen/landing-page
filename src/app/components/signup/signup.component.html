@@ -1,0 +1,72 @@
+<div class="wrap">
+    <div class="form-group fadein animation-duration-1000 animation-iteration-1">
+        <img src="assets/images/logo-breast-expert.png" width="200px" alt="" srcset="" routerLink="/">
+        <div class="mt-4 title">
+            Đăng ký sử dụng BREAST-EXPERT
+        </div>
+        <div class=" mt-4">
+            <input class="w-25rem" pInputText placeholder="Họ tên *" required autofocus />
+            <div
+                *ngIf="usersForm.controls['email'].invalid && ((usersForm.controls['email'].dirty && usersForm.controls['email'].touched))">
+                <div class="m-error" *ngIf="usersForm.controls['email'].hasError('required')">*Email không được để trống
+                </div>
+            </div>
+        </div>
+        <div class=" mt-4">
+            <input class="w-25rem" pInputText placeholder="Chức danh nghề nghiệp *" required />
+            <div
+                *ngIf="usersForm.controls['email'].invalid && ((usersForm.controls['email'].dirty && usersForm.controls['email'].touched))">
+                <div class="m-error" *ngIf="usersForm.controls['email'].hasError('required')">*Email không được để trống
+                </div>
+            </div>
+        </div>
+        <div class=" mt-4">
+            <input class="w-25rem" pInputText placeholder="Đơn vị công tác *" required />
+            <div
+                *ngIf="usersForm.controls['email'].invalid && ((usersForm.controls['email'].dirty && usersForm.controls['email'].touched))">
+                <div class="m-error" *ngIf="usersForm.controls['email'].hasError('required')">*Email không được để trống
+                </div>
+            </div>
+        </div>
+        <div class=" mt-4">
+            <input class="w-25rem" pInputText placeholder="Chức vụ" required />
+            <div
+                *ngIf="usersForm.controls['email'].invalid && ((usersForm.controls['email'].dirty && usersForm.controls['email'].touched))">
+                <div class="m-error" *ngIf="usersForm.controls['email'].hasError('required')">*Email không được để trống
+                </div>
+            </div>
+        </div>
+        <div class=" mt-4">
+            <input class="w-25rem" pInputText placeholder="Email *" required />
+            <div
+                *ngIf="usersForm.controls['email'].invalid && ((usersForm.controls['email'].dirty && usersForm.controls['email'].touched))">
+                <div class="m-error" *ngIf="usersForm.controls['email'].hasError('required')">*Email không được để trống
+                </div>
+            </div>
+        </div>
+        <div class=" mt-4">
+            <input class="w-25rem" pInputText placeholder="Số điện thoại *" required />
+            <div
+                *ngIf="usersForm.controls['email'].invalid && ((usersForm.controls['email'].dirty && usersForm.controls['email'].touched))">
+                <div class="m-error" *ngIf="usersForm.controls['email'].hasError('required')">*Email không được để trống
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-4 text-left">Chức năng bạn sẽ sử dụng (*)</div>
+        <div class="flex mt-2">
+            <p-checkbox styleClass="custom-checkbox mr-2" [binary]="true"></p-checkbox> Breast-Expert Mammography AI
+        </div>
+        <div class="flex mt-2">
+            <p-checkbox styleClass="custom-checkbox mr-2" [binary]="true"></p-checkbox> Breast-Expert Pathology AI
+        </div>
+
+        <div class="mt-4"><button pButton pRipple type="button" label="Đăng ký"
+                class="p-button btn-signup w-25rem"></button></div>
+
+    </div>
+    <div class="footer">
+        Hệ thống Breast-Expert là sản phẩm của đề tài khoa học công nghệ cấp nhà nước KC4.0-18/19-25, theo Quyết định
+        số 3237/QĐ-BKHCN ngày 24 tháng 11 năm 2020 của Bộ trưởng Bộ Khoa học và Công nghệ.
+    </div>
+</div>
